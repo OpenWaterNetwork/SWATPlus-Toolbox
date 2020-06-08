@@ -21,12 +21,28 @@ namespace SWAT__Toolbox
     /// </summary>
     public partial class MainWindow : Window
     {
+        List<parameter> selected_parameters = new List<parameter>();
+
+        public class parameter
+        {
+            public string name { get; set; }
+            public double min { get; set; }
+            public double max { get; set; }
+            public double value { get; set; }
+            public int change_type { get; set; }
+            //public List<int> assigned { get; set; }
+        }
         public MainWindow()
         {
             InitializeComponent();
             WindowChrome.SetWindowChrome(this, new WindowChrome());
 
+            selected_parameters.Add(new parameter() { name = "cn2", min = 40.2, max = 89.5, change_type = 1, value = 71.2 });
+            selected_parameters.Add(new parameter() { name = "esco", min = 35.2, max = 89.5, change_type = 2, value = 71.2 });
+
+            ui_selected_parameters.ItemsSource = selected_parameters;
         }
+
 
         private void WindowMinimise(object sender, RoutedEventArgs e)
         {
@@ -83,6 +99,28 @@ namespace SWAT__Toolbox
         {
             pages.SelectedIndex = 5;
 
+        }
+
+        //parameters page block
+        // mapping info https://github.com/ThinkGeo/Desktop-Maps
+        private void list_available_parameters(object sender, EventArgs e)
+        {
+            ui_parameter_name.Items.Clear();
+            if (ui_parameter_group.SelectedIndex == 0)
+            {
+                ui_parameter_name.Items.Add("cn2");
+            }
+            else if (ui_parameter_group.SelectedIndex == 1)
+            {
+                ui_parameter_name.Items.Add("esco");
+            }
+            else
+            {
+                ui_parameter_name.Items.Add("cn2");
+                ui_parameter_name.Items.Add("esco");
+
+
+            }
         }
     }
 }

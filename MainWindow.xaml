@@ -16,16 +16,20 @@
         Title="MainWindow" Height="450" Width="800" WindowStyle="None">
 
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="251*"/>
+            <ColumnDefinition Width="541*"/>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="130"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <materialDesign:ColorZone Grid.Row="0" Mode="PrimaryLight" VerticalAlignment="Stretch" 
-                                  HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch">
+                                  HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Grid.ColumnSpan="2">
         </materialDesign:ColorZone>
 
-        <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" WindowChrome.IsHitTestVisibleInChrome="True">
+        <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" WindowChrome.IsHitTestVisibleInChrome="True" Grid.Column="1">
             <Button Width = "46" Style="{StaticResource MaterialDesignFlatButton}" ToolTip="Minimise" Click="WindowMinimise">
                 <materialDesign:PackIcon Kind="WindowMinimize" />
             </Button>
@@ -37,7 +41,7 @@
             </Button>
         </StackPanel>
 
-        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,86,-8,0" Width="800" >
+        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,86,-8,0" Width="800" Grid.ColumnSpan="2" >
             <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="4" IsChecked="True" Content="Home" Click="navigate_homepage" />
             <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="4" IsChecked="False" Content="Parameters" Click="navigate_parameters" />
             <!--Command="{x:Static materialDesign:Transitioner.MoveNextCommand}-->
@@ -46,28 +50,29 @@
             <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="4" IsChecked="False" Content="Calibration" Click="navigate_calibration" />
             <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="4" IsChecked="False" Content="Model Check" Click="navigate_model_check" />
         </StackPanel>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="715,308,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75"/>
 
-        <materialDesign:Transitioner Grid.Row="2" SelectedIndex="0" AutoApplyTransitionOrigins="True">
+        <materialDesign:Transitioner Grid.Row="1" SelectedIndex="0" AutoApplyTransitionOrigins="True" Grid.ColumnSpan="2">
             <Grid>
 
                 <local:home_page Grid.ColumnSpan="2"/>
-                <TabControl  x:Name="pages"  Grid.ColumnSpan="2">
+                <TabControl  x:Name="pages" TabStripPlacement="Bottom">
                     <TabItem Header="Home">
                         <Grid Background="{DynamicResource MaterialDesignPaper}" Margin="0,0,0,24">
+
+
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="2*"/>
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="3*"/>
                             </Grid.RowDefinitions>
 
-                            <TextBlock Grid.Row="0" Style="{StaticResource MaterialDesignHeadline2TextBlock}" HorizontalAlignment="Center" VerticalAlignment="Center"> 
+                            <TextBlock Grid.Row="0" Style="{StaticResource MaterialDesignHeadline2TextBlock}" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1" Margin="102.5,11,230,11"> 
                                 <Hyperlink IsEnabled="False">
                                     SWAT+ Toolbox
                                 </Hyperlink>
                             </TextBlock>
 
-                            <Grid Grid.Row="1">
+                            <Grid Grid.Row="1" Grid.ColumnSpan="2">
                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
                                     <Button   Style="{StaticResource MaterialDesignFlatButton}" ToolTip="Start a New Project">
                                         <StackPanel Orientation="Horizontal">
@@ -82,37 +87,136 @@
                                         </StackPanel>
                                     </Button>
                                 </StackPanel>
-                                
+
                             </Grid>
-                            
-                            
-                            
-                            <ListView Grid.Row="2" ItemsSource="{Binding Items1}">
-                                <ListView.View>
-                                    <GridView>
-                                        <GridViewColumn DisplayMemberBinding="{Binding Code}" Header="Code" />
-                                        <GridViewColumn DisplayMemberBinding="{Binding Name}" Header="Name" />
-                                        <GridViewColumn DisplayMemberBinding="{Binding Description}" Header="Description" />
-                                        <GridViewColumn Header="Options"> 
-                                            <GridViewColumn.CellTemplate>
-                                                <DataTemplate>
-                                                    <ComboBox Width="300">
-                                                        <ComboBoxItem Content="Test" />
-                                                        <ComboBoxItem Content="Test2" />
-                                                        <ComboBoxItem Content="Test3" />
-                                                    </ComboBox> 
-                                                </DataTemplate>
-                                            </GridViewColumn.CellTemplate>
-                                        </GridViewColumn>
-                                    </GridView>
-                                </ListView.View>
+
+                            <ListView Grid.Row="2" Grid.ColumnSpan="2">
+                                <ListViewItem>
+                                    <StackPanel  Width="687" HorizontalAlignment="Left" Margin="30, 0, 0, 0">
+                                        <TextBlock>
+                                            <Hyperlink
+                                            Style="{StaticResource MaterialDesignSubtitle1Hyperlink}">
+                                            Project 1
+                                            </Hyperlink>
+                                        </TextBlock>
+                                        <TextBlock>
+                                                <Hyperlink
+                                                IsEnabled="False"
+                                                Style="{StaticResource MaterialDesignBody2Hyperlink}">
+                                                Path/to/Txt/In/Out
+                                            </Hyperlink>
+                                        </TextBlock>
+
+                                    </StackPanel>
+                                </ListViewItem>
+                                <ListViewItem>
+                                    <StackPanel  Width="687" HorizontalAlignment="Left" Margin="30, 0, 0, 0">
+                                        <TextBlock>
+                                            <Hyperlink
+                                            Style="{StaticResource MaterialDesignSubtitle1Hyperlink}">
+                                            Project 2
+                                            </Hyperlink>
+                                        </TextBlock>
+                                        <TextBlock>
+                                                <Hyperlink
+                                                IsEnabled="False"
+                                                Style="{StaticResource MaterialDesignBody2Hyperlink}">
+                                                Path/to/Txt/In/Out/2
+                                            </Hyperlink>
+                                        </TextBlock>
+
+                                    </StackPanel>
+                                </ListViewItem>
                             </ListView>
 
 
                         </Grid>
                     </TabItem>
-                    <TabItem Header="Parameters">
-                        <Grid Background="{DynamicResource MaterialDesignPaper}"/>
+
+
+
+
+
+
+
+                    <!--page 2-->
+                    <TabItem Header="Parameters" Height="22" VerticalAlignment="Top">
+                        <Grid Background="{DynamicResource MaterialDesignPaper}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="70"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <StackPanel Grid.Row="0" Orientation="Horizontal" Grid.ColumnSpan="2">
+                                <ComboBox x:Name="ui_parameter_group" Style="{StaticResource MaterialDesignFloatingHintComboBox}" materialDesign:TextFieldAssist.HasClearButton="True"
+                                          materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource SecondaryAccentBrush}"
+                                           materialDesign:HintAssist.Hint="Parameter Group" materialDesign:HintAssist.HintOpacity=".26" Width="115" Margin="50, 0, 0, 0" DropDownClosed="list_available_parameters">
+                                    <ComboBoxItem IsSelected="True">
+                                        All
+                                    </ComboBoxItem>
+                                    <ComboBoxItem>
+                                        HRU
+                                    </ComboBoxItem>
+                                    <ComboBoxItem>
+                                        GW
+                                    </ComboBoxItem>
+                                    <ComboBoxItem>
+                                        Soil
+                                    </ComboBoxItem>
+                                </ComboBox>
+                                <ComboBox Style="{StaticResource MaterialDesignFloatingHintComboBox}"  x:Name="ui_parameter_name"
+                                          materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource SecondaryAccentBrush}"
+                                           materialDesign:HintAssist.Hint="Parameter Name" Width="115" materialDesign:HintAssist.HintOpacity=".26" Margin="10, 0, 0, 0">
+                                    <ComboBoxItem>
+                                        cn2
+                                    </ComboBoxItem>
+                                    <ComboBoxItem>
+                                        esco
+                                    </ComboBoxItem>
+                                    <ComboBoxItem>
+                                        epco
+                                    </ComboBoxItem>
+                                </ComboBox>
+                                <ComboBox Style="{StaticResource MaterialDesignFloatingHintComboBox}" 
+                                          materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource SecondaryAccentBrush}" IsEditable="True"
+                                           materialDesign:HintAssist.Hint="Minimum" Width="80" materialDesign:HintAssist.HintOpacity=".26" Margin="10, 0, 0, 0">
+                                    <ComboBoxItem>
+                                        -10
+                                    </ComboBoxItem>
+                                    <ComboBoxItem>
+                                        -20
+                                    </ComboBoxItem>
+                                    <ComboBoxItem>
+                                        -30
+                                    </ComboBoxItem>
+                                </ComboBox>
+                                <ComboBox Style="{StaticResource MaterialDesignFloatingHintComboBox}" 
+                                          materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource SecondaryAccentBrush}" IsEditable="True"
+                                           materialDesign:HintAssist.Hint="Maximum" Width="80" materialDesign:HintAssist.HintOpacity=".26" Margin="10, 0, 0, 0">
+                                    <ComboBoxItem>
+                                        10
+                                    </ComboBoxItem>
+                                    <ComboBoxItem>
+                                        20
+                                    </ComboBoxItem>
+                                    <ComboBoxItem>
+                                        30
+                                    </ComboBoxItem>
+                                </ComboBox>
+                            </StackPanel>
+
+                            <TabControl TabStripPlacement="Bottom" Grid.Row="1" >
+                                <TabItem Header="TabItem">
+                                    <Grid Background="{DynamicResource MaterialDesignPaper}">
+                                        <DataGrid Grid.Row="1" x:Name="ui_selected_parameters" Margin="50,0,52,0" Focusable="False" />
+                                    </Grid>
+                                </TabItem>
+                                <TabItem Header="TabItem">
+                                    <Grid Background="#FFE5E5E5"/>
+                                </TabItem>
+                            </TabControl>
+
+
+                        </Grid>
                     </TabItem>
                     <TabItem Header="Observations">
                         <Grid Background="{DynamicResource MaterialDesignPaper}"/>
