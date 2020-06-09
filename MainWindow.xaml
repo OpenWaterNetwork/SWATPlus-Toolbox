@@ -13,7 +13,7 @@
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
-        Title="MainWindow" Height="496" Width="820" MinHeight="450" MinWidth="840" WindowStyle="None">
+        Title="MainWindow" Height="529" Width="904" MinHeight="500" MinWidth="900" WindowStyle="None">
 
     <Grid>
 
@@ -38,14 +38,42 @@
             </Button>
         </StackPanel>
 
-        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,86,0,0" Width="800" >
-            <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="4" IsChecked="True" Content="Home" Click="navigate_homepage" />
-            <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="4" IsChecked="False" Content="Run Model" Click="navigate_runmodel" />
-            <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="4" IsChecked="False" Content="Parameters" Click="navigate_parameters" />
-            <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="4" IsChecked="False" Content="Observations" Click="navigate_observations"/>
-            <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="4" IsChecked="False" Content="Sensitivity Analysis" Click="navigate_sensitivity" />
-            <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="4" IsChecked="False" Content="Calibration" Click="navigate_calibration" />
-            <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="4" IsChecked="False" Content="Model Check" Click="navigate_model_check" />
+        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,86,0,0" Width="896" >
+            <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="4" IsChecked="True" Click="navigate_homepage">
+                <TextBlock Style="{StaticResource MaterialDesignSubtitle1TextBlock}">
+                    Home
+                </TextBlock>
+            </RadioButton>
+            <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="4" IsChecked="False" Click="navigate_runmodel">
+                <TextBlock Style="{StaticResource MaterialDesignSubtitle1TextBlock}">
+                    Run Model
+                </TextBlock>
+            </RadioButton>
+            <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="4" IsChecked="False" Click="navigate_parameters">
+                <TextBlock Style="{StaticResource MaterialDesignSubtitle1TextBlock}">
+                    Parameters
+                </TextBlock>
+            </RadioButton>
+            <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="4" IsChecked="False" Click="navigate_observations">
+                <TextBlock Style="{StaticResource MaterialDesignSubtitle1TextBlock}">
+                    Observations
+                </TextBlock>
+            </RadioButton>
+            <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="4" IsChecked="False" Click="navigate_sensitivity">
+                <TextBlock Style="{StaticResource MaterialDesignSubtitle1TextBlock}">
+                    Sensitivity Analysis
+                </TextBlock>
+            </RadioButton>
+            <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="4" IsChecked="False" Click="navigate_calibration">
+                <TextBlock Style="{StaticResource MaterialDesignSubtitle1TextBlock}">
+                    Calibration
+                </TextBlock>
+            </RadioButton>
+            <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="4" IsChecked="False" Click="navigate_model_check">
+                <TextBlock Style="{StaticResource MaterialDesignSubtitle1TextBlock}">
+                    Model Check
+                </TextBlock>
+            </RadioButton>
         </StackPanel>
 
         <materialDesign:Transitioner Grid.Row="1" SelectedIndex="0" AutoApplyTransitionOrigins="True">
@@ -87,46 +115,7 @@
 
                             </Grid>
 
-                            <ListView Grid.Row="2" Grid.ColumnSpan="2">
-                                <ListViewItem>
-                                    <StackPanel  Width="687" HorizontalAlignment="Left" Margin="30, 0, 0, 0">
-                                        <TextBlock>
-                                            <Hyperlink
-                                            Style="{StaticResource MaterialDesignSubtitle1Hyperlink}">
-                                            Project 1
-                                            </Hyperlink>
-                                        </TextBlock>
-                                        <TextBlock>
-                                                <Hyperlink
-                                                IsEnabled="False"
-                                                Style="{StaticResource MaterialDesignBody2Hyperlink}">
-                                                Path/to/Txt/In/Out
-                                            </Hyperlink>
-                                        </TextBlock>
-
-                                    </StackPanel>
-                                </ListViewItem>
-                                <ListViewItem>
-                                    <StackPanel  Width="687" HorizontalAlignment="Left" Margin="30, 0, 0, 0">
-                                        <TextBlock>
-                                            <Hyperlink
-                                            Style="{StaticResource MaterialDesignSubtitle1Hyperlink}">
-                                            Project 2
-                                            </Hyperlink>
-                                        </TextBlock>
-                                        <TextBlock>
-                                                <Hyperlink
-                                                IsEnabled="False"
-                                                Style="{StaticResource MaterialDesignBody2Hyperlink}">
-                                                Path/to/Txt/In/Out/2
-                                            </Hyperlink>
-                                        </TextBlock>
-
-                                    </StackPanel>
-                                </ListViewItem>
-                            </ListView>
-
-
+                            
                         </Grid>
                     </TabItem>
 
@@ -134,7 +123,7 @@
                     <!--page 2-->
                     <TabItem Header="Run Model" Height="22" VerticalAlignment="Top">
                         <Grid Background="{DynamicResource MaterialDesignPaper}" Margin="0, 10, 0, 0">
-                            
+
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="17*"/>
                                 <RowDefinition Height="8*"/>
@@ -147,258 +136,259 @@
                                 </Grid.ColumnDefinitions>
                                 <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Vertical" Margin="20, 0, 0, 0" Width="240" HorizontalAlignment="Right">
 
-                                <TextBlock HorizontalAlignment="Right">
+                                    <TextBlock HorizontalAlignment="Right">
                                     Simulation Period
-                                </TextBlock>
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0, 5, 0, 0">
-                                    <DatePicker Margin="0, 0, 0, 0" HorizontalAlignment="Right" Width="110" materialDesign:HintAssist.Hint="Start Date" Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
-                                    <DatePicker Margin="20, 0, 0, 0" HorizontalAlignment="Right" Width="110" materialDesign:HintAssist.Hint="Start Date" Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
-                                </StackPanel>
+                                    </TextBlock>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0, 5, 0, 0">
+                                        <DatePicker Margin="0, 0, 0, 0" HorizontalAlignment="Right" Width="110" materialDesign:HintAssist.Hint="Start Date" Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
+                                        <DatePicker Margin="20, 0, 0, 0" HorizontalAlignment="Right" Width="110" materialDesign:HintAssist.Hint="Start Date" Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
+                                    </StackPanel>
 
-                                <TextBlock HorizontalAlignment="Right" Height="10" Padding="0, 0, 0, 0">
+                                    <TextBlock HorizontalAlignment="Right" Height="10" Padding="0, 0, 0, 0">
 
-                                </TextBlock>
+                                    </TextBlock>
 
-                                <TextBox HorizontalAlignment="Right" Width="110" materialDesign:HintAssist.Hint="Warm-Up Period"
+                                    <TextBox HorizontalAlignment="Right" Width="110" materialDesign:HintAssist.Hint="Warm-Up Period"
                                          Style="{StaticResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Center"
                                          materialDesign:TextFieldAssist.SuffixText=" Years" TextAlignment="Right" >
-                                    2
-                                </TextBox>
+                                        2
+                                    </TextBox>
 
-                                <TextBlock HorizontalAlignment="Right" Margin="0,40,0,7">
+                                    <TextBlock HorizontalAlignment="Right" Margin="0,40,0,7">
                                     Print CSV Output
-                                </TextBlock>
+                                    </TextBlock>
 
-                                <StackPanel Orientation="Horizontal" Margin="0,0,0,0" HorizontalAlignment="Right">
-                                    <TextBlock>No</TextBlock>
-                                    <ToggleButton Style="{StaticResource MaterialDesignSwitchToggleButton}" Margin="10,0,10,0"
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,0" HorizontalAlignment="Right">
+                                        <TextBlock>No</TextBlock>
+                                        <ToggleButton Style="{StaticResource MaterialDesignSwitchToggleButton}" Margin="10,0,10,0"
                                                   ToolTip="MaterialDesignSwitchToggleButton" IsChecked="False" />
-                                    <TextBlock Margin="0,0,0,0"> Yes</TextBlock>
+                                        <TextBlock Margin="0,0,0,0"> Yes</TextBlock>
+                                    </StackPanel>
+
+
                                 </StackPanel>
-                                
 
-                            </StackPanel>
-
-                            <ScrollViewer Grid.Row="0" Grid.Column="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                                <ScrollViewer Grid.Row="0" Grid.Column="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                                     <StackPanel   Orientation="Vertical" Margin="20, 0, 0, 0" HorizontalAlignment="Left">
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Width="120">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Width="120">
                                         <Hyperlink IsEnabled="True" materialDesign:HintAssist.Hint="Type of Object to be printed" materialDesign:HintAssist.HintOpacity=".26" Style="{StaticResource MaterialDesignBody1Hyperlink}">
                                             Print Object
                                         </Hyperlink>
-                                    </TextBlock>
-                                    <TextBlock  Width="110" TextAlignment="Right">
+                                            </TextBlock>
+                                            <TextBlock  Width="110" TextAlignment="Right">
                                         <Hyperlink IsEnabled="True" Style="{StaticResource MaterialDesignBody1Hyperlink}">
                                             Daily
                                         </Hyperlink>
-                                    </TextBlock>
-                                    <TextBlock Width="83" TextAlignment="Right">
+                                            </TextBlock>
+                                            <TextBlock Width="83" TextAlignment="Right">
                                         <Hyperlink IsEnabled="True" Style="{StaticResource MaterialDesignBody1Hyperlink}">
                                             Monthly
                                         </Hyperlink>
-                                    </TextBlock>
-                                    <TextBlock Width="83" TextAlignment="Right">
+                                            </TextBlock>
+                                            <TextBlock Width="83" TextAlignment="Right">
                                         <Hyperlink IsEnabled="True" Style="{StaticResource MaterialDesignBody1Hyperlink}">
                                             Yearly
                                         </Hyperlink>
-                                    </TextBlock>
-                                    <TextBlock Width="83" TextAlignment="Right">
+                                            </TextBlock>
+                                            <TextBlock Width="83" TextAlignment="Right">
                                         <Hyperlink IsEnabled="True" Style="{StaticResource MaterialDesignBody1Hyperlink}">
                                             Average
                                         </Hyperlink>
-                                    </TextBlock>
-                                </StackPanel>
+                                            </TextBlock>
+                                        </StackPanel>
 
 
 
 
-                                <StackPanel>
-                                    <Expander
+                                        <StackPanel>
+                                            <Expander
                                         HorizontalAlignment="Stretch"
                                         Header="Model Components"
                                         materialDesign:ExpanderAssist.DownHeaderPadding="10, 0, 0, 0"
                                         IsExpanded="True">
 
-                                        <StackPanel Orientation="Vertical" TextBlock.Foreground="{DynamicResource MaterialDesignBody}" Margin="24,8,24,16">
+                                                <StackPanel Orientation="Vertical" TextBlock.Foreground="{DynamicResource MaterialDesignBody}" Margin="24,8,24,16">
 
-                                            <StackPanel Orientation="Horizontal" Margin="-10, 10, 0, 0">
-                                                <TextBlock Width="120">
+                                                    <StackPanel Orientation="Horizontal" Margin="-10, 10, 0, 0">
+                                                        <TextBlock Width="120">
                                                     <Hyperlink IsEnabled="False" Style="{StaticResource MaterialDesignBody1Hyperlink}">
                                                         Channel
                                                     </Hyperlink>
-                                                </TextBlock>
-                                                <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="84, 0, 0, 0" />
-                                                <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0"/>
-                                                <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0"/>
-                                                <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0"/>
-                                            </StackPanel>
+                                                        </TextBlock>
+                                                        <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="84, 0, 0, 0" />
+                                                        <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0"/>
+                                                        <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0"/>
+                                                        <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0"/>
+                                                    </StackPanel>
 
-                                            <StackPanel Orientation="Horizontal" Margin="-10, 10, 0, 0">
-                                                <TextBlock Width="120">
+                                                    <StackPanel Orientation="Horizontal" Margin="-10, 10, 0, 0">
+                                                        <TextBlock Width="120">
                                                     <Hyperlink IsEnabled="False" Style="{StaticResource MaterialDesignBody1Hyperlink}">
                                                         Reservoir
                                                     </Hyperlink>
-                                                </TextBlock>
-                                                <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="84, 0, 0, 0" />
-                                                <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0"/>
-                                                <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0"/>
-                                                <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0"/>
-                                            </StackPanel>
+                                                        </TextBlock>
+                                                        <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="84, 0, 0, 0" />
+                                                        <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0"/>
+                                                        <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0"/>
+                                                        <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0"/>
+                                                    </StackPanel>
 
-                                            <StackPanel Orientation="Horizontal" Margin="-10, 10, 0, 0">
-                                                <TextBlock Width="120">
+                                                    <StackPanel Orientation="Horizontal" Margin="-10, 10, 0, 0">
+                                                        <TextBlock Width="120">
                                                     <Hyperlink IsEnabled="False" Style="{StaticResource MaterialDesignBody1Hyperlink}">
                                                         Aquifer
                                                     </Hyperlink>
-                                                </TextBlock>
-                                                <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="84, 0, 0, 0" />
-                                                <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0"/>
-                                                <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0"/>
-                                                <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0"/>
-                                            </StackPanel>
+                                                        </TextBlock>
+                                                        <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="84, 0, 0, 0" />
+                                                        <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0"/>
+                                                        <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0"/>
+                                                        <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0"/>
+                                                    </StackPanel>
 
-                                        </StackPanel>
+                                                </StackPanel>
 
-                                    </Expander>
-                                    <Expander
+                                            </Expander>
+                                            <Expander
                                         HorizontalAlignment="Stretch"
                                         Header="Nutrient Balance"
                                         materialDesign:ExpanderAssist.DownHeaderPadding="10, 0, 0, 0">
 
-                                        <StackPanel Orientation="Vertical" TextBlock.Foreground="{DynamicResource MaterialDesignBody}" Margin="24,8,24,16">
+                                                <StackPanel Orientation="Vertical" TextBlock.Foreground="{DynamicResource MaterialDesignBody}" Margin="24,8,24,16">
 
-                                            <StackPanel Orientation="Horizontal" Margin="-10, 10, 0, 0">
-                                                <TextBlock Width="120">
+                                                    <StackPanel Orientation="Horizontal" Margin="-10, 10, 0, 0">
+                                                        <TextBlock Width="120">
                                                     <Hyperlink IsEnabled="False" Style="{StaticResource MaterialDesignBody1Hyperlink}">
                                                         Basin
                                                     </Hyperlink>
-                                                </TextBlock>
-                                                <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="84, 0, 0, 0" />
-                                                <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0"/>
-                                                <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0"/>
-                                                <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0"/>
-                                            </StackPanel>
+                                                        </TextBlock>
+                                                        <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="84, 0, 0, 0" />
+                                                        <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0"/>
+                                                        <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0"/>
+                                                        <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0"/>
+                                                    </StackPanel>
 
-                                            <StackPanel Orientation="Horizontal" Margin="-10, 10, 0, 0">
-                                                <TextBlock Width="120">
+                                                    <StackPanel Orientation="Horizontal" Margin="-10, 10, 0, 0">
+                                                        <TextBlock Width="120">
                                                     <Hyperlink IsEnabled="False" Style="{StaticResource MaterialDesignBody1Hyperlink}">
                                                         LSU
                                                     </Hyperlink>
-                                                </TextBlock>
-                                                <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="84, 0, 0, 0" />
-                                                <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0"/>
-                                                <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0"/>
-                                                <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0"/>
-                                            </StackPanel>
+                                                        </TextBlock>
+                                                        <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="84, 0, 0, 0" />
+                                                        <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0"/>
+                                                        <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0"/>
+                                                        <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0"/>
+                                                    </StackPanel>
 
-                                            <StackPanel Orientation="Horizontal" Margin="-10, 10, 0, 0">
-                                                <TextBlock Width="120">
+                                                    <StackPanel Orientation="Horizontal" Margin="-10, 10, 0, 0">
+                                                        <TextBlock Width="120">
                                                     <Hyperlink IsEnabled="False" Style="{StaticResource MaterialDesignBody1Hyperlink}">
                                                         HRU
                                                     </Hyperlink>
-                                                </TextBlock>
-                                                <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="84, 0, 0, 0" />
-                                                <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0"/>
-                                                <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0"/>
-                                                <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0"/>
-                                            </StackPanel>
+                                                        </TextBlock>
+                                                        <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="84, 0, 0, 0" />
+                                                        <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0"/>
+                                                        <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0"/>
+                                                        <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0"/>
+                                                    </StackPanel>
 
-                                        </StackPanel>
+                                                </StackPanel>
 
-                                    </Expander>
-                                    <Expander
+                                            </Expander>
+                                            <Expander
                                         HorizontalAlignment="Stretch"
                                         Header="Water Balance"
                                         materialDesign:ExpanderAssist.DownHeaderPadding="10, 0, 0, 0">
 
-                                        <StackPanel Orientation="Vertical" TextBlock.Foreground="{DynamicResource MaterialDesignBody}" Margin="24,8,24,16">
+                                                <StackPanel Orientation="Vertical" TextBlock.Foreground="{DynamicResource MaterialDesignBody}" Margin="24,8,24,16">
 
-                                            <StackPanel Orientation="Horizontal" Margin="-10, 10, 0, 0">
-                                                <TextBlock Width="120">
+                                                    <StackPanel Orientation="Horizontal" Margin="-10, 10, 0, 0">
+                                                        <TextBlock Width="120">
                                                     <Hyperlink IsEnabled="False" Style="{StaticResource MaterialDesignBody1Hyperlink}">
                                                         Basin
                                                     </Hyperlink>
-                                                </TextBlock>
-                                                <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="84, 0, 0, 0" />
-                                                <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0"/>
-                                                <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0"/>
-                                                <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0"/>
-                                            </StackPanel>
+                                                        </TextBlock>
+                                                        <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="84, 0, 0, 0" />
+                                                        <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0"/>
+                                                        <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0"/>
+                                                        <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0"/>
+                                                    </StackPanel>
 
-                                            <StackPanel Orientation="Horizontal" Margin="-10, 10, 0, 0">
-                                                <TextBlock Width="120">
+                                                    <StackPanel Orientation="Horizontal" Margin="-10, 10, 0, 0">
+                                                        <TextBlock Width="120">
                                                     <Hyperlink IsEnabled="False" Style="{StaticResource MaterialDesignBody1Hyperlink}">
                                                         LSU
                                                     </Hyperlink>
-                                                </TextBlock>
-                                                <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="84, 0, 0, 0" />
-                                                <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0"/>
-                                                <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0"/>
-                                                <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0"/>
-                                            </StackPanel>
+                                                        </TextBlock>
+                                                        <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="84, 0, 0, 0" />
+                                                        <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0"/>
+                                                        <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0"/>
+                                                        <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0"/>
+                                                    </StackPanel>
 
-                                            <StackPanel Orientation="Horizontal" Margin="-10, 10, 0, 0">
-                                                <TextBlock Width="120">
+                                                    <StackPanel Orientation="Horizontal" Margin="-10, 10, 0, 0">
+                                                        <TextBlock Width="120">
                                                     <Hyperlink IsEnabled="False" Style="{StaticResource MaterialDesignBody1Hyperlink}">
                                                         HRU
                                                     </Hyperlink>
-                                                </TextBlock>
-                                                <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="84, 0, 0, 0" />
-                                                <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0"/>
-                                                <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0"/>
-                                                <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0"/>
-                                            </StackPanel>
+                                                        </TextBlock>
+                                                        <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="84, 0, 0, 0" />
+                                                        <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0"/>
+                                                        <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0"/>
+                                                        <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0"/>
+                                                    </StackPanel>
 
-                                        </StackPanel>
+                                                </StackPanel>
 
-                                    </Expander>
-                                    <Expander
+                                            </Expander>
+                                            <Expander
                                         HorizontalAlignment="Stretch"
                                         Header="Plant"
                                         materialDesign:ExpanderAssist.DownHeaderPadding="10, 0, 0, 0">
 
-                                        <StackPanel Orientation="Vertical" TextBlock.Foreground="{DynamicResource MaterialDesignBody}" Margin="24,8,24,16">
+                                                <StackPanel Orientation="Vertical" TextBlock.Foreground="{DynamicResource MaterialDesignBody}" Margin="24,8,24,16">
 
-                                            <StackPanel Orientation="Horizontal" Margin="-10, 10, 0, 0">
-                                                <TextBlock Width="120">
+                                                    <StackPanel Orientation="Horizontal" Margin="-10, 10, 0, 0">
+                                                        <TextBlock Width="120">
                                                     <Hyperlink IsEnabled="False" Style="{StaticResource MaterialDesignBody1Hyperlink}">
                                                         Basin
                                                     </Hyperlink>
-                                                </TextBlock>
-                                                <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="84, 0, 0, 0" />
-                                                <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0"/>
-                                                <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0"/>
-                                                <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0"/>
-                                            </StackPanel>
+                                                        </TextBlock>
+                                                        <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="84, 0, 0, 0" />
+                                                        <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0"/>
+                                                        <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0"/>
+                                                        <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0"/>
+                                                    </StackPanel>
 
-                                            <StackPanel Orientation="Horizontal" Margin="-10, 10, 0, 0">
-                                                <TextBlock Width="120">
+                                                    <StackPanel Orientation="Horizontal" Margin="-10, 10, 0, 0">
+                                                        <TextBlock Width="120">
                                                     <Hyperlink IsEnabled="False" Style="{StaticResource MaterialDesignBody1Hyperlink}">
                                                         LSU
                                                     </Hyperlink>
-                                                </TextBlock>
-                                                <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="84, 0, 0, 0" />
-                                                <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0"/>
-                                                <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0"/>
-                                                <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0"/>
-                                            </StackPanel>
+                                                        </TextBlock>
+                                                        <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="84, 0, 0, 0" />
+                                                        <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0"/>
+                                                        <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0"/>
+                                                        <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0"/>
+                                                    </StackPanel>
 
-                                            <StackPanel Orientation="Horizontal" Margin="-10, 10, 0, 0">
-                                                <TextBlock Width="120">
+                                                    <StackPanel Orientation="Horizontal" Margin="-10, 10, 0, 0">
+                                                        <TextBlock Width="120">
                                                     <Hyperlink IsEnabled="False" Style="{StaticResource MaterialDesignBody1Hyperlink}">
                                                         HRU
                                                     </Hyperlink>
-                                                </TextBlock>
-                                                <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="84, 0, 0, 0" />
-                                                <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0"/>
-                                                <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0"/>
-                                                <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0"/>
-                                            </StackPanel>
+                                                        </TextBlock>
+                                                        <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="84, 0, 0, 0" />
+                                                        <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0"/>
+                                                        <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0"/>
+                                                        <CheckBox IsChecked="True" Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0"/>
+                                                    </StackPanel>
 
+                                                </StackPanel>
+
+                                            </Expander>
                                         </StackPanel>
 
-                                    </Expander>
-                                </StackPanel>
 
 
 
@@ -411,11 +401,10 @@
 
 
 
-
-                            </StackPanel>
+                                    </StackPanel>
                                 </ScrollViewer>
-                               
-                                
+
+
                             </Grid>
 
                             <Grid Grid.Row="1" VerticalAlignment="Top">
@@ -433,7 +422,7 @@
                                     </Grid.RowDefinitions>
 
                                     <ProgressBar VerticalAlignment="Bottom" Margin="12,0,0,5" Width="510" HorizontalAlignment="Left" Value="25" Height="10" />
-                                    
+
                                     <Button Grid.Row = "1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12,0,0,0" Style="{StaticResource MaterialDesignFlatButton}" ToolTip="MaterialDesignFlatButton">
                                         <StackPanel Orientation="Horizontal">
                                             <materialDesign:PackIcon Kind="Play" />
@@ -442,13 +431,13 @@
                                     </Button>
 
                                 </Grid>
-                                
-                                
+
+
                             </Grid>
-                            
-                            
-                            
-                            
+
+
+
+
                         </Grid>
 
 
