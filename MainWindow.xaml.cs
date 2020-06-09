@@ -41,6 +41,12 @@ namespace SWAT__Toolbox
             selected_parameters.Add(new parameter() { name = "esco", min = 35.2, max = 89.5, change_type = 2, value = 71.2 });
 
             ui_selected_parameters.ItemsSource = selected_parameters;
+
+            // Python in C# https://pythonnet.github.io/
+
+
+
+
         }
 
 
@@ -70,34 +76,38 @@ namespace SWAT__Toolbox
         {
             pages.SelectedIndex = 0;
         }
-
-        private void navigate_parameters(object sender, RoutedEventArgs e)
+        private void navigate_runmodel(object sender, RoutedEventArgs e)
         {
             pages.SelectedIndex = 1;
-
         }
 
-        private void navigate_observations(object sender, RoutedEventArgs e)
+        private void navigate_parameters(object sender, RoutedEventArgs e)
         {
             pages.SelectedIndex = 2;
 
         }
 
-        private void navigate_sensitivity(object sender, RoutedEventArgs e)
+        private void navigate_observations(object sender, RoutedEventArgs e)
         {
             pages.SelectedIndex = 3;
 
         }
 
-        private void navigate_calibration(object sender, RoutedEventArgs e)
+        private void navigate_sensitivity(object sender, RoutedEventArgs e)
         {
             pages.SelectedIndex = 4;
 
         }
 
-        private void navigate_model_check(object sender, RoutedEventArgs e)
+        private void navigate_calibration(object sender, RoutedEventArgs e)
         {
             pages.SelectedIndex = 5;
+
+        }
+
+        private void navigate_model_check(object sender, RoutedEventArgs e)
+        {
+            pages.SelectedIndex = 6;
 
         }
 
