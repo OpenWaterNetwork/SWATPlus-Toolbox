@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,6 +15,15 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Shell;
 
+// Added
+using Microsoft.Win32;
+
+// Custom
+using static SWAT__Toolbox.observations_classes;
+using static SWAT__Toolbox.observations_functions;
+using static SWAT__Toolbox.parameters_module;
+using static SWAT__Toolbox.toolbox_functions;
+
 namespace SWAT__Toolbox
 {
     /// <summary>
@@ -21,31 +31,21 @@ namespace SWAT__Toolbox
     /// </summary>
     public partial class MainWindow : Window
     {
-        List<parameter> selected_parameters = new List<parameter>();
 
-        public class parameter
-        {
-            public string name { get; set; }
-            public double min { get; set; }
-            public double max { get; set; }
-            public double value { get; set; }
-            public int change_type { get; set; }
-            //public List<int> assigned { get; set; }
-        }
+        ObservableCollection<parameter> selected_parameters = new ObservableCollection<parameter>();
+        ObservableCollection<observation> selected_observations = new ObservableCollection<observation>();
+
         public MainWindow()
         {
             InitializeComponent();
             WindowChrome.SetWindowChrome(this, new WindowChrome());
 
-            selected_parameters.Add(new parameter() { name = "cn2", min = 40.2, max = 89.5, change_type = 1, value = 71.2 });
-            selected_parameters.Add(new parameter() { name = "esco", min = 35.2, max = 89.5, change_type = 2, value = 71.2 });
-
             ui_selected_parameters.ItemsSource = selected_parameters;
+            ui_selected_observations.ItemsSource = selected_observations;
 
             // Python in C# https://pythonnet.github.io/
 
-
-
+            this.DataContext = this;
 
         }
 
@@ -115,22 +115,71 @@ namespace SWAT__Toolbox
         // mapping info https://github.com/ThinkGeo/Desktop-Maps
         private void list_available_parameters(object sender, EventArgs e)
         {
+            // All, Hydrologic Response Unit, Aquifer, Routing, HRU LTE, Soil, Reservoir, SWQ
+            ui_parameter_name.ItemsSource = null;
             ui_parameter_name.Items.Clear();
+            ui_parameter_name.DisplayMemberPath = "name";
+            ui_parameter_name.SelectedValuePath = "name";
+
             if (ui_parameter_group.SelectedIndex == 0)
             {
-                ui_parameter_name.Items.Add("cn2");
+                ui_parameter_name.ItemsSource = all_parameters();
             }
             else if (ui_parameter_group.SelectedIndex == 1)
             {
-                ui_parameter_name.Items.Add("esco");
+                ui_parameter_name.ItemsSource = hru_parameters();
+            }
+            else if (ui_parameter_group.SelectedIndex == 2)
+            {
+                ui_parameter_name.ItemsSource = aqu_parameters();
+            }
+            else if (ui_parameter_group.SelectedIndex == 3)
+            {
+                ui_parameter_name.ItemsSource = rte_parameters();
+            }
+            else if (ui_parameter_group.SelectedIndex == 4)
+            {
+                ui_parameter_name.ItemsSource = hlt_parameters();
+            }
+            else if (ui_parameter_group.SelectedIndex == 5)
+            {
+                ui_parameter_name.ItemsSource = sol_parameters();
+            }
+            else if (ui_parameter_group.SelectedIndex == 6)
+            {
+                ui_parameter_name.ItemsSource = res_parameters();
+            }
+            else if (ui_parameter_group.SelectedIndex == 7)
+            {
+                ui_parameter_name.ItemsSource = swq_parameters();
             }
             else
             {
-                ui_parameter_name.Items.Add("cn2");
-                ui_parameter_name.Items.Add("esco");
-
 
             }
         }
+
+        private void pick_observation_file(object sender, RoutedEventArgs e)
+        {
+            string file_name = pick_file("Comma Separated|*.csv", "Select and Observation File", "Select");
+            ui_parameters_file_selection_path.Text = file_name;
+        }
+        private void clear_observation_file(object sender, RoutedEventArgs e)
+        {
+            ui_parameters_file_selection_path.Text = "Click to select an observation file";
+        }
+
+        private void add_observation(object sender, RoutedEventArgs e)
+        {
+            //get objects values from user
+
+            string obj_type = get_observation_object_type(ui_observations_object_type.SelectedIndex + 1);
+            string obs_variable = get_observation_variable(ui_observations_observed_variable.SelectedIndex + 1);
+            int obj_number = int.Parse(ui_observations_object_number.Text);
+
+            selected_observations.Add(new observation() { file = ui_parameters_file_selection_path.Text, id = 1, number = obj_number, object_type = obj_type, observed_variable = obs_variable });
+        }
+
+
     }
 }

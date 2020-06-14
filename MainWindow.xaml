@@ -79,7 +79,6 @@
         <materialDesign:Transitioner Grid.Row="1" SelectedIndex="0" AutoApplyTransitionOrigins="True">
             <Grid Margin="0,0,0,10">
 
-                <local:home_page Grid.ColumnSpan="2"/>
                 <TabControl  x:Name="pages" TabStripPlacement="Bottom" Margin="0,0,0,-9">
                     <TabItem Header="Home">
                         <Grid Background="{DynamicResource MaterialDesignPaper}" Margin="0,0,0,24">
@@ -115,7 +114,7 @@
 
                             </Grid>
 
-                            
+
                         </Grid>
                     </TabItem>
 
@@ -454,25 +453,37 @@
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
                             <StackPanel Grid.Row="0" Orientation="Horizontal" Grid.ColumnSpan="2">
-                                <ComboBox x:Name="ui_parameter_group" Style="{StaticResource MaterialDesignFloatingHintComboBox}" materialDesign:TextFieldAssist.HasClearButton="True"
+                                <ComboBox x:Name="ui_parameter_group" Style="{StaticResource MaterialDesignFloatingHintComboBox}" materialDesign:TextFieldAssist.HasClearButton="False"
                                           materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource SecondaryAccentBrush}"
-                                           materialDesign:HintAssist.Hint="Parameter Group" materialDesign:HintAssist.HintOpacity=".26" Width="115" Margin="50, 0, 0, 0" DropDownClosed="list_available_parameters">
+                                           materialDesign:HintAssist.Hint="Parameter Group" materialDesign:HintAssist.HintOpacity=".26" MinWidth="115" Margin="38, 0, 0, 0" DropDownClosed="list_available_parameters">
                                     <ComboBoxItem IsSelected="True">
                                         All
                                     </ComboBoxItem>
                                     <ComboBoxItem>
-                                        HRU
+                                        Hydrologic Response Unit
                                     </ComboBoxItem>
                                     <ComboBoxItem>
-                                        GW
+                                        Aquifer
+                                    </ComboBoxItem>
+                                    <ComboBoxItem>
+                                        Routing
+                                    </ComboBoxItem>
+                                    <ComboBoxItem>
+                                        HRU LTE
                                     </ComboBoxItem>
                                     <ComboBoxItem>
                                         Soil
                                     </ComboBoxItem>
+                                    <ComboBoxItem>
+                                        Reservoir
+                                    </ComboBoxItem>
+                                    <ComboBoxItem>
+                                        SWQ
+                                    </ComboBoxItem>
                                 </ComboBox>
                                 <ComboBox Style="{StaticResource MaterialDesignFloatingHintComboBox}"  x:Name="ui_parameter_name"
                                           materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource SecondaryAccentBrush}"
-                                           materialDesign:HintAssist.Hint="Parameter Name" Width="115" materialDesign:HintAssist.HintOpacity=".26" Margin="10, 0, 0, 0">
+                                           materialDesign:HintAssist.Hint="Parameter Name" MinWidth="115" materialDesign:HintAssist.HintOpacity=".26" Margin="10, 0, 0, 0">
                                     <ComboBoxItem>
                                         cn2
                                     </ComboBoxItem>
@@ -483,9 +494,24 @@
                                         epco
                                     </ComboBoxItem>
                                 </ComboBox>
+
+                                <ComboBox Style="{StaticResource MaterialDesignFloatingHintComboBox}" Margin="30, 0, 0, 0"
+                                          materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource SecondaryAccentBrush}"
+                                           materialDesign:HintAssist.Hint="Change Type" MinWidth="115" materialDesign:HintAssist.HintOpacity=".26" >
+                                    <ComboBoxItem>
+                                        Percentage
+                                    </ComboBoxItem>
+                                    <ComboBoxItem>
+                                        Relative Value
+                                    </ComboBoxItem>
+                                    <ComboBoxItem>
+                                        Replace
+                                    </ComboBoxItem>
+                                </ComboBox>
+
                                 <ComboBox Style="{StaticResource MaterialDesignFloatingHintComboBox}" 
                                           materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource SecondaryAccentBrush}" IsEditable="True"
-                                           materialDesign:HintAssist.Hint="Minimum" Width="80" materialDesign:HintAssist.HintOpacity=".26" Margin="10, 0, 0, 0">
+                                           materialDesign:HintAssist.Hint="Minimum" MinWidth="80" materialDesign:HintAssist.HintOpacity=".26" Margin="10, 0, 0, 0">
                                     <ComboBoxItem>
                                         -10
                                     </ComboBoxItem>
@@ -498,7 +524,7 @@
                                 </ComboBox>
                                 <ComboBox Style="{StaticResource MaterialDesignFloatingHintComboBox}" 
                                           materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource SecondaryAccentBrush}" IsEditable="True"
-                                           materialDesign:HintAssist.Hint="Maximum" Width="80" materialDesign:HintAssist.HintOpacity=".26" Margin="10, 0, 0, 0">
+                                           materialDesign:HintAssist.Hint="Maximum" MinWidth="80" materialDesign:HintAssist.HintOpacity=".26" Margin="10, 0, 0, 0">
                                     <ComboBoxItem>
                                         10
                                     </ComboBoxItem>
@@ -509,12 +535,30 @@
                                         30
                                     </ComboBoxItem>
                                 </ComboBox>
+
+                                <Button Style="{StaticResource MaterialDesignFloatingActionMiniButton}" ToolTip="Add to observations table" Width="35"
+                                            Height="35" Margin="10, 0, 0, 0"
+                                            HorizontalAlignment ="Right"
+                                            >
+                                    <materialDesign:PackIcon Kind="Add" />
+
+                                </Button>
                             </StackPanel>
 
-                            <TabControl TabStripPlacement="Bottom" Grid.Row="1" BorderBrush="SkyBlue" Margin="-3,0,-5,0">
+                            <TabControl TabStripPlacement="Bottom" Grid.Row="1" BorderBrush="SkyBlue" Margin="0,0,0,0">
                                 <TabItem Header="TabItem">
-                                    <Grid Background="{DynamicResource MaterialDesignPaper}">
-                                        <DataGrid Grid.Row="1" x:Name="ui_selected_parameters" Margin="50,0,52,0" Focusable="False" />
+                                    <Grid Background="{DynamicResource MaterialDesignPaper}" Margin="18, 0, 18, 0">
+                                        <DataGrid x:Name="ui_selected_parameters" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                                      Margin="0,0,0,0" CanUserAddRows="False"  AutoGenerateColumns="False">
+                                            <DataGrid.Columns>
+                                                <DataGridTextColumn Header="Parameter Group" Binding="{Binding Path=object_type}" Width="2*"/>
+                                                <DataGridTextColumn Header="Parameter Name" Binding="{Binding Path=number}" Width="2*" />
+                                                <DataGridTextColumn Header="Change Type" Binding="{Binding Path=file}" Width="2*"/>
+                                                <DataGridTextColumn Header="Minimum" Binding="{Binding Path=observed_variable}" Width="*"/>
+                                                <DataGridTextColumn Header="Maximum" Binding="{Binding Path=observed_variable}" Width="*"/>
+                                            </DataGrid.Columns>
+
+                                        </DataGrid>
                                     </Grid>
                                 </TabItem>
                                 <TabItem Header="TabItem">
@@ -522,12 +566,137 @@
                                 </TabItem>
                             </TabControl>
 
-
                         </Grid>
                     </TabItem>
 
                     <TabItem Header="Observations">
-                        <Grid Background="{DynamicResource MaterialDesignPaper}"/>
+                        <Grid Background="{DynamicResource MaterialDesignPaper}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="4*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Grid Grid.Column="0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="100"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <Grid Grid.Row="0" Margin="18, 0, 18, 0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="320"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="280"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Right">
+                                        <StackPanel Orientation="Horizontal">
+                                            <ComboBox Style="{StaticResource MaterialDesignFloatingHintComboBox}" materialDesign:TextFieldAssist.HasClearButton="False"
+                                                materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource SecondaryAccentBrush}" HorizontalAlignment="Left"
+                                                materialDesign:HintAssist.Hint="Object Type" Width="180" x:Name="ui_observations_object_type">
+                                                <ComboBoxItem IsSelected="False">
+                                                    Channel
+                                                </ComboBoxItem>
+                                                <ComboBoxItem>
+                                                    Landscape Unit
+                                                </ComboBoxItem>
+                                                <ComboBoxItem>
+                                                    Hydrologic Response Unit
+                                                </ComboBoxItem>
+                                                <ComboBoxItem>
+                                                    All Basin
+                                                </ComboBoxItem>
+                                            </ComboBox>
+
+                                            <TextBox x:Name="ui_observations_object_number" materialDesign:HintAssist.Hint="Object Number" TextAlignment="Right" Margin="14, 0, 0, 3" Width="110"
+                                          Style="{StaticResource MaterialDesignFloatingHintTextBox}" HorizontalAlignment="Left"
+                                          VerticalAlignment="Center" />
+                                        </StackPanel>
+                                    </StackPanel>
+
+                                    <materialDesign:Chip Grid.Column="1"  IsDeletable="True" ToolTip="Observation File"
+                                         DeleteToolTip="Remove Selected File" Margin="10,38,10,30" HorizontalAlignment="Stretch" Click="pick_observation_file" DeleteClick="clear_observation_file">
+                                        <StackPanel Orientation="Horizontal" Margin="0, 0, 0, -2">
+                                            <materialDesign:PackIcon Kind="MicrosoftExcel" />
+                                            <TextBlock x:Name="ui_parameters_file_selection_path" Margin="6, 0, 0, 0"> Click to select an observation file</TextBlock>
+                                        </StackPanel>
+                                    </materialDesign:Chip>
+
+                                    <Grid Grid.Column="2">
+                                        <StackPanel Orientation="Horizontal">
+                                            <ComboBox Style="{StaticResource MaterialDesignFloatingHintComboBox}" materialDesign:TextFieldAssist.HasClearButton="False"
+                                                    materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource SecondaryAccentBrush}" HorizontalAlignment="Stretch"
+                                                    materialDesign:HintAssist.Hint="Observed Variable" Width="200" Margin="10, 0, 0, 0"
+                                                      x:Name="ui_observations_observed_variable">
+                                                <ComboBoxItem IsSelected="False">
+                                                    Flow
+                                                </ComboBoxItem>
+                                                <ComboBoxItem>
+                                                    ET
+                                                </ComboBoxItem>
+                                                <ComboBoxItem>
+                                                    Sediments
+                                                </ComboBoxItem>
+                                                <ComboBoxItem>
+                                                    Organic Nitrogen
+                                                </ComboBoxItem>
+                                                <ComboBoxItem>
+                                                    Nitrate Nitrogen
+                                                </ComboBoxItem>
+                                                <ComboBoxItem>
+                                                    Amonium Nitrogen
+                                                </ComboBoxItem>
+                                                <ComboBoxItem>
+                                                    Nitrite Nitrogen
+                                                </ComboBoxItem>
+                                                <ComboBoxItem>
+                                                    Organic Phosphorus
+                                                </ComboBoxItem>
+                                                <ComboBoxItem>
+                                                    Mineral Phosphorus
+                                                </ComboBoxItem>
+                                            </ComboBox>
+
+                                            <Button Style="{StaticResource MaterialDesignFloatingActionMiniButton}" ToolTip="Add to observations table"
+                                                    Width="35" Height="35" Margin="10, 0, 0, 0" HorizontalAlignment ="Right" Click="add_observation">
+                                                
+                                                <materialDesign:PackIcon Kind="Add" />
+
+                                            </Button>
+                                        </StackPanel>
+                                    </Grid>
+
+                                </Grid>
+
+                                
+                                
+                                
+                                
+                                <TabControl HorizontalAlignment="Stretch" Grid.Row="1" TabStripPlacement="Bottom" Margin="0,0,0,10">
+                                    <TabItem Header="Parameters">
+                                        <Grid>
+                                            <DataGrid x:Name="ui_selected_observations" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                                      Margin="0,0,0,0" CanUserAddRows="False"  AutoGenerateColumns="False">
+                                                <DataGrid.Columns>
+                                                    <DataGridTextColumn Header="Object Type" Binding="{Binding Path=object_type}" Width="200"/>
+                                                    <DataGridTextColumn Header="Object Number" Binding="{Binding Path=number}" Width="120" />
+                                                    <DataGridTextColumn Header="Observation File" Binding="{Binding Path=file}" Width="*"/>
+                                                    <DataGridTextColumn Header="Observed Variable" Binding="{Binding Path=observed_variable}" Width="180"/>
+                                                </DataGrid.Columns>
+
+                                            </DataGrid>
+
+                                        </Grid>
+                                    </TabItem>
+                                    <TabItem Header="Map">
+                                        <Grid Background="#FFE5E5E5"/>
+                                    </TabItem>
+
+                                </TabControl>
+
+                            </Grid>
+
+
+                        </Grid>
                     </TabItem>
                     <TabItem Header="Sensitivity">
                         <Grid Background="{DynamicResource MaterialDesignPaper}"/>
@@ -552,7 +721,6 @@
                 <materialDesign:TransitionerSlide.ForwardWipe>
                     <materialDesign:SlideWipe Direction="Right"/>
                 </materialDesign:TransitionerSlide.ForwardWipe>
-                <local:parameters_page/>
             </materialDesign:TransitionerSlide>
         </materialDesign:Transitioner>
 
