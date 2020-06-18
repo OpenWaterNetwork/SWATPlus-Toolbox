@@ -449,14 +449,14 @@
                     <TabItem Header="Parameters" Height="22" VerticalAlignment="Top">
                         <Grid Background="{DynamicResource MaterialDesignPaper}">
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="70"/>
+                                <RowDefinition Height="100"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
                             <StackPanel Grid.Row="0" Orientation="Horizontal" Grid.ColumnSpan="2">
                                 <ComboBox x:Name="ui_parameter_group" Style="{StaticResource MaterialDesignFloatingHintComboBox}" materialDesign:TextFieldAssist.HasClearButton="False"
                                           materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource SecondaryAccentBrush}"
-                                           materialDesign:HintAssist.Hint="Parameter Group" materialDesign:HintAssist.HintOpacity=".26" MinWidth="115" Margin="38, 0, 0, 0" DropDownClosed="list_available_parameters">
-                                    <ComboBoxItem IsSelected="True">
+                                           materialDesign:HintAssist.Hint="Parameter Group" materialDesign:HintAssist.HintOpacity=".26" MinWidth="180" Margin="38, 0, 0, 0" DropDownClosed="list_available_parameters">
+                                    <ComboBoxItem IsSelected="False">
                                         All
                                     </ComboBoxItem>
                                     <ComboBoxItem>
@@ -483,21 +483,13 @@
                                 </ComboBox>
                                 <ComboBox Style="{StaticResource MaterialDesignFloatingHintComboBox}"  x:Name="ui_parameter_name"
                                           materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource SecondaryAccentBrush}"
-                                           materialDesign:HintAssist.Hint="Parameter Name" MinWidth="115" materialDesign:HintAssist.HintOpacity=".26" Margin="10, 0, 0, 0">
-                                    <ComboBoxItem>
-                                        cn2
-                                    </ComboBoxItem>
-                                    <ComboBoxItem>
-                                        esco
-                                    </ComboBoxItem>
-                                    <ComboBoxItem>
-                                        epco
-                                    </ComboBoxItem>
+                                           materialDesign:HintAssist.Hint="Parameter Name" MinWidth="180" materialDesign:HintAssist.HintOpacity=".26" Margin="10, 0, 0, 0">
+                                    
                                 </ComboBox>
 
-                                <ComboBox Style="{StaticResource MaterialDesignFloatingHintComboBox}" Margin="30, 0, 0, 0"
+                                <ComboBox Style="{StaticResource MaterialDesignFloatingHintComboBox}" x:Name="ui_parameter_change_type" Margin="30, 0, 0, 0"
                                           materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource SecondaryAccentBrush}"
-                                           materialDesign:HintAssist.Hint="Change Type" MinWidth="115" materialDesign:HintAssist.HintOpacity=".26" >
+                                           materialDesign:HintAssist.Hint="Change Type" MinWidth="120" materialDesign:HintAssist.HintOpacity=".26" >
                                     <ComboBoxItem>
                                         Percentage
                                     </ComboBoxItem>
@@ -510,8 +502,8 @@
                                 </ComboBox>
 
                                 <ComboBox Style="{StaticResource MaterialDesignFloatingHintComboBox}" 
-                                          materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource SecondaryAccentBrush}" IsEditable="True"
-                                           materialDesign:HintAssist.Hint="Minimum" MinWidth="80" materialDesign:HintAssist.HintOpacity=".26" Margin="10, 0, 0, 0">
+                                          materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource SecondaryAccentBrush}" x:Name="ui_parameter_minimum" IsEditable="True"
+                                           materialDesign:HintAssist.Hint="Minimum" MinWidth="100" materialDesign:HintAssist.HintOpacity=".26" Margin="10, 0, 0, 0">
                                     <ComboBoxItem>
                                         -10
                                     </ComboBoxItem>
@@ -523,8 +515,8 @@
                                     </ComboBoxItem>
                                 </ComboBox>
                                 <ComboBox Style="{StaticResource MaterialDesignFloatingHintComboBox}" 
-                                          materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource SecondaryAccentBrush}" IsEditable="True"
-                                           materialDesign:HintAssist.Hint="Maximum" MinWidth="80" materialDesign:HintAssist.HintOpacity=".26" Margin="10, 0, 0, 0">
+                                          materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource SecondaryAccentBrush}" x:Name="ui_parameter_maximum" IsEditable="True"
+                                           materialDesign:HintAssist.Hint="Maximum" MinWidth="100" materialDesign:HintAssist.HintOpacity=".26" Margin="10, 0, 0, 0">
                                     <ComboBoxItem>
                                         10
                                     </ComboBoxItem>
@@ -538,30 +530,31 @@
 
                                 <Button Style="{StaticResource MaterialDesignFloatingActionMiniButton}" ToolTip="Add to observations table" Width="35"
                                             Height="35" Margin="10, 0, 0, 0"
-                                            HorizontalAlignment ="Right"
+                                            HorizontalAlignment ="Right" Click="add_parameter"
                                             >
                                     <materialDesign:PackIcon Kind="Add" />
 
                                 </Button>
                             </StackPanel>
 
-                            <TabControl TabStripPlacement="Bottom" Grid.Row="1" BorderBrush="SkyBlue" Margin="0,0,0,0">
+                            <TabControl TabStripPlacement="Bottom" Grid.Row="1" BorderBrush="SkyBlue" Margin="0,0,0,-29">
                                 <TabItem Header="TabItem">
-                                    <Grid Background="{DynamicResource MaterialDesignPaper}" Margin="18, 0, 18, 0">
+                                    <Grid Background="{DynamicResource MaterialDesignPaper}" Margin="0, 0, 0, 0">
                                         <DataGrid x:Name="ui_selected_parameters" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                                                      Margin="0,0,0,0" CanUserAddRows="False"  AutoGenerateColumns="False">
+                                                      Margin="18,0,18,0" CanUserAddRows="False"  AutoGenerateColumns="False">
                                             <DataGrid.Columns>
                                                 <DataGridTextColumn Header="Parameter Group" Binding="{Binding Path=object_type}" Width="2*"/>
-                                                <DataGridTextColumn Header="Parameter Name" Binding="{Binding Path=number}" Width="2*" />
-                                                <DataGridTextColumn Header="Change Type" Binding="{Binding Path=file}" Width="2*"/>
-                                                <DataGridTextColumn Header="Minimum" Binding="{Binding Path=observed_variable}" Width="*"/>
-                                                <DataGridTextColumn Header="Maximum" Binding="{Binding Path=observed_variable}" Width="*"/>
+                                                <DataGridTextColumn Header="Parameter Name" Binding="{Binding Path=name}" Width="2*" />
+                                                <DataGridTextColumn Header="Change Type" Binding="{Binding Path=change_type}" Width="2*"/>
+                                                <DataGridTextColumn Header="Minimum" Binding="{Binding Path=minimum}" Width="*"/>
+                                                <DataGridTextColumn Header="Maximum" Binding="{Binding Path=maximum}" Width="*"/>
+                                                <DataGridTextColumn Header="Units" Binding="{Binding Path=units}" Width="*"/>
                                             </DataGrid.Columns>
 
                                         </DataGrid>
                                     </Grid>
                                 </TabItem>
-                                <TabItem Header="TabItem">
+                                <TabItem Header="TabItem" Visibility="Hidden">
                                     <Grid Background="{DynamicResource MaterialDesignPaper}"/>
                                 </TabItem>
                             </TabControl>
@@ -671,7 +664,7 @@
                                 
                                 
                                 
-                                <TabControl HorizontalAlignment="Stretch" Grid.Row="1" TabStripPlacement="Bottom" Margin="0,0,0,10">
+                                <TabControl HorizontalAlignment="Stretch" Grid.Row="1" TabStripPlacement="Bottom" Margin="0,0,0,-29">
                                     <TabItem Header="Parameters">
                                         <Grid>
                                             <DataGrid x:Name="ui_selected_observations" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
@@ -687,7 +680,7 @@
 
                                         </Grid>
                                     </TabItem>
-                                    <TabItem Header="Map">
+                                    <TabItem Header="Map" Visibility="Hidden">
                                         <Grid Background="#FFE5E5E5"/>
                                     </TabItem>
 

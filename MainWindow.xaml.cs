@@ -180,6 +180,27 @@ namespace SWAT__Toolbox
             selected_observations.Add(new observation() { file = ui_parameters_file_selection_path.Text, id = 1, number = obj_number, object_type = obj_type, observed_variable = obs_variable });
         }
 
+        private void add_parameter(object sender, RoutedEventArgs e)
+        {
+            string par_obj = (string)ui_parameter_name.SelectedValue;
 
+            foreach (var par_item in all_parameters())
+            {
+                if (par_obj == par_item.name)
+                {
+                    parameter additional_parameter = par_item;
+                    additional_parameter.change_type = get_parameter_change_type(ui_parameter_change_type.SelectedIndex + 1);
+                    additional_parameter.maximum = double.Parse(ui_parameter_maximum.Text);
+                    additional_parameter.minimum = double.Parse(ui_parameter_minimum.Text);
+                    selected_parameters.Add(additional_parameter);
+
+                }
+                else
+                {
+                    
+                }
+            }
+            //MessageBox.Show(par_obj);
+        }
     }
 }
