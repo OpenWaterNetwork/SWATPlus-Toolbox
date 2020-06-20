@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Shapes;
 using Microsoft.Win32;
 using YamlDotNet.Serialization;
 
@@ -14,6 +15,19 @@ namespace SWAT__Toolbox
 {
     class toolbox_functions
     {
+
+        public static string[] split_string_by_space(string input_string)
+        {
+            string[] string_parts = input_string.Split(new char[0], StringSplitOptions.RemoveEmptyEntries);
+            return string_parts;
+        }
+        
+        public static string[] read_from(string file_path)
+        {
+            string[] lines = File.ReadAllLines(file_path);
+            return lines;
+        }
+
 
         public static bool save_project(project project_object)
         {

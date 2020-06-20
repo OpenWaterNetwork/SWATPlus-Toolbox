@@ -98,7 +98,7 @@
 
                             <Grid Grid.Row="1" Grid.ColumnSpan="2">
                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
-                                    
+
 
                                     <!--<Button Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}" VerticalAlignment="Bottom" HorizontalAlignment="Right" Grid.Row="0" Margin="0 0 28 -20">
                                         <materialDesign:PackIcon Kind="Plus" Height="22" Width="22" />
@@ -113,7 +113,7 @@
                                                         <ColumnDefinition Width="*"/>
                                                         <ColumnDefinition Width="30"/>
                                                     </Grid.ColumnDefinitions>
-                                                    
+
                                                     <TextBlock Grid.Column="0"  Margin="16">
                                                         Create a SWAT+ Toolbox Project.
                                                     </TextBlock>
@@ -134,33 +134,33 @@
                                                         </Grid.RowDefinitions>
 
                                                         <Grid Height="200" Grid.Row="0"  Margin="16, 0, 16, 16">
-                                                                <Grid.ColumnDefinitions>
-                                                                    <ColumnDefinition Width="32"/>
-                                                                    <ColumnDefinition Width="*"/>
-                                                                    <ColumnDefinition Width="32"/>
-                                                                </Grid.ColumnDefinitions>
-                                                                <Grid.RowDefinitions>
-                                                                    <RowDefinition Height="*"/>
-                                                                    <RowDefinition Height="*"/>
-                                                                </Grid.RowDefinitions>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="32"/>
+                                                                <ColumnDefinition Width="*"/>
+                                                                <ColumnDefinition Width="32"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <Grid.RowDefinitions>
+                                                                <RowDefinition Height="*"/>
+                                                                <RowDefinition Height="*"/>
+                                                            </Grid.RowDefinitions>
 
-                                                                <materialDesign:PackIcon VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" Kind="FolderOpen" Width="28" Height="28"/>
+                                                            <materialDesign:PackIcon VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" Kind="FolderOpen" Width="28" Height="28"/>
                                                             <TextBox TextAlignment="Left" x:Name="ui_home_new_project_txtinout_path" VerticalAlignment="Center" Grid.Row="0" Grid.Column="1" Margin="8 0 8 0" HorizontalAlignment="Stretch" materialDesign:HintAssist.Hint="Set TxtInOut Directory" IsEnabled="False" />
 
                                                             <Button VerticalAlignment="Center" Width="32" Height="32" Grid.Row="0" Grid.Column="2" Style="{StaticResource MaterialDesignIconButton}" ToolTip="Browse for TxtInOut Directory" Background="{DynamicResource MaterialDesignTextFieldBoxBackground}" Click="home_set_txtinout_directory">
-                                                                    <materialDesign:PackIcon Kind="Plus" />
-                                                                </Button>
+                                                                <materialDesign:PackIcon Kind="Plus" />
+                                                            </Button>
 
 
                                                             <materialDesign:PackIcon VerticalAlignment="Center" Grid.Row="1" Grid.Column="0" Kind="File" Width="28" Height="28"/>
                                                             <TextBox TextAlignment="Left" x:Name="ui_home_new_project_file_path" VerticalAlignment="Center" Grid.Row="1" Grid.Column="1" Margin="8 0 8 0" HorizontalAlignment="Stretch" materialDesign:HintAssist.Hint="Set Project Save Location" IsEnabled="False" />
 
                                                             <Button VerticalAlignment="Center" Width="32" Height="32" Grid.Row="1" Grid.Column="2" Style="{StaticResource MaterialDesignIconButton}" ToolTip="Browse for Project Save Location" Background="{DynamicResource MaterialDesignTextFieldBoxBackground}" Click="home_set_project_location">
-                                                                    <materialDesign:PackIcon Kind="Plus"/>
-                                                                </Button>
+                                                                <materialDesign:PackIcon Kind="Plus"/>
+                                                            </Button>
 
-                                                            </Grid>
-                                                        
+                                                        </Grid>
+
                                                         <materialDesign:ColorZone Mode="PrimaryMid" Grid.Row="1" Effect="{DynamicResource MaterialDesignShadowDepth5}">
                                                             <TextBlock Margin="16">
                                                                 New Project
@@ -381,7 +381,9 @@
                                             <Expander
                                         HorizontalAlignment="Stretch"
                                         Header="Water Balance"
-                                        materialDesign:ExpanderAssist.DownHeaderPadding="10, 0, 0, 0">
+                                        materialDesign:ExpanderAssist.DownHeaderPadding="10, 0, 0, 0"
+                                        IsExpanded="True">
+
 
                                                 <StackPanel Orientation="Vertical" TextBlock.Foreground="{DynamicResource MaterialDesignBody}" Margin="24,8,24,16">
 
@@ -496,20 +498,20 @@
                                     <ColumnDefinition Width="2*"/>
                                 </Grid.ColumnDefinitions>
 
-                                <ProgressBar Value="99.999" x:Name="ui_run_model_annual_progress" Grid.Column="0" HorizontalAlignment="Right" Margin="0,0,0,0" Width="70" Height="70" Style="{StaticResource MaterialDesignCircularProgressBar}"/>
+                                <ProgressBar Value="0" x:Name="ui_run_model_annual_progress" Grid.Column="0" HorizontalAlignment="Right" Margin="0,0,0,0" Width="70" Height="70" Style="{StaticResource MaterialDesignCircularProgressBar}"/>
 
                                 <StackPanel Grid.Column="0" Margin="0, 0 , 18, 0" Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Center">
                                     <TextBlock x:Name="ui_run_model_running_year" FontSize="16"  HorizontalAlignment="Center">
-                                    
+
                                     </TextBlock>
                                     <TextBlock x:Name="ui_run_model_of_label" FontSize="12" HorizontalAlignment="Center">
-                                    
+
                                     </TextBlock>
                                     <TextBlock x:Name="ui_run_model_total_years" FontSize="14"  HorizontalAlignment="Center">
-                                    
+
                                     </TextBlock>
                                 </StackPanel>
-                                
+
                                 <Grid Grid.Column="1">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="*"/>
@@ -520,24 +522,13 @@
 
                                     <Button x:Name="ui_run_model_run_swat_plus" Grid.Row = "1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12,0,0,0" Style="{StaticResource MaterialDesignFlatButton}" ToolTip="MaterialDesignFlatButton" Click="run_swat_plus_model">
                                         <StackPanel Orientation="Horizontal">
-                                            <materialDesign:PackIcon Kind="Play" />
-                                            <TextBlock Text=" Run SWAT+"/>
+                                            <materialDesign:PackIcon x:Name="ui_run_model_run_icon" Kind="Play" />
+                                            <TextBlock x:Name="ui_run_model_run_swat_button_text" Text=" Run SWAT+"/>
                                         </StackPanel>
                                     </Button>
-
                                 </Grid>
-
-
                             </Grid>
-
-
-
-
                         </Grid>
-
-
-
-
                     </TabItem>
 
                     <!--page 3-->
@@ -580,7 +571,7 @@
                                 <ComboBox Style="{StaticResource MaterialDesignFloatingHintComboBox}"  x:Name="ui_parameter_name"
                                           materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource SecondaryAccentBrush}"
                                            materialDesign:HintAssist.Hint="Parameter Name" MinWidth="180" materialDesign:HintAssist.HintOpacity=".26" Margin="10, 0, 0, 0">
-                                    
+
                                 </ComboBox>
 
                                 <ComboBox Style="{StaticResource MaterialDesignFloatingHintComboBox}" x:Name="ui_parameter_change_type" Margin="30, 0, 0, 0"
@@ -747,7 +738,7 @@
 
                                             <Button Style="{StaticResource MaterialDesignFloatingActionMiniButton}" ToolTip="Add to observations table"
                                                     Width="35" Height="35" Margin="10, 0, 0, 0" HorizontalAlignment ="Right" Click="add_observation">
-                                                
+
                                                 <materialDesign:PackIcon Kind="Add" />
 
                                             </Button>
@@ -756,10 +747,10 @@
 
                                 </Grid>
 
-                                
-                                
-                                
-                                
+
+
+
+
                                 <TabControl HorizontalAlignment="Stretch" Grid.Row="1" TabStripPlacement="Bottom" Margin="0,0,0,-29">
                                     <TabItem Header="Parameters">
                                         <Grid>
@@ -793,8 +784,50 @@
                     <TabItem Header="Calibration">
                         <Grid Background="{DynamicResource MaterialDesignPaper}"/>
                     </TabItem>
+
+
                     <TabItem Header="Model Check">
-                        <Grid Background="{DynamicResource MaterialDesignPaper}"/>
+                        <Grid Background="{DynamicResource MaterialDesignPaper}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="70"/>
+                            </Grid.RowDefinitions>
+
+
+                            <TabControl Grid.Row="0" Margin="-8,-8,-7,-27" TabStripPlacement="Bottom" Grid.RowSpan="2">
+                                <TabItem Header="TabItem">
+                                    <Grid Background="{DynamicResource MaterialDesignPaper}">
+                                        <Image x:Name="ui_model_check_hydrology_image" Source="C:\tmp\overview_analysis_hydrology.png" Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Grid>
+                                </TabItem>
+
+                            </TabControl>
+
+                            <Grid Grid.Row="1" HorizontalAlignment="Stretch">
+                                <materialDesign:Card
+                                    materialDesign:ShadowAssist.ShadowDepth="Depth1"
+                                    Padding="1" MinWidth="450" Margin="0, 0, 0, 17"
+                                    HorizontalAlignment="Center">
+
+                                    <StackPanel Orientation="Horizontal" Margin="4" HorizontalAlignment="Center">
+
+                                        <Button Style="{StaticResource MaterialDesignIconButton}" Width="40" Height="40" Margin="10, 0, 10, 0"
+                                                Background="{DynamicResource MaterialDesignTextFieldBoxBackground}" ToolTip="Refresh Analysis" Click="analyse_model" >
+                                            <materialDesign:PackIcon Kind="Sync" Height="30" Width="30"/>
+                                        </Button>
+
+                                        <RadioButton IsChecked="False" IsEnabled="False" MinWidth="110" Content="Overview" ToolTip="Model Analysis of various components" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="0"/>
+                                        <RadioButton IsChecked="True"  IsEnabled="True" MinWidth="110" Content="Hydrology" ToolTip="Hydrological Mass Balance" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="0" Click="update_image"  />
+                                        <RadioButton IsChecked="False" IsEnabled="False" MinWidth="110" Content="Nutrients" ToolTip="Nutrient Balance" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="0"  />
+                                        <RadioButton IsChecked="False" IsEnabled="False" MinWidth="110" Content="Plants" ToolTip="Vegetation Information" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="0" />
+                                    </StackPanel>
+
+                                </materialDesign:Card>
+                            </Grid>
+
+
+
+                        </Grid>
                     </TabItem>
                 </TabControl>
 

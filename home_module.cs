@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using static SWAT__Toolbox.model_evaluation_module;
 using static SWAT__Toolbox.observations_classes;
 using static SWAT__Toolbox.parameters_module;
 using static SWAT__Toolbox.run_model_module;
@@ -26,8 +27,10 @@ namespace SWAT__Toolbox
             public DateTime run_date_end { get; set; }
             public int run_warmup { get; set; }
             public bool print_csv { get; set; }
-
             public print_options print_settings { get; set; }
+            public water_balance_results water_balance { get; set; }
+            public nutrient_balance_results nutrient_balance { get; set; }
+            public plant_results plant_summary { get; set; }
         }
     }
 }

@@ -27,6 +27,7 @@ using static SWAT__Toolbox.parameters_module;
 using static SWAT__Toolbox.toolbox_functions;
 using static SWAT__Toolbox.home_module;
 using static SWAT__Toolbox.run_model_module;
+using static SWAT__Toolbox.model_evaluation_module;
 
 
 using Path = System.IO.Path;
@@ -35,6 +36,10 @@ using YamlDotNet.Serialization.NamingConventions;
 using System.Diagnostics;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
+using MaterialDesignThemes.Wpf;
+using System.Globalization;
+using System.Drawing;
+using System.Drawing.Drawing2D;
 
 namespace SWAT__Toolbox
 {
@@ -274,6 +279,9 @@ namespace SWAT__Toolbox
             current_project.print_csv = false;
 
             current_project.print_settings = default_print_settings();
+            current_project.water_balance = default_water_balance();
+            current_project.nutrient_balance = default_nutrient_balance();
+            current_project.plant_summary = default_plant_results();
 
             // saving the project
             save_project(current_project);
@@ -485,14 +493,17 @@ namespace SWAT__Toolbox
 
                 this.Dispatcher.Invoke(() =>
                 {
-                    ui_run_model_progress.Value = (double)(Convert.ToDouble(year_count) / Convert.ToDouble(total_years)) * 100;
+                    double all_total_days = Convert.ToDouble(new DateTime(current_project.run_date_end.Year, 12, 31).Subtract(new DateTime(current_project.run_date_start.Year, 1, 1)).TotalDays);
+                    double all_past_days  = Convert.ToDouble(current_date.Subtract(new DateTime(current_project.run_date_start.Year, 1, 1)).TotalDays);
+                    
+                    ui_run_model_progress.Value = (double)(all_past_days / all_total_days) * 100;
 
                     double total_days = Convert.ToDouble(new DateTime(current_date.Year, 12, 31).Subtract(new DateTime(current_date.Year, 1, 1)).TotalDays);
-
                     ui_run_model_annual_progress.Value = (double)(Convert.ToDouble(current_date.DayOfYear) / total_days) * 100;
+
                     ui_run_model_running_year.Text = current_year.ToString();
                     ui_run_model_total_years.Text = current_project.run_date_end.Year.ToString();
-                    ui_run_model_of_label.Text = "of";
+                    ui_run_model_of_label.Text = "/";
                 });
 
             }
@@ -508,10 +519,18 @@ namespace SWAT__Toolbox
 
             ui_run_model_progress.DataContext = this;
 
+            ui_run_model_run_icon.Kind = PackIconKind.Stop;
+            ui_run_model_run_swat_button_text.Text = "Stop SWAT+";
+
             run_swat();
             ui_run_model_running_year.Text = "";
             ui_run_model_total_years.Text = "";
             ui_run_model_of_label.Text = "";
+
+            ui_run_model_run_icon.Kind = PackIconKind.Play;
+            ui_run_model_run_swat_button_text.Text = "Run SWAT+";
+
+
         }
 
         private string time_sim_file(project current_)
@@ -539,7 +558,7 @@ basin_wb              {(current_.print_settings.wb_basin.daily == true ? "y" : "
 basin_nb              {(current_.print_settings.nut_basin.daily == true ? "y" : "n")}           {(current_.print_settings.nut_basin.monthly == true ? "y" : "n")}             {(current_.print_settings.nut_basin.yearly == true ? "y" : "n")}              {(current_.print_settings.nut_basin.annual_average == true ? "y" : "n")}
 basin_ls              n           n             n              n
 basin_pw              {(current_.print_settings.plt_basin.daily == true ? "y" : "n")}           {(current_.print_settings.plt_basin.monthly == true ? "y" : "n")}             {(current_.print_settings.plt_basin.yearly == true ? "y" : "n")}              {(current_.print_settings.plt_basin.annual_average == true ? "y" : "n")}
-basin_aqu             n           n             n              n
+basin_aqu             {(current_.print_settings.aquifer.daily == true ? "y" : "n")}           {(current_.print_settings.aquifer.monthly == true ? "y" : "n")}             {(current_.print_settings.aquifer.yearly == true ? "y" : "n")}              {(current_.print_settings.aquifer.annual_average == true ? "y" : "n")}
 basin_res             n           n             n              n
 basin_cha             n           n             n              n
 basin_sd_cha          n           n             n              n
@@ -574,6 +593,218 @@ hyd                   n           n             n              n
 ru                    n           n             n              n
 ";
             return print_prt;
+        }
+
+        System.Drawing.Image bitmap;
+
+        private void analyse_model(object sender, RoutedEventArgs e)
+        {
+            results_analyse_wb();
+            results_analyse_nb();
+            results_analyse_plant_summary();
+
+            int image_font_size = 55;
+
+            System.Drawing.Point precipitation_point = new System.Drawing.Point(2025, 520);
+            System.Drawing.Point evapotranspiration_point = new System.Drawing.Point(3610, 710);
+            System.Drawing.Point surface_runoff_point = new System.Drawing.Point(2820, 1400);
+            System.Drawing.Point lateral_flow_point = new System.Drawing.Point(2150, 1270);
+            System.Drawing.Point percolation_point = new System.Drawing.Point(2130, 1560);
+            System.Drawing.Point revap_point = new System.Drawing.Point(1680, 1480);
+            System.Drawing.Point return_flow_point = new System.Drawing.Point(2460, 1840);
+            System.Drawing.Point irrigation_point = new System.Drawing.Point(4290, 1130);
+            System.Drawing.Point pet_point = new System.Drawing.Point(3160, 540);
+            System.Drawing.Point cn_point = new System.Drawing.Point(3140, 870);
+            System.Drawing.Point deep_losses_point = new System.Drawing.Point(1670, 2330);
+            System.Drawing.Point aquifer_recharge_point = new System.Drawing.Point(1640, 1890);
+
+            ui_model_check_hydrology_image.Source = new BitmapImage(new Uri(@"C:\\tmp\\overview_analysis_hydrology.png"));
+
+
+            bitmap = Bitmap.FromFile("C:\\tmp\\overview_analysis_hydrology.png");
+
+            Graphics image_graphics = Graphics.FromImage(bitmap);
+            image_graphics.SmoothingMode = SmoothingMode.AntiAlias; image_graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
+
+            StringFormat label_string_format = new StringFormat();
+            label_string_format.Alignment = StringAlignment.Near;
+
+            System.Drawing.Color label_string_colour = ColorTranslator.FromHtml("#000000");
+
+            // add recharge
+            image_graphics.DrawString($@"Recharge{System.Environment.NewLine}{current_project.water_balance.aqu_rchrg.ToString("0.##")}", new Font("Arial", image_font_size, System.Drawing.FontStyle.Regular),
+                new SolidBrush(label_string_colour), aquifer_recharge_point, label_string_format);
+            
+            // add cn
+            image_graphics.DrawString($@"CN{System.Environment.NewLine}{current_project.water_balance.cn.ToString("0.##")}", new Font("Arial", image_font_size, System.Drawing.FontStyle.Regular),
+                new SolidBrush(label_string_colour), cn_point, label_string_format);
+            
+            // add pet
+            image_graphics.DrawString($@"PET{System.Environment.NewLine}{current_project.water_balance.pet.ToString("0.##")}", new Font("Arial", image_font_size, System.Drawing.FontStyle.Regular),
+                new SolidBrush(label_string_colour), pet_point, label_string_format);
+            
+            // add irrigation
+            image_graphics.DrawString($@"Irrigation{System.Environment.NewLine}{current_project.water_balance.irr.ToString("0.##")}", new Font("Arial", image_font_size, System.Drawing.FontStyle.Regular),
+                new SolidBrush(label_string_colour), irrigation_point, label_string_format);
+            
+            // add pcp
+            image_graphics.DrawString($@"Precipitation{System.Environment.NewLine}{current_project.water_balance.precip.ToString("0.##")}", new Font("Arial", image_font_size, System.Drawing.FontStyle.Regular),
+                new SolidBrush(label_string_colour), precipitation_point, label_string_format);
+            
+            // add et
+            image_graphics.DrawString($@"ET{System.Environment.NewLine}{current_project.water_balance.et.ToString("0.##")}", new Font("Arial", image_font_size, System.Drawing.FontStyle.Regular),
+                new SolidBrush(label_string_colour), evapotranspiration_point, label_string_format);
+             
+            // add sr
+            image_graphics.DrawString($@"Surface Runnof{System.Environment.NewLine}{current_project.water_balance.surq_gen.ToString("0.##")}", new Font("Arial", image_font_size, System.Drawing.FontStyle.Regular),
+                new SolidBrush(label_string_colour), surface_runoff_point, label_string_format);
+            
+            // add lat_q
+            image_graphics.DrawString($@"Lateral Flow{System.Environment.NewLine}{current_project.water_balance.latq.ToString("0.##")}", new Font("Arial", image_font_size, System.Drawing.FontStyle.Regular),
+                new SolidBrush(label_string_colour), lateral_flow_point, label_string_format);
+            
+            // add perc
+            image_graphics.DrawString($@"Perc{System.Environment.NewLine}{current_project.water_balance.perc.ToString("0.##")}", new Font("Arial", image_font_size, System.Drawing.FontStyle.Regular),
+                new SolidBrush(label_string_colour), percolation_point, label_string_format);
+            
+            // add revap
+            image_graphics.DrawString($@"Revap{System.Environment.NewLine}{current_project.water_balance.aqu_revap.ToString("0.##")}", new Font("Arial", image_font_size, System.Drawing.FontStyle.Regular),
+                new SolidBrush(label_string_colour), revap_point, label_string_format);
+            
+            // add return_flow
+            image_graphics.DrawString($@"Retun Flow{System.Environment.NewLine}{current_project.water_balance.aqu_flo_cha.ToString("0.##")}", new Font("Arial", image_font_size, System.Drawing.FontStyle.Regular),
+                new SolidBrush(label_string_colour), return_flow_point, label_string_format);
+
+            // to do fix second refresh (Exception)
+            bitmap.Save("C:\\tmp\\overview_analysis_mod.png");
+            bitmap = null;
+
+            ui_model_check_hydrology_image.Source = new BitmapImage(new Uri(@"C:\\tmp\\overview_analysis_mod.png"));
+
+
+        }
+
+        private void update_image(object sender, RoutedEventArgs e)
+        {
+            ui_model_check_hydrology_image.Source = new BitmapImage(new Uri(@"C:\\tmp\\overview_analysis_hydrology.png"));
+        }
+
+
+        private void results_analyse_wb()
+        {
+            //wb
+            string[] parts = read_from($@"{ current_project.txtinout}\basin_wb_aa.txt");
+            string[] water_balance_parts = split_string_by_space(parts[3]);
+
+            current_project.water_balance.precip = double.Parse(water_balance_parts[7]);
+            current_project.water_balance.snofall = double.Parse(water_balance_parts[8]);
+            current_project.water_balance.snomlt = double.Parse(water_balance_parts[9]);
+            current_project.water_balance.surq_gen = double.Parse(water_balance_parts[10]);
+            current_project.water_balance.latq = double.Parse(water_balance_parts[11]);
+            current_project.water_balance.wateryld = double.Parse(water_balance_parts[12]);
+            current_project.water_balance.perc = double.Parse(water_balance_parts[13]);
+            current_project.water_balance.et = double.Parse(water_balance_parts[14]);
+            current_project.water_balance.tloss = double.Parse(water_balance_parts[15]);
+            current_project.water_balance.eplant = double.Parse(water_balance_parts[16]);
+            current_project.water_balance.esoil = double.Parse(water_balance_parts[17]);
+            current_project.water_balance.surq_cont = double.Parse(water_balance_parts[18]);
+            current_project.water_balance.cn = double.Parse(water_balance_parts[19]);
+            current_project.water_balance.sw = double.Parse(water_balance_parts[20]);
+            current_project.water_balance.sw_300 = double.Parse(water_balance_parts[21]);
+            current_project.water_balance.snopack = double.Parse(water_balance_parts[22]);
+            current_project.water_balance.pet = double.Parse(water_balance_parts[23]);
+            current_project.water_balance.qtile = double.Parse(water_balance_parts[24]);
+            current_project.water_balance.irr = double.Parse(water_balance_parts[25]);
+            current_project.water_balance.surq_runon = double.Parse(water_balance_parts[26]);
+            current_project.water_balance.latq_runon = double.Parse(water_balance_parts[27]);
+            current_project.water_balance.overbank = double.Parse(water_balance_parts[28]);
+            current_project.water_balance.surq_cha = double.Parse(water_balance_parts[29]);
+            current_project.water_balance.surq_res = double.Parse(water_balance_parts[30]);
+            current_project.water_balance.surq_ls = double.Parse(water_balance_parts[31]);
+            current_project.water_balance.latq_cha = double.Parse(water_balance_parts[32]);
+            current_project.water_balance.latq_res = double.Parse(water_balance_parts[33]);
+            current_project.water_balance.latq_ls = double.Parse(water_balance_parts[34]);
+
+            //aqu
+            parts = read_from($@"{current_project.txtinout}\basin_aqu_aa.txt");
+            string[] aquifer_balance_parts = split_string_by_space(parts[3]);
+
+            current_project.water_balance.aqu_flo = double.Parse(aquifer_balance_parts[7]);
+            current_project.water_balance.aqu_dep_wt = double.Parse(aquifer_balance_parts[8]);
+            current_project.water_balance.aqu_stor = double.Parse(aquifer_balance_parts[9]);
+            current_project.water_balance.aqu_rchrg = double.Parse(aquifer_balance_parts[10]);
+            current_project.water_balance.aqu_seep = double.Parse(aquifer_balance_parts[11]);
+            current_project.water_balance.aqu_revap = double.Parse(aquifer_balance_parts[12]);
+            current_project.water_balance.aqu_no3_st = double.Parse(aquifer_balance_parts[13]);
+            current_project.water_balance.aqu_min = double.Parse(aquifer_balance_parts[14]);
+            current_project.water_balance.aqu_orgn = double.Parse(aquifer_balance_parts[15]);
+            current_project.water_balance.aqu_orgp = double.Parse(aquifer_balance_parts[16]);
+            current_project.water_balance.aqu_rchrgn = double.Parse(aquifer_balance_parts[17]);
+            current_project.water_balance.aqu_nloss = double.Parse(aquifer_balance_parts[18]);
+            current_project.water_balance.aqu_no3gw = double.Parse(aquifer_balance_parts[19]);
+            current_project.water_balance.aqu_seepno3 = double.Parse(aquifer_balance_parts[20]);
+            current_project.water_balance.aqu_flo_cha = double.Parse(aquifer_balance_parts[21]);
+            current_project.water_balance.aqu_flo_res = double.Parse(aquifer_balance_parts[22]);
+            current_project.water_balance.aqu_flo_ls = double.Parse(aquifer_balance_parts[23]);
+
+            current_project.last_modified = DateTime.Now;
+            save_project(current_project);
+        }
+
+        private void results_analyse_nb()
+        {
+            string[] parts = read_from($@"{current_project.txtinout}\basin_aqu_aa.txt");
+            string[] nutrient_balance_parts = split_string_by_space(parts[3]);
+
+            current_project.nutrient_balance.grzn = double.Parse(nutrient_balance_parts[7]);
+            current_project.nutrient_balance.grzp = double.Parse(nutrient_balance_parts[8]);
+            current_project.nutrient_balance.lab_min_p = double.Parse(nutrient_balance_parts[9]);
+            current_project.nutrient_balance.act_sta_p = double.Parse(nutrient_balance_parts[10]);
+            current_project.nutrient_balance.fertn = double.Parse(nutrient_balance_parts[11]);
+            current_project.nutrient_balance.fertp = double.Parse(nutrient_balance_parts[12]);
+            current_project.nutrient_balance.fixn = double.Parse(nutrient_balance_parts[13]);
+            current_project.nutrient_balance.denit = double.Parse(nutrient_balance_parts[14]);
+            current_project.nutrient_balance.act_nit_n = double.Parse(nutrient_balance_parts[15]);
+            current_project.nutrient_balance.act_sta_n = double.Parse(nutrient_balance_parts[16]);
+            current_project.nutrient_balance.org_lab_p = double.Parse(nutrient_balance_parts[17]);
+            current_project.nutrient_balance.rsd_nitorg_n = double.Parse(nutrient_balance_parts[18]);
+            current_project.nutrient_balance.rsd_laborg_p = double.Parse(nutrient_balance_parts[19]);
+            current_project.nutrient_balance.no3atmo = double.Parse(nutrient_balance_parts[20]);
+            current_project.nutrient_balance.nh4atmo = double.Parse(nutrient_balance_parts[21]);
+
+            current_project.last_modified = DateTime.Now;
+            save_project(current_project);
+        }
+
+
+        private void results_analyse_plant_summary()
+        {
+            string[] parts = read_from($@"{current_project.txtinout}\basin_pw_aa.txt");
+            string[] plant_results_parts = split_string_by_space(parts[3]);
+
+            current_project.plant_summary.lai = double.Parse(plant_results_parts[7]);
+            current_project.plant_summary.bioms = double.Parse(plant_results_parts[8]);
+            current_project.plant_summary.yield = double.Parse(plant_results_parts[9]);
+            current_project.plant_summary.residue = double.Parse(plant_results_parts[10]);
+            current_project.plant_summary.sol_tmp = double.Parse(plant_results_parts[11]);
+            current_project.plant_summary.strsw = double.Parse(plant_results_parts[12]);
+            current_project.plant_summary.strsa = double.Parse(plant_results_parts[13]);
+            current_project.plant_summary.strstmp = double.Parse(plant_results_parts[14]);
+            current_project.plant_summary.strsn = double.Parse(plant_results_parts[15]);
+            current_project.plant_summary.strsp = double.Parse(plant_results_parts[16]);
+            current_project.plant_summary.nplt = double.Parse(plant_results_parts[17]);
+            current_project.plant_summary.percn = double.Parse(plant_results_parts[18]);
+            current_project.plant_summary.pplnt = double.Parse(plant_results_parts[19]);
+            current_project.plant_summary.tmx = double.Parse(plant_results_parts[20]);
+            current_project.plant_summary.tmn = double.Parse(plant_results_parts[21]);
+            current_project.plant_summary.tmpav = double.Parse(plant_results_parts[22]);
+            current_project.plant_summary.solarad = double.Parse(plant_results_parts[23]);
+            current_project.plant_summary.wndspd = double.Parse(plant_results_parts[24]);
+            current_project.plant_summary.rhum = double.Parse(plant_results_parts[25]);
+            current_project.plant_summary.phubas0 = double.Parse(plant_results_parts[26]);
+
+            current_project.last_modified = DateTime.Now;
+            save_project(current_project);
         }
 
 
