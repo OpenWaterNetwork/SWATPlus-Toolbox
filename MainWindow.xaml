@@ -13,7 +13,7 @@
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        Title="MainWindow" Height="529" Width="904" MinHeight="500" MinWidth="900" WindowStyle="None">
+        Title="MainWindow" Height="544" Width="904" MinHeight="500" MinWidth="900" WindowStyle="None">
 
     <Grid>
 
@@ -27,50 +27,50 @@
                                   HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch"/>
 
         <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" WindowChrome.IsHitTestVisibleInChrome="True" Height="32" Width="138">
-            <Button Width = "46" Style="{StaticResource MaterialDesignFlatButton}" ToolTip="Minimise" Click="WindowMinimise">
+            <Button Width = "46" Style="{StaticResource MaterialDesignFlatButton}" Foreground="{DynamicResource MaterialDesignPaper}" ToolTip="Minimise" Click="WindowMinimise">
                 <materialDesign:PackIcon Kind="WindowMinimize" />
             </Button>
-            <Button Width = "46" Style="{StaticResource MaterialDesignFlatButton}" ToolTip="Maxmise" Click="RestoreMaximise">
+            <Button Width = "46" Style="{StaticResource MaterialDesignFlatButton}" Foreground="{DynamicResource MaterialDesignPaper}" ToolTip="Maxmise" Click="RestoreMaximise">
                 <materialDesign:PackIcon Kind="WindowMaximize" />
             </Button>
-            <Button Width = "46" Style="{StaticResource MaterialDesignFlatButton}" ToolTip="Close" Click="CloseWindow">
+            <Button Width = "46" Style="{StaticResource MaterialDesignFlatButton}" Foreground="{DynamicResource MaterialDesignPaper}" ToolTip="Close" Click="CloseWindow">
                 <materialDesign:PackIcon Kind="WindowClose" />
             </Button>
         </StackPanel>
 
         <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,86,0,0" Width="896" >
             <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="4" IsChecked="True" Click="navigate_homepage">
-                <TextBlock Style="{StaticResource MaterialDesignSubtitle1TextBlock}">
+                <TextBlock Style="{StaticResource MaterialDesignSubtitle1TextBlock}" Foreground="{DynamicResource MaterialDesignPaper}">
                     Home
                 </TextBlock>
             </RadioButton>
             <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="4" IsChecked="False" Click="navigate_runmodel">
-                <TextBlock Style="{StaticResource MaterialDesignSubtitle1TextBlock}">
+                <TextBlock Style="{StaticResource MaterialDesignSubtitle1TextBlock}" Foreground="{DynamicResource MaterialDesignPaper}">
                     Run Model
                 </TextBlock>
             </RadioButton>
             <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="4" IsChecked="False" Click="navigate_parameters">
-                <TextBlock Style="{StaticResource MaterialDesignSubtitle1TextBlock}">
+                <TextBlock Style="{StaticResource MaterialDesignSubtitle1TextBlock}" Foreground="{DynamicResource MaterialDesignPaper}">
                     Parameters
                 </TextBlock>
             </RadioButton>
             <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="4" IsChecked="False" Click="navigate_observations">
-                <TextBlock Style="{StaticResource MaterialDesignSubtitle1TextBlock}">
+                <TextBlock Style="{StaticResource MaterialDesignSubtitle1TextBlock}" Foreground="{DynamicResource MaterialDesignPaper}">
                     Observations
                 </TextBlock>
             </RadioButton>
             <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="4" IsChecked="False" Click="navigate_sensitivity">
-                <TextBlock Style="{StaticResource MaterialDesignSubtitle1TextBlock}">
+                <TextBlock Style="{StaticResource MaterialDesignSubtitle1TextBlock}" Foreground="{DynamicResource MaterialDesignPaper}">
                     Sensitivity Analysis
                 </TextBlock>
             </RadioButton>
             <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="4" IsChecked="False" Click="navigate_calibration">
-                <TextBlock Style="{StaticResource MaterialDesignSubtitle1TextBlock}">
+                <TextBlock Style="{StaticResource MaterialDesignSubtitle1TextBlock}" Foreground="{DynamicResource MaterialDesignPaper}">
                     Calibration
                 </TextBlock>
             </RadioButton>
             <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="4" IsChecked="False" Click="navigate_model_check">
-                <TextBlock Style="{StaticResource MaterialDesignSubtitle1TextBlock}">
+                <TextBlock Style="{StaticResource MaterialDesignSubtitle1TextBlock}" Foreground="{DynamicResource MaterialDesignPaper}">
                     Model Check
                 </TextBlock>
             </RadioButton>
@@ -79,24 +79,24 @@
         <materialDesign:Transitioner Grid.Row="1" SelectedIndex="0" AutoApplyTransitionOrigins="True">
             <Grid Margin="0,0,0,10">
 
-                <TabControl  x:Name="pages" TabStripPlacement="Bottom" Margin="0,0,0,-9">
+                <TabControl  x:Name="pages" TabStripPlacement="Bottom">
                     <TabItem Header="Home">
                         <Grid Background="{DynamicResource MaterialDesignPaper}" Margin="0,0,0,24">
 
 
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="2*"/>
-                                <RowDefinition Height="10*"/>
-                                <RowDefinition Height="3*"/>
+                                <RowDefinition Height="142*"/>
+                                <RowDefinition Height="119*"/>
+                                <RowDefinition Height="65*"/>
                             </Grid.RowDefinitions>
 
-                            <TextBlock Grid.Row="0" Style="{StaticResource MaterialDesignHeadline2TextBlock}" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"> 
+                            <TextBlock TextAlignment="Center" Grid.Row="0" Style="{StaticResource MaterialDesignHeadline2TextBlock}" MinWidth="500" HorizontalAlignment="Center" VerticalAlignment="Center" Height="72"> 
                                 <Hyperlink IsEnabled="False">
                                     SWAT+ Toolbox
                                 </Hyperlink>
                             </TextBlock>
 
-                            <Grid Grid.Row="1" Grid.ColumnSpan="2">
+                            <Grid Grid.Row="1">
                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
 
 
@@ -175,14 +175,14 @@
                                             </StackPanel>
                                         </materialDesign:DialogHost.DialogContent>
                                         <StackPanel Orientation="Horizontal">
-                                            <Button x:Name="ui_home_new_project" Style="{StaticResource MaterialDesignFlatButton}" Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}" ToolTip="Start a New Project">
+                                            <Button x:Name="ui_home_new_project" Foreground="{DynamicResource MaterialDesignTextAreaBorder}" Style="{StaticResource MaterialDesignFlatButton}"  Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}" ToolTip="Start a New Project">
                                                 <StackPanel Orientation="Horizontal">
                                                     <materialDesign:PackIcon Kind="Plus" />
                                                     <TextBlock>New Project</TextBlock>
                                                 </StackPanel>
                                             </Button>
 
-                                            <Button x:Name="ui_home_open_project"  Style="{StaticResource MaterialDesignFlatButton}" ToolTip="Open an Existing Project" Click="home_open_project">
+                                            <Button x:Name="ui_home_open_project" Foreground="{DynamicResource MaterialDesignTextAreaBorder}" Style="{StaticResource MaterialDesignFlatButton}" ToolTip="Open an Existing Project" Click="home_open_project">
                                                 <StackPanel Orientation="Horizontal">
                                                     <materialDesign:PackIcon Kind="ChevronRight" />
                                                     <TextBlock>Open Project</TextBlock>
@@ -222,9 +222,9 @@
                                     </TextBlock>
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0, 5, 0, 0">
                                         <DatePicker x:Name="ui_run_model_start_date" Margin="0, 0, 0, 0" HorizontalAlignment="Right" Width="110" materialDesign:HintAssist.Hint="Start Date"
-                                                    Style="{StaticResource MaterialDesignFloatingHintDatePicker}" CalendarClosed="update_project_start_date"/>
+                                                    Style="{StaticResource MaterialDesignFloatingHintDatePicker}" CalendarClosed="update_project_start_date" LostFocus="update_project_start_date"/>
                                         <DatePicker x:Name="ui_run_model_end_date" Margin="20, 0, 0, 0" HorizontalAlignment="Right" Width="110" materialDesign:HintAssist.Hint="Start Date"
-                                                    Style="{StaticResource MaterialDesignFloatingHintDatePicker}" CalendarClosed="update_project_end_date"/>
+                                                    Style="{StaticResource MaterialDesignFloatingHintDatePicker}" CalendarClosed="update_project_end_date" LostFocus="update_project_end_date"/>
                                     </StackPanel>
 
                                     <TextBlock HorizontalAlignment="Right" Height="10" Padding="0, 0, 0, 0">
@@ -243,8 +243,8 @@
 
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,0" HorizontalAlignment="Right">
                                         <TextBlock>No</TextBlock>
-                                        <ToggleButton x:Name="ui_run_model_print_csv" Style="{StaticResource MaterialDesignSwitchToggleButton}" Margin="10,0,10,0"
-                                                  ToolTip="MaterialDesignSwitchToggleButton" IsChecked="False" Unchecked="update_project_print_csv" Checked="update_project_print_csv"  />
+                                        <ToggleButton Checked="update_print_settings" Unchecked="update_print_settings" IsChecked="{Binding Path=print_csv, Mode=TwoWay}" x:Name="ui_run_model_print_csv" Style="{StaticResource MaterialDesignSwitchToggleButton}" Margin="10,0,10,0"
+                                                  ToolTip="Switch for printing CSV output" /> <!--Unchecked="update_project_print_csv" Checked="update_project_print_csv"-->
                                         <TextBlock Margin="0,0,0,0"> Yes</TextBlock>
                                     </StackPanel>
 
@@ -518,12 +518,12 @@
                                         <RowDefinition Height="*"/>
                                     </Grid.RowDefinitions>
 
-                                    <ProgressBar x:Name="ui_run_model_progress" Value = "0" VerticalAlignment="Bottom" Margin="12,0,0,5" Width="510" HorizontalAlignment="Left" Height="10"  />
+                                    <ProgressBar materialDesign:TransitionAssist.DisableTransitions="True" x:Name="ui_run_model_progress" Value = "0" VerticalAlignment="Bottom" Margin="12,0,0,5" Width="510" HorizontalAlignment="Left" Height="5"  />
 
-                                    <Button x:Name="ui_run_model_run_swat_plus" Grid.Row = "1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12,0,0,0" Style="{StaticResource MaterialDesignFlatButton}" ToolTip="MaterialDesignFlatButton" Click="run_swat_plus_model">
+                                    <Button Foreground="{DynamicResource MaterialDesignTextAreaBorder}" x:Name="ui_run_model_run_swat_plus" Grid.Row = "1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12,0,0,0" Style="{StaticResource MaterialDesignFlatButton}" ToolTip="Run SWAT+ with current settings" Click="run_swat_plus_model">
                                         <StackPanel Orientation="Horizontal">
                                             <materialDesign:PackIcon x:Name="ui_run_model_run_icon" Kind="Play" />
-                                            <TextBlock x:Name="ui_run_model_run_swat_button_text" Text=" Run SWAT+"/>
+                                            <TextBlock  x:Name="ui_run_model_run_swat_button_text" Text=" Run SWAT+"/>
                                         </StackPanel>
                                     </Button>
                                 </Grid>
@@ -663,16 +663,16 @@
 
                                 <Grid Grid.Row="0" Margin="18, 0, 18, 0">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="320"/>
-                                        <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="280"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="300"/>
                                     </Grid.ColumnDefinitions>
 
                                     <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Right">
                                         <StackPanel Orientation="Horizontal">
                                             <ComboBox Style="{StaticResource MaterialDesignFloatingHintComboBox}" materialDesign:TextFieldAssist.HasClearButton="False"
                                                 materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource SecondaryAccentBrush}" HorizontalAlignment="Left"
-                                                materialDesign:HintAssist.Hint="Object Type" Width="180" x:Name="ui_observations_object_type">
+                                                materialDesign:HintAssist.Hint="Object Type" Width="175" x:Name="ui_observations_object_type">
                                                 <ComboBoxItem IsSelected="False">
                                                     Channel
                                                 </ComboBoxItem>
@@ -687,7 +687,7 @@
                                                 </ComboBoxItem>
                                             </ComboBox>
 
-                                            <TextBox x:Name="ui_observations_object_number" materialDesign:HintAssist.Hint="Object Number" TextAlignment="Right" Margin="14, 0, 0, 3" Width="110"
+                                            <TextBox x:Name="ui_observations_object_number" materialDesign:HintAssist.Hint="Object Number" TextAlignment="Right" Margin="14, 0, 0, 3" Width="90"
                                           Style="{StaticResource MaterialDesignFloatingHintTextBox}" HorizontalAlignment="Left"
                                           VerticalAlignment="Center" />
                                         </StackPanel>
@@ -705,7 +705,22 @@
                                         <StackPanel Orientation="Horizontal">
                                             <ComboBox Style="{StaticResource MaterialDesignFloatingHintComboBox}" materialDesign:TextFieldAssist.HasClearButton="False"
                                                     materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource SecondaryAccentBrush}" HorizontalAlignment="Stretch"
-                                                    materialDesign:HintAssist.Hint="Observed Variable" Width="200" Margin="10, 0, 0, 0"
+                                                    materialDesign:HintAssist.Hint="Timestep" Width="80" Margin="10, 0, 0, 0"
+                                                      x:Name="ui_observations_timestep">
+                                                <ComboBoxItem IsSelected="False">
+                                                    Daily
+                                                </ComboBoxItem>
+                                                <ComboBoxItem>
+                                                    Monthly
+                                                </ComboBoxItem>
+                                                <ComboBoxItem>
+                                                    Yearly
+                                                </ComboBoxItem>
+                                            </ComboBox>
+                                            
+                                            <ComboBox Style="{StaticResource MaterialDesignFloatingHintComboBox}" materialDesign:TextFieldAssist.HasClearButton="False"
+                                                    materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource SecondaryAccentBrush}" HorizontalAlignment="Stretch"
+                                                    materialDesign:HintAssist.Hint="Observed Variable" Width="155" Margin="10, 0, 0, 0"
                                                       x:Name="ui_observations_observed_variable">
                                                 <ComboBoxItem IsSelected="False">
                                                     Flow
@@ -760,6 +775,7 @@
                                                     <DataGridTextColumn Header="Object Type" Binding="{Binding Path=object_type}" Width="200"/>
                                                     <DataGridTextColumn Header="Object Number" Binding="{Binding Path=number}" Width="120" />
                                                     <DataGridTextColumn Header="Observation File" Binding="{Binding Path=file}" Width="*"/>
+                                                    <DataGridTextColumn Header="Timestep" Binding="{Binding Path=timestep}" Width="120"/>
                                                     <DataGridTextColumn Header="Observed Variable" Binding="{Binding Path=observed_variable}" Width="180"/>
                                                 </DataGrid.Columns>
 
@@ -782,7 +798,129 @@
                         <Grid Background="{DynamicResource MaterialDesignPaper}"/>
                     </TabItem>
                     <TabItem Header="Calibration">
-                        <Grid Background="{DynamicResource MaterialDesignPaper}"/>
+                        <Grid Background="{DynamicResource MaterialDesignPaper}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="70"/>
+                            </Grid.RowDefinitions>
+
+                            <TabControl Grid.Row="0" TabStripPlacement="Bottom" Margin="-8,-8,-12,-27" Grid.RowSpan="2">
+                                <TabItem Header="Manual Calibration" Background="{DynamicResource MaterialDesignPaper}">
+                                    <Grid Background="{DynamicResource MaterialDesignPaper}">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="140"/>
+                                        </Grid.RowDefinitions>
+
+                                        <StackPanel Grid.Row="1" Orientation="Vertical">
+                                            <ProgressBar x:Name="ui_calibration_manual_run_swat_progress" Value="0" materialDesign:TransitionAssist.DisableTransitions="True" />
+                                            
+                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0, 10, 0, 0" >
+                                                <Button Foreground="{DynamicResource MaterialDesignTextAreaBorder}" x:Name="ui_calibration_manual_run_swat_plus"
+                                                        Grid.Row = "1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12,0,0,0"
+                                                        Style="{StaticResource MaterialDesignFlatButton}" ToolTip="Run SWAT+ with current parameters"
+                                                        Click="run_swat_plus_model_with_new_pars">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <materialDesign:PackIcon x:Name="ui_calibration_manual_run_icon" Kind="Play" />
+                                                        <TextBlock  x:Name="ui_calibration_manual_run_swat_button_text" Text=" Run SWAT+"/>
+                                                    </StackPanel>
+                                                </Button>
+                                                <Button x:Name="ui_calibration_manual_refresh_indices" Style="{StaticResource MaterialDesignIconButton}" Width="40" Height="40" Margin="10, -5, 10, 0"
+                                                    Background="{DynamicResource MaterialDesignTextFieldBoxBackground}" ToolTip="Refresh Model Performance" Click="calibration_manual_refresh_indices">
+                                                    <materialDesign:PackIcon Kind="Sync" Height="30" Width="30"/>
+                                                </Button>
+                                            </StackPanel>
+                                        </StackPanel>
+                                        
+                                        
+                                        
+                                    <Grid Grid.Row="0" Background="{DynamicResource MaterialDesignPaper}">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="11*"/>
+                                            <ColumnDefinition Width="9*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <Grid Grid.Column="1" Margin="0, 0, 15, 0">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="*"/>
+                                                <RowDefinition Height="10*"/>
+                                            </Grid.RowDefinitions>
+
+                                            <Grid Grid.Row="1" Margin="0, 0, 0, 0" Background="{DynamicResource MaterialDesignPaper}">
+                                                <DataGrid x:Name="ui_calibration_mannual_parameters" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                                          Background="{DynamicResource MaterialDesignPaper}"
+                                                      Margin="0,0,0,0" CanUserAddRows="False"  AutoGenerateColumns="False" CellEditEnding="update_parameter_value"
+                                                     materialDesign:DataGridAssist.CellPadding="2 4 2 4" 
+                                                          materialDesign:DataGridAssist.ColumnHeaderPadding="2 3 2 3">
+                                                    <DataGrid.Columns>
+
+                                                            <DataGridTextColumn IsReadOnly="True"  Header="Group" Binding="{Binding Path=object_type}" Width="*" MinWidth="50"/>
+                                                            <DataGridTextColumn IsReadOnly="True"  Header="Name" Binding="{Binding Path=name}" MinWidth="55" Width="*"/>
+                                                            <DataGridTextColumn IsReadOnly="True"  Header="Change Type" Binding="{Binding Path=change_type}" Width="*" MinWidth="80"/>
+                                                            <DataGridTextColumn IsReadOnly="True"  Header="Abs.min" Binding="{Binding Path=absolute_minimum}" Width="*" MinWidth="50"/>
+                                                            <DataGridTextColumn IsReadOnly="True"  Header="Abs.max" Binding="{Binding Path=absolute_maximum}" Width="*" MinWidth="50"/>
+                                                            <DataGridTextColumn  IsReadOnly="False" Header="Value" Binding="{Binding Path=value, Mode=TwoWay}" Width="*"/>
+                                                            <DataGridTextColumn IsReadOnly="True"  Header="" Binding="{Binding Path=units}" Width="*" MinWidth="20"/>
+                                                    </DataGrid.Columns>
+                                                </DataGrid>
+                                            </Grid>
+                                        </Grid>
+
+                                        <Grid Grid.Column="2">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="*"/>
+                                                <RowDefinition Height="10*"/>
+                                            </Grid.RowDefinitions>
+
+                                            <Grid Grid.Row="1">
+                                                <DataGrid x:Name="ui_calibration_manual_performance" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                                      Margin="0,0,0,0" CanUserAddRows="False"  AutoGenerateColumns="False"
+                                                          materialDesign:DataGridAssist.CellPadding="2 4 2 4" 
+                                                          materialDesign:DataGridAssist.ColumnHeaderPadding="2 3 2 3">
+                                                    <DataGrid.Columns>
+                                                            <DataGridTextColumn IsReadOnly="True" Header="" Binding="{Binding Path=object_type}" MinWidth="120" Width="2*"/>
+                                                        <DataGridTextColumn IsReadOnly="True" Header="" Binding="{Binding Path=number}" Width="*" />
+                                                        <DataGridTextColumn IsReadOnly="True" Header="" Binding="{Binding Path=timestep}" Width="*" />
+                                                        <DataGridTextColumn IsReadOnly="True" Header="" Binding="{Binding Path=observed_variable}" Width="*" />
+                                                        <DataGridTextColumn IsReadOnly="True" Header="NSE" Binding="{Binding Path=nse}" MinWidth="30"/>
+                                                        <!--<DataGridTextColumn IsReadOnly="True" Header="R2" Binding="{Binding Path=r2}" MinWidth="20"/>-->
+                                                        <DataGridTextColumn IsReadOnly="True" Header="PBias" Binding="{Binding Path=pbias}" MinWidth="30"/>
+                                                    </DataGrid.Columns>
+                                                </DataGrid>
+                                            </Grid>
+                                            
+                                            
+                                            
+                                        </Grid>
+
+                                    </Grid>
+                                    </Grid>
+                                </TabItem>
+
+                                <TabItem Header="Automatic Calibration">
+
+                                </TabItem>
+                            </TabControl>
+
+
+                            <Grid Grid.Row="1" HorizontalAlignment="Stretch">
+                                <materialDesign:Card
+                                    materialDesign:ShadowAssist.ShadowDepth="Depth1"
+                                    Padding="1" MinWidth="280" Margin="0, 0, 0, 17"
+                                    HorizontalAlignment="Center">
+
+                                    <StackPanel Orientation="Horizontal" Margin="4" HorizontalAlignment="Center">
+
+                                        <RadioButton IsChecked="True"  IsEnabled="True" MinWidth="110" Content="Manual" ToolTip="Perform a Manual Calibration" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="0" Click="update_image"  />
+                                        <RadioButton IsChecked="False" IsEnabled="False" MinWidth="110" Content="Automatic" ToolTip="Perform an Automatic Calibration" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="0"  />
+
+                                    </StackPanel>
+
+                                </materialDesign:Card>
+                            </Grid>
+                        </Grid>
                     </TabItem>
 
 

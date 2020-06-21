@@ -14,7 +14,13 @@ namespace SWAT__Toolbox
             public string object_type { get; set; }
             public int number { get; set; }
             public string file { get; set; }
+            public string timestep { get; set; }
             public string observed_variable { get; set; }
+            public double nse { get; set; }
+            public double r2 { get; set; }
+            public double pbias { get; set; }
+
+
             //public List<int> assigned { get; set; }
         }
     }

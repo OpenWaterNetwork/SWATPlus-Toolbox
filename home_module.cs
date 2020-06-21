@@ -14,6 +14,7 @@ namespace SWAT__Toolbox
 {
     class home_module
     {
+        //add mechanism to lad existing parameters upon new project
         public class project
         {
             public string project_name { get; set; }

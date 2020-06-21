@@ -28,6 +28,7 @@ using static SWAT__Toolbox.toolbox_functions;
 using static SWAT__Toolbox.home_module;
 using static SWAT__Toolbox.run_model_module;
 using static SWAT__Toolbox.model_evaluation_module;
+using static SWAT__Toolbox.mannual_calibration_module;
 
 
 using Path = System.IO.Path;
@@ -40,6 +41,8 @@ using MaterialDesignThemes.Wpf;
 using System.Globalization;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Windows.Media.Media3D;
+using MaterialDesignColors;
 
 namespace SWAT__Toolbox
 {
@@ -58,13 +61,41 @@ namespace SWAT__Toolbox
         {
             InitializeComponent();
 
+            //ui init
             WindowChrome.SetWindowChrome(this, new WindowChrome());
+
+            var paletteHelper = new PaletteHelper();
+            //Retrieve the app's existing theme
+            ITheme theme = paletteHelper.GetTheme();
+
+            //Change the base theme to Ligh
+            theme.SetBaseTheme(Theme.Light);
+
+            //Change all of the primary colors to Red
+            theme.SetPrimaryColor(System.Windows.Media.Color.FromRgb(21, 101, 192));
+
+            //Change all of the secondary colors to Blue
+            theme.SetSecondaryColor(Colors.Orange);
+
+            //You can also change a single color on the theme, and optionally set the corresponding foreground color
+            theme.PrimaryMid = new ColorPair(Colors.Brown, Colors.White);
+
+            //Change the app's current theme
+            paletteHelper.SetTheme(theme);
+
+
+
+
 
             selected_parameters = new ObservableCollection<parameter>();
             selected_observations = new ObservableCollection<observation>();
 
             ui_selected_parameters.ItemsSource = selected_parameters;
             ui_selected_observations.ItemsSource = selected_observations;
+
+            ui_calibration_manual_performance.ItemsSource = current_project.current_observations;
+
+
 
 
             // Python in C# https://pythonnet.github.io/
@@ -195,24 +226,29 @@ namespace SWAT__Toolbox
 
         private void add_observation(object sender, RoutedEventArgs e)
         {
+
             //get objects values from user
             string obj_type = get_observation_object_type(ui_observations_object_type.SelectedIndex + 1);
             string obs_variable = get_observation_variable(ui_observations_observed_variable.SelectedIndex + 1);
+            string timestep = ui_observations_timestep.SelectionBoxItem.ToString();
             int obj_number = int.Parse(ui_observations_object_number.Text);
 
-            selected_observations.Add(new observation() { file = ui_parameters_file_selection_path.Text, id = 1, number = obj_number, object_type = obj_type, observed_variable = obs_variable });
-
+            selected_observations.Add(new observation() { file = ui_parameters_file_selection_path.Text,
+                                                            id = 1, number = obj_number,
+                                                   object_type = obj_type,
+                                             observed_variable = obs_variable,
+                                                      timestep = timestep,
+                                                nse = 0, pbias = 0, r2 = 0 });
 
             ui_observations_object_type.Text = null;
             ui_observations_observed_variable.Text = null;
             ui_observations_object_number.Text = null;
+            ui_observations_timestep.Text = null;
             ui_observations_object_number.Text = null;
             ui_parameters_file_selection_path.Text = "Click to select an observation file";
 
             current_project.current_observations = selected_observations;
-            current_project.last_modified = DateTime.Now;
-
-            save_project(current_project);
+            update_project();
         }
 
         private void add_parameter(object sender, RoutedEventArgs e)
@@ -242,9 +278,7 @@ namespace SWAT__Toolbox
             ui_parameter_change_type.Text = null;
 
             current_project.current_parameters = selected_parameters;
-            current_project.last_modified = DateTime.Now;
-
-            save_project(current_project);
+            update_project();
         }
 
         private void home_set_project_location(object sender, RoutedEventArgs e)
@@ -289,8 +323,10 @@ namespace SWAT__Toolbox
             ui_selected_parameters.ItemsSource = selected_parameters;
             ui_selected_observations.ItemsSource = selected_observations;
 
+            ui_calibration_manual_performance.ItemsSource = current_project.current_observations;
+
             //binding checkboxes for printing
-            set_binding_context_for_print();
+            set_binding_contexts();
         }
 
         private void home_open_project(object sender, RoutedEventArgs e)
@@ -311,6 +347,9 @@ namespace SWAT__Toolbox
             ui_selected_parameters.ItemsSource = selected_parameters;
             ui_selected_observations.ItemsSource = selected_observations;
 
+            ui_calibration_manual_performance.ItemsSource = current_project.current_observations;
+
+
             //update ui
             //home
 
@@ -321,7 +360,7 @@ namespace SWAT__Toolbox
             ui_run_model_warmup_period.Text = current_project.run_warmup.ToString();
 
             //binding checkboxes for printing
-            set_binding_context_for_print();
+            set_binding_contexts();
 
             //
         }
@@ -331,47 +370,46 @@ namespace SWAT__Toolbox
         private void update_project_start_date(object sender, RoutedEventArgs e)
         {
             current_project.run_date_start = (DateTime)ui_run_model_start_date.SelectedDate;
-            current_project.last_modified = DateTime.Now;
-            save_project(current_project);
+            update_project();
         }
         private void update_project_end_date(object sender, RoutedEventArgs e)
         {
             current_project.run_date_end = (DateTime)ui_run_model_end_date.SelectedDate;
-            current_project.last_modified = DateTime.Now;
-            save_project(current_project);
+            update_project();
         }
 
         private void update_project_warmup(object sender, RoutedEventArgs e)
         {
             current_project.run_warmup = int.Parse(ui_run_model_warmup_period.Text);
-            current_project.last_modified = DateTime.Now;
-            save_project(current_project);
-        }
-
-        private void update_project_print_csv(object sender, RoutedEventArgs e)
-        {
-            if ((bool)ui_run_model_print_csv.IsChecked)
-            {
-                current_project.print_csv = true;
-                current_project.last_modified = DateTime.Now;
-                save_project(current_project);
-            }
-            else
-            {
-                current_project.print_csv = false;
-                current_project.last_modified = DateTime.Now;
-                save_project(current_project);
-            }
+            update_project();
         }
 
         private void update_print_settings(object sender, RoutedEventArgs e)
         {
+            update_project();
+        }
+
+        private void update_parameter_value(object sender, DataGridCellEditEndingEventArgs e)
+        {
+            update_project();
+        }
+
+        private void update_project()
+        {
             current_project.last_modified = DateTime.Now;
             save_project(current_project);
         }
 
-        private void set_binding_context_for_print()
+
+        private void set_binding_contexts()
         {
+            ui_calibration_manual_performance.ItemsSource = current_project.current_observations;
+            ui_calibration_manual_performance.DataContext = current_project.current_observations;
+
+            ui_run_model_print_csv.DataContext = current_project;
+            ui_calibration_mannual_parameters.ItemsSource = current_project.current_parameters;
+            ui_calibration_mannual_parameters.DataContext = current_project.current_parameters;
+
             ui_run_model_print_channel_day.DataContext = current_project.print_settings.channel;
             ui_run_model_print_channel_month.DataContext = current_project.print_settings.channel;
             ui_run_model_print_channel_year.DataContext = current_project.print_settings.channel;
@@ -497,6 +535,7 @@ namespace SWAT__Toolbox
                     double all_past_days  = Convert.ToDouble(current_date.Subtract(new DateTime(current_project.run_date_start.Year, 1, 1)).TotalDays);
                     
                     ui_run_model_progress.Value = (double)(all_past_days / all_total_days) * 100;
+                    ui_calibration_manual_run_swat_progress.Value = (double)(all_past_days / all_total_days) * 100;
 
                     double total_days = Convert.ToDouble(new DateTime(current_date.Year, 12, 31).Subtract(new DateTime(current_date.Year, 1, 1)).TotalDays);
                     ui_run_model_annual_progress.Value = (double)(Convert.ToDouble(current_date.DayOfYear) / total_days) * 100;
@@ -747,8 +786,7 @@ ru                    n           n             n              n
             current_project.water_balance.aqu_flo_res = double.Parse(aquifer_balance_parts[22]);
             current_project.water_balance.aqu_flo_ls = double.Parse(aquifer_balance_parts[23]);
 
-            current_project.last_modified = DateTime.Now;
-            save_project(current_project);
+            update_project();
         }
 
         private void results_analyse_nb()
@@ -772,8 +810,7 @@ ru                    n           n             n              n
             current_project.nutrient_balance.no3atmo = double.Parse(nutrient_balance_parts[20]);
             current_project.nutrient_balance.nh4atmo = double.Parse(nutrient_balance_parts[21]);
 
-            current_project.last_modified = DateTime.Now;
-            save_project(current_project);
+            update_project();
         }
 
 
@@ -803,10 +840,67 @@ ru                    n           n             n              n
             current_project.plant_summary.rhum = double.Parse(plant_results_parts[25]);
             current_project.plant_summary.phubas0 = double.Parse(plant_results_parts[26]);
 
-            current_project.last_modified = DateTime.Now;
-            save_project(current_project);
+            update_project();
         }
 
+        private void run_swat_plus_model_with_new_pars(object sender, RoutedEventArgs e)
+        {
+            set_new_parameters();
 
+            File.WriteAllText($"{current_project.txtinout}\\print.prt", print_prt_file(current_project));
+            File.WriteAllText($"{current_project.txtinout}\\time.sim", time_sim_file(current_project));
+
+            Environment.CurrentDirectory = current_project.txtinout;
+
+            run_swat();
+            ui_run_model_running_year.Text = "";
+            ui_run_model_total_years.Text = "";
+            ui_run_model_of_label.Text = "";
+        }
+
+        private void set_new_parameters()
+        {
+            // modify file.cio to hook parameter files
+            string chg_ = chg_line();
+            string[] file_cio = read_from($@"{current_project.txtinout}\file.cio");
+
+            string new_file_cio = "";
+
+            for (int i = 0; i < file_cio.Count(); i++)
+            {
+                if (file_cio[i].StartsWith("chg"))
+                {
+                    file_cio[i] = chg_;
+                }
+                new_file_cio = new_file_cio + file_cio[i] + Environment.NewLine;
+            }
+
+            File.WriteAllText($@"{current_project.txtinout}\file.cio", new_file_cio);
+
+            // create and write cal_parms
+            string new_cal_parms = $@"cal_parms.cal: written by SWAT+ Toolbox" + Environment.NewLine + $@"{ all_parameters().Count()}" + Environment.NewLine + "name                       obj_typ       abs_min       abs_max                    units " + Environment.NewLine;
+            for (int i = 0; i < all_parameters().Count(); i++)
+            {
+                new_cal_parms = new_cal_parms + $@"{String.Format("{0,-27}", all_parameters()[i].name)}{String.Format("{0,7}", all_parameters()[i].object_type)}{String.Format("{0,14}", $@"{String.Format("{0:0.00000}", all_parameters()[i].absolute_minimum)}")}{String.Format("{0,14}", $@"{String.Format("{0:0.00000}", all_parameters()[i].absolute_maximum)}")}{(all_parameters()[i].units == "" ? $@"{String.Format("{0,25}", "null")}" : $@"{String.Format("{0,25}", all_parameters()[i].units)}")}" + Environment.NewLine;
+            }
+            File.WriteAllText($@"{current_project.txtinout}\cal_parms.cal", new_cal_parms);
+
+            // create calibration.cal
+
+            string new_calibration_cal = $@"calibration.cal: written by SWAT+ Toolbox" + Environment.NewLine + $@"{current_project.current_parameters.Count()}" + Environment.NewLine + "cal_parm               chg_typ       chg_val     conds  soil_lyr1  soil_lyr2       yr1       yr2      day1      day2   obj_tot" + Environment.NewLine;
+            for (int i = 0; i < current_project.current_parameters.Count(); i++)
+            {
+                new_calibration_cal = new_calibration_cal + $@"{String.Format("{0,-17}", current_project.current_parameters[i].name)}{String.Format("{0,13}", get_parameter_change_type_calibration(current_project.current_parameters[i].change_type))}{String.Format("{0,14}", $@"{String.Format("{0:0.00000}", current_project.current_parameters[i].value)}")}         0          0          0         0         0         0         0         0" + Environment.NewLine;
+            }
+            File.WriteAllText($@"{current_project.txtinout}\calibration.cal", new_calibration_cal);
+
+        }
+
+        private void calibration_manual_refresh_indices(object sender, RoutedEventArgs e)
+        {
+            current_project = get_performance_indices(current_project);
+            ui_calibration_manual_performance.Items.Refresh();
+            update_project();
+        }
     }
 }

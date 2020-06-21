@@ -28,6 +28,29 @@ namespace SWAT__Toolbox
             return lines;
         }
 
+        public static string get_parameter_change_type_calibration(String change_type)
+        {
+            string par_change_typ;
+
+            switch (change_type)
+            //    Channel, Landscape Unit, Hydrologic Response Unit, All Basin
+            {
+                case "Percent":
+                    par_change_typ = "pctchg";
+                    break;
+                case "Relative":
+                    par_change_typ = "abschg";
+                    break;
+                case "Replace":
+                    par_change_typ = "absval";
+                    break;
+
+                default:
+                    par_change_typ = "pctchg";
+                    break;
+            }
+            return par_change_typ;
+        }
 
         public static bool save_project(project project_object)
         {
