@@ -19,6 +19,7 @@ namespace SWAT__Toolbox
             public double nse { get; set; }
             public double r2 { get; set; }
             public double pbias { get; set; }
+            public string chart_name { get; set; }
 
 
             //public List<int> assigned { get; set; }

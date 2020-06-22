@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using System.Windows.Navigation;
 
 using static SWAT__Toolbox.home_module;
+using static SWAT__Toolbox.observations_classes;
 using static SWAT__Toolbox.toolbox_functions;
 
 
@@ -25,13 +26,32 @@ namespace SWAT__Toolbox
             return cal_parms_content;
         }
 
-        public static project get_performance_indices(project project_object)
+        public class evaluation_time_series
+        {
+            public Dictionary<string, Dictionary<DateTime, double>> observed_timeseries { get; set; }
+            public Dictionary<string, Dictionary<DateTime, double>> simulated_timeseries { get; set; }
+        }
+
+
+        public static (project, evaluation_time_series) get_performance_indices(project project_object)
         {
 
             project eval_project = project_object;
 
+            //initialise ts object
+            evaluation_time_series time_series_data = new evaluation_time_series();
+
+            time_series_data = new evaluation_time_series { };
+            time_series_data.simulated_timeseries = new Dictionary<string, Dictionary<DateTime, double>> { };
+            time_series_data.observed_timeseries = new Dictionary<string, Dictionary<DateTime, double>> { };
+
+
             for (int i = 0; i < eval_project.current_observations.Count(); i++)
             {
+                time_series_data.observed_timeseries.Add(eval_project.current_observations[i].chart_name, new Dictionary<DateTime, double> { });
+                time_series_data.simulated_timeseries.Add(eval_project.current_observations[i].chart_name, new Dictionary<DateTime, double> { });
+
+
                 //read model results
                 switch (eval_project.current_observations[i].observed_variable)
                 //Flow //ET //Sediments //Organic Nitrogen //Nitrate Nitrogen //Amonium Nitrogen //Nitrite Nitrogen //Organic Phosphorus //Mineral Phosphorus
@@ -151,18 +171,25 @@ namespace SWAT__Toolbox
                         // calculate indices
 
                         //get observation average
-                        foreach (var date_stamp in obs_dictionary.Keys)
+                        foreach (var date_stamp_obs in obs_dictionary.Keys)
                         {
-                            if (obs_dictionary[date_stamp] >= 0)
+                            if (obs_dictionary[date_stamp_obs] >= 0)
                             {
-                                // For NSE
-                                NSE_numerator = NSE_numerator + ((sim_dictionary[date_stamp] - obs_dictionary[date_stamp]) * (sim_dictionary[date_stamp] - obs_dictionary[date_stamp]));
-                                NSE_denominator = NSE_denominator + ((obs_dictionary[date_stamp] - valid_observations.Average()) * (obs_dictionary[date_stamp] - valid_observations.Average()));
+                                if (sim_dictionary.ContainsKey(date_stamp_obs)) {
+                                    // For NSE
+                                    NSE_numerator = NSE_numerator + ((sim_dictionary[date_stamp_obs] - obs_dictionary[date_stamp_obs]) * (sim_dictionary[date_stamp_obs] - obs_dictionary[date_stamp_obs]));
+                                    NSE_denominator = NSE_denominator + ((obs_dictionary[date_stamp_obs] - valid_observations.Average()) * (obs_dictionary[date_stamp_obs] - valid_observations.Average()));
 
-                                PBIAS_denominator = PBIAS_denominator + obs_dictionary[date_stamp];
+                                    PBIAS_denominator = PBIAS_denominator + obs_dictionary[date_stamp_obs];
+
+                                }
                             }
                         }
 
+                        time_series_data.observed_timeseries[eval_project.current_observations[i].chart_name] = obs_dictionary;
+                        time_series_data.simulated_timeseries[eval_project.current_observations[i].chart_name] = sim_dictionary;
+
+                        // this will be sent over for graphing
                         eval_project.current_observations[i].nse = Math.Round((1 - (NSE_numerator / NSE_denominator)), 2);
                         eval_project.current_observations[i].pbias = Math.Round((1 - (NSE_numerator * 100 / PBIAS_denominator)), 2);
 
@@ -191,7 +218,7 @@ namespace SWAT__Toolbox
                         break;
                 }
             }
-            return eval_project;
+            return (eval_project, time_series_data);
         }
 
 

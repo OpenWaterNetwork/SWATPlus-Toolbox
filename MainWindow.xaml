@@ -1,9 +1,10 @@
-﻿<Window x:Class="SWAT__Toolbox.MainWindow"
+﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:SWAT__Toolbox"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf" x:Class="SWAT__Toolbox.MainWindow"
         mc:Ignorable="d"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         TextElement.FontWeight="Regular"
@@ -12,74 +13,59 @@
         TextOptions.TextRenderingMode="Auto"        
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
-        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        Title="MainWindow" Height="544" Width="904" MinHeight="500" MinWidth="900" WindowStyle="None">
+        Title="MainWindow" Height="544" Width="904" MinHeight="500" MinWidth="900" Icon="toolbox_icon.png" WindowStartupLocation="CenterScreen" WindowStyle="None">
 
     <Grid>
 
         <Grid.RowDefinitions>
             <RowDefinition Height="130"/>
             <RowDefinition/>
-            <RowDefinition Height="10"/>
+            <RowDefinition Height="5"/>
         </Grid.RowDefinitions>
 
         <materialDesign:ColorZone Grid.Row="0" Mode="PrimaryLight" VerticalAlignment="Stretch" 
-                                  HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch"/>
+                                  HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Background="#FF06467A"/>
 
         <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" WindowChrome.IsHitTestVisibleInChrome="True" Height="32" Width="138">
-            <Button Width = "46" Style="{StaticResource MaterialDesignFlatButton}" Foreground="{DynamicResource MaterialDesignPaper}" ToolTip="Minimise" Click="WindowMinimise">
+            <Button Width = "46" Style="{StaticResource MaterialDesignFlatButton}" Foreground="{DynamicResource MaterialDesignPaper}" ToolTip="Minimise" Click="WindowMinimise" Cursor="Arrow">
                 <materialDesign:PackIcon Kind="WindowMinimize" />
             </Button>
-            <Button Width = "46" Style="{StaticResource MaterialDesignFlatButton}" Foreground="{DynamicResource MaterialDesignPaper}" ToolTip="Maxmise" Click="RestoreMaximise">
+            <Button Width = "46" Style="{StaticResource MaterialDesignFlatButton}" Foreground="{DynamicResource MaterialDesignPaper}" ToolTip="Maxmise" Click="RestoreMaximise" Cursor="Arrow">
                 <materialDesign:PackIcon Kind="WindowMaximize" />
             </Button>
-            <Button Width = "46" Style="{StaticResource MaterialDesignFlatButton}" Foreground="{DynamicResource MaterialDesignPaper}" ToolTip="Close" Click="CloseWindow">
+            <Button Width = "46" Style="{StaticResource MaterialDesignFlatButton}" Foreground="{DynamicResource MaterialDesignPaper}" ToolTip="Close" Click="CloseWindow" Cursor="Arrow" Background="#00000000">
                 <materialDesign:PackIcon Kind="WindowClose" />
             </Button>
         </StackPanel>
 
         <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,86,0,0" Width="896" >
             <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="4" IsChecked="True" Click="navigate_homepage">
-                <TextBlock Style="{StaticResource MaterialDesignSubtitle1TextBlock}" Foreground="{DynamicResource MaterialDesignPaper}">
-                    Home
-                </TextBlock>
+                <TextBlock Style="{StaticResource MaterialDesignSubtitle1TextBlock}" Foreground="{DynamicResource MaterialDesignPaper}"><Run Text="Home"/></TextBlock>
             </RadioButton>
             <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="4" IsChecked="False" Click="navigate_runmodel">
-                <TextBlock Style="{StaticResource MaterialDesignSubtitle1TextBlock}" Foreground="{DynamicResource MaterialDesignPaper}">
-                    Run Model
-                </TextBlock>
+                <TextBlock Style="{StaticResource MaterialDesignSubtitle1TextBlock}" Foreground="{DynamicResource MaterialDesignPaper}"><Run Text="Run Model"/></TextBlock>
             </RadioButton>
             <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="4" IsChecked="False" Click="navigate_parameters">
-                <TextBlock Style="{StaticResource MaterialDesignSubtitle1TextBlock}" Foreground="{DynamicResource MaterialDesignPaper}">
-                    Parameters
-                </TextBlock>
+                <TextBlock Style="{StaticResource MaterialDesignSubtitle1TextBlock}" Foreground="{DynamicResource MaterialDesignPaper}"><Run Text="Parameters"/></TextBlock>
             </RadioButton>
             <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="4" IsChecked="False" Click="navigate_observations">
-                <TextBlock Style="{StaticResource MaterialDesignSubtitle1TextBlock}" Foreground="{DynamicResource MaterialDesignPaper}">
-                    Observations
-                </TextBlock>
+                <TextBlock Style="{StaticResource MaterialDesignSubtitle1TextBlock}" Foreground="{DynamicResource MaterialDesignPaper}"><Run Text="Observations"/></TextBlock>
             </RadioButton>
             <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="4" IsChecked="False" Click="navigate_sensitivity">
-                <TextBlock Style="{StaticResource MaterialDesignSubtitle1TextBlock}" Foreground="{DynamicResource MaterialDesignPaper}">
-                    Sensitivity Analysis
-                </TextBlock>
+                <TextBlock Style="{StaticResource MaterialDesignSubtitle1TextBlock}" Foreground="{DynamicResource MaterialDesignPaper}"><Run Text="Sensitivity Analysis"/></TextBlock>
             </RadioButton>
             <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="4" IsChecked="False" Click="navigate_calibration">
-                <TextBlock Style="{StaticResource MaterialDesignSubtitle1TextBlock}" Foreground="{DynamicResource MaterialDesignPaper}">
-                    Calibration
-                </TextBlock>
+                <TextBlock Style="{StaticResource MaterialDesignSubtitle1TextBlock}" Foreground="{DynamicResource MaterialDesignPaper}"><Run Text="Calibration"/></TextBlock>
             </RadioButton>
             <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="4" IsChecked="False" Click="navigate_model_check">
-                <TextBlock Style="{StaticResource MaterialDesignSubtitle1TextBlock}" Foreground="{DynamicResource MaterialDesignPaper}">
-                    Model Check
-                </TextBlock>
+                <TextBlock Style="{StaticResource MaterialDesignSubtitle1TextBlock}" Foreground="{DynamicResource MaterialDesignPaper}"><Run Text="Model Check"/></TextBlock>
             </RadioButton>
         </StackPanel>
 
         <materialDesign:Transitioner Grid.Row="1" SelectedIndex="0" AutoApplyTransitionOrigins="True">
             <Grid Margin="0,0,0,10">
 
-                <TabControl  x:Name="pages" TabStripPlacement="Bottom">
+                <TabControl  x:Name="pages" TabStripPlacement="Bottom" Margin="0,0,0,-39">
                     <TabItem Header="Home">
                         <Grid Background="{DynamicResource MaterialDesignPaper}" Margin="0,0,0,24">
 
@@ -90,11 +76,7 @@
                                 <RowDefinition Height="65*"/>
                             </Grid.RowDefinitions>
 
-                            <TextBlock TextAlignment="Center" Grid.Row="0" Style="{StaticResource MaterialDesignHeadline2TextBlock}" MinWidth="500" HorizontalAlignment="Center" VerticalAlignment="Center" Height="72"> 
-                                <Hyperlink IsEnabled="False">
-                                    SWAT+ Toolbox
-                                </Hyperlink>
-                            </TextBlock>
+                            <TextBlock TextAlignment="Center" Grid.Row="0" Style="{StaticResource MaterialDesignHeadline2TextBlock}" MinWidth="500" HorizontalAlignment="Center" VerticalAlignment="Center" Height="72"><Hyperlink IsEnabled="False"><Run Text="SWAT+ Toolbox"/></Hyperlink></TextBlock>
 
                             <Grid Grid.Row="1">
                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
@@ -114,9 +96,7 @@
                                                         <ColumnDefinition Width="30"/>
                                                     </Grid.ColumnDefinitions>
 
-                                                    <TextBlock Grid.Column="0"  Margin="16">
-                                                        Create a SWAT+ Toolbox Project.
-                                                    </TextBlock>
+                                                    <TextBlock Grid.Column="0"  Margin="16"><Run Text="Create a SWAT+ Toolbox Project."/></TextBlock>
 
                                                     <Button Margin="0, -10, 5, 0" Width="22" Height="22" Grid.Column="1" Style="{StaticResource MaterialDesignIconButton}" 
                                                             Command="materialDesign:DialogHost.CloseDialogCommand"
@@ -161,12 +141,10 @@
 
                                                         </Grid>
 
-                                                        <materialDesign:ColorZone Mode="PrimaryMid" Grid.Row="1" Effect="{DynamicResource MaterialDesignShadowDepth5}">
-                                                            <TextBlock Margin="16">
-                                                                New Project
-                                                            </TextBlock>
+                                                        <materialDesign:ColorZone Mode="PrimaryMid" Grid.Row="1" Effect="{DynamicResource MaterialDesignShadowDepth5}" Background="#FF06467A">
+                                                            <TextBlock Margin="16"><Run Text="New Project"/></TextBlock>
                                                         </materialDesign:ColorZone>
-                                                        <Button x:Name="ui_home_new_project_save" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" ToolTip="Save SWAT+ Toolbox Project" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" VerticalAlignment="Bottom" HorizontalAlignment="Right" Grid.Row="0" Margin="0 0 28 -20" Click="home_new_project_save">
+                                                        <Button x:Name="ui_home_new_project_save" Background="#FF2962FF" BorderThickness="0" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" ToolTip="Save SWAT+ Toolbox Project" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" VerticalAlignment="Bottom" HorizontalAlignment="Right" Grid.Row="0" Margin="0 0 28 -20" Click="home_new_project_save" BorderBrush="#00000000">
                                                             <materialDesign:PackIcon Kind="ContentSave" Height="22" Width="22" />
                                                         </Button>
                                                     </Grid>
@@ -178,14 +156,14 @@
                                             <Button x:Name="ui_home_new_project" Foreground="{DynamicResource MaterialDesignTextAreaBorder}" Style="{StaticResource MaterialDesignFlatButton}"  Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}" ToolTip="Start a New Project">
                                                 <StackPanel Orientation="Horizontal">
                                                     <materialDesign:PackIcon Kind="Plus" />
-                                                    <TextBlock>New Project</TextBlock>
+                                                    <TextBlock><Run Text="New Project"/></TextBlock>
                                                 </StackPanel>
                                             </Button>
 
                                             <Button x:Name="ui_home_open_project" Foreground="{DynamicResource MaterialDesignTextAreaBorder}" Style="{StaticResource MaterialDesignFlatButton}" ToolTip="Open an Existing Project" Click="home_open_project">
                                                 <StackPanel Orientation="Horizontal">
                                                     <materialDesign:PackIcon Kind="ChevronRight" />
-                                                    <TextBlock>Open Project</TextBlock>
+                                                    <TextBlock><Run Text="Open Project"/></TextBlock>
                                                 </StackPanel>
                                             </Button>
                                         </StackPanel>
@@ -217,9 +195,7 @@
                                 </Grid.ColumnDefinitions>
                                 <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Vertical" Margin="20, 0, 0, 0" Width="240" HorizontalAlignment="Right">
 
-                                    <TextBlock HorizontalAlignment="Right">
-                                    Simulation Period
-                                    </TextBlock>
+                                    <TextBlock HorizontalAlignment="Right"><Run Text="Simulation Period"/></TextBlock>
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0, 5, 0, 0">
                                         <DatePicker x:Name="ui_run_model_start_date" Margin="0, 0, 0, 0" HorizontalAlignment="Right" Width="110" materialDesign:HintAssist.Hint="Start Date"
                                                     Style="{StaticResource MaterialDesignFloatingHintDatePicker}" CalendarClosed="update_project_start_date" LostFocus="update_project_start_date"/>
@@ -227,25 +203,20 @@
                                                     Style="{StaticResource MaterialDesignFloatingHintDatePicker}" CalendarClosed="update_project_end_date" LostFocus="update_project_end_date"/>
                                     </StackPanel>
 
-                                    <TextBlock HorizontalAlignment="Right" Height="10" Padding="0, 0, 0, 0">
-
-                                    </TextBlock>
+                                    <TextBlock HorizontalAlignment="Right" Height="10" Padding="0, 0, 0, 0"/>
 
                                     <TextBox x:Name="ui_run_model_warmup_period" HorizontalAlignment="Right" Width="110" materialDesign:HintAssist.Hint="Warm-Up Period"
                                          Style="{StaticResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Center"
-                                         materialDesign:TextFieldAssist.SuffixText=" Years" TextAlignment="Right" LostFocus="update_project_warmup">
-                                        2
-                                    </TextBox>
+                                         materialDesign:TextFieldAssist.SuffixText=" Years" TextAlignment="Right" LostFocus="update_project_warmup" Text="2"/>
 
-                                    <TextBlock HorizontalAlignment="Right" Margin="0,40,0,7">
-                                    Print CSV Output
-                                    </TextBlock>
+                                    <TextBlock HorizontalAlignment="Right" Margin="0,40,0,7"><Run Text="Print CSV Output"/></TextBlock>
 
                                     <StackPanel Orientation="Horizontal" Margin="0,0,0,0" HorizontalAlignment="Right">
-                                        <TextBlock>No</TextBlock>
-                                        <ToggleButton Checked="update_print_settings" Unchecked="update_print_settings" IsChecked="{Binding Path=print_csv, Mode=TwoWay}" x:Name="ui_run_model_print_csv" Style="{StaticResource MaterialDesignSwitchToggleButton}" Margin="10,0,10,0"
-                                                  ToolTip="Switch for printing CSV output" /> <!--Unchecked="update_project_print_csv" Checked="update_project_print_csv"-->
-                                        <TextBlock Margin="0,0,0,0"> Yes</TextBlock>
+                                        <TextBlock><Run Text="No"/></TextBlock>
+                                        <ToggleButton Checked="update_print_settings" Unchecked="update_print_settings" IsChecked="{Binding print_csv, Mode=TwoWay}" x:Name="ui_run_model_print_csv" Style="{StaticResource MaterialDesignSwitchToggleButton}" Margin="10,0,10,0"
+                                                  ToolTip="Switch for printing CSV output" />
+                                        <!--Unchecked="update_project_print_csv" Checked="update_project_print_csv"-->
+                                        <TextBlock Margin="0,0,0,0"><Run Text="Yes"/></TextBlock>
                                     </StackPanel>
 
 
@@ -254,31 +225,11 @@
                                 <ScrollViewer Grid.Row="0" Grid.Column="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                                     <StackPanel   Orientation="Vertical" Margin="20, 0, 0, 0" HorizontalAlignment="Left">
                                         <StackPanel Orientation="Horizontal">
-                                            <TextBlock Width="120">
-                                        <Hyperlink IsEnabled="True" materialDesign:HintAssist.Hint="Type of Object to be printed" materialDesign:HintAssist.HintOpacity=".26" Style="{StaticResource MaterialDesignBody1Hyperlink}">
-                                            Print Object
-                                        </Hyperlink>
-                                            </TextBlock>
-                                            <TextBlock  Width="110" TextAlignment="Right">
-                                        <Hyperlink IsEnabled="True" Style="{StaticResource MaterialDesignBody1Hyperlink}">
-                                            Daily
-                                        </Hyperlink>
-                                            </TextBlock>
-                                            <TextBlock Width="83" TextAlignment="Right">
-                                        <Hyperlink IsEnabled="True" Style="{StaticResource MaterialDesignBody1Hyperlink}">
-                                            Monthly
-                                        </Hyperlink>
-                                            </TextBlock>
-                                            <TextBlock Width="83" TextAlignment="Right">
-                                        <Hyperlink IsEnabled="True" Style="{StaticResource MaterialDesignBody1Hyperlink}">
-                                            Yearly
-                                        </Hyperlink>
-                                            </TextBlock>
-                                            <TextBlock Width="83" TextAlignment="Right">
-                                        <Hyperlink IsEnabled="True" Style="{StaticResource MaterialDesignBody1Hyperlink}">
-                                            Average
-                                        </Hyperlink>
-                                            </TextBlock>
+                                            <TextBlock Width="120"><Hyperlink IsEnabled="True" materialDesign:HintAssist.Hint="Type of Object to be printed" materialDesign:HintAssist.HintOpacity=".26" Style="{StaticResource MaterialDesignBody1Hyperlink}"><Run Text="Print Object"/></Hyperlink></TextBlock>
+                                            <TextBlock  Width="110" TextAlignment="Right"><Hyperlink IsEnabled="True" Style="{StaticResource MaterialDesignBody1Hyperlink}"><Run Text="Daily"/></Hyperlink></TextBlock>
+                                            <TextBlock Width="83" TextAlignment="Right"><Hyperlink IsEnabled="True" Style="{StaticResource MaterialDesignBody1Hyperlink}"><Run Text="Monthly"/></Hyperlink></TextBlock>
+                                            <TextBlock Width="83" TextAlignment="Right"><Hyperlink IsEnabled="True" Style="{StaticResource MaterialDesignBody1Hyperlink}"><Run Text="Yearly"/></Hyperlink></TextBlock>
+                                            <TextBlock Width="83" TextAlignment="Right"><Hyperlink IsEnabled="True" Style="{StaticResource MaterialDesignBody1Hyperlink}"><Run Text="Average"/></Hyperlink></TextBlock>
                                         </StackPanel>
 
 
@@ -294,39 +245,27 @@
                                                 <StackPanel Orientation="Vertical" TextBlock.Foreground="{DynamicResource MaterialDesignBody}" Margin="24,8,24,16">
 
                                                     <StackPanel Orientation="Horizontal" Margin="-10, 10, 0, 0">
-                                                        <TextBlock Width="120">
-                                                    <Hyperlink IsEnabled="False" Style="{StaticResource MaterialDesignBody1Hyperlink}">
-                                                        Channel
-                                                    </Hyperlink>
-                                                        </TextBlock>
-                                                        <CheckBox x:Name="ui_run_model_print_channel_day"   IsChecked="{Binding Path=daily, Mode=TwoWay}"               Checked="update_print_settings" Unchecked="update_print_settings"   Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="84, 0, 0, 0" />
-                                                        <CheckBox x:Name="ui_run_model_print_channel_month" IsChecked="{Binding Path=monthly, Mode=TwoWay}"             Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings"/>
-                                                        <CheckBox x:Name="ui_run_model_print_channel_year"  IsChecked="{Binding Path=yearly, Mode=TwoWay}"              Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings"/>
-                                                        <CheckBox x:Name="ui_run_model_print_channel_aa"    IsChecked="{Binding Path=annual_average, Mode=TwoWay}"      Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings"/>
+                                                        <TextBlock Width="120"><Hyperlink IsEnabled="False" Style="{StaticResource MaterialDesignBody1Hyperlink}"><Run Text="Channel"/></Hyperlink></TextBlock>
+                                                        <CheckBox x:Name="ui_run_model_print_channel_day"   IsChecked="{Binding daily, Mode=TwoWay}"               Checked="update_print_settings" Unchecked="update_print_settings"   Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="84, 0, 0, 0" />
+                                                        <CheckBox x:Name="ui_run_model_print_channel_month" IsChecked="{Binding monthly, Mode=TwoWay}"             Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings"/>
+                                                        <CheckBox x:Name="ui_run_model_print_channel_year"  IsChecked="{Binding yearly, Mode=TwoWay}"              Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings"/>
+                                                        <CheckBox x:Name="ui_run_model_print_channel_aa"    IsChecked="{Binding annual_average, Mode=TwoWay}"      Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings"/>
                                                     </StackPanel>
 
                                                     <StackPanel Orientation="Horizontal" Margin="-10, 10, 0, 0">
-                                                        <TextBlock Width="120">
-                                                    <Hyperlink IsEnabled="False" Style="{StaticResource MaterialDesignBody1Hyperlink}">
-                                                        Reservoir
-                                                    </Hyperlink>
-                                                        </TextBlock>
-                                                        <CheckBox  x:Name="ui_run_model_print_reservoir_day"   IsChecked="{Binding Path=daily, Mode=TwoWay}"               Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="84, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings" />
-                                                        <CheckBox  x:Name="ui_run_model_print_reservoir_month" IsChecked="{Binding Path=monthly, Mode=TwoWay}"             Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings"/>
-                                                        <CheckBox  x:Name="ui_run_model_print_reservoir_year"  IsChecked="{Binding Path=yearly, Mode=TwoWay}"              Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings"/>
-                                                        <CheckBox  x:Name="ui_run_model_print_reservoir_aa"    IsChecked="{Binding Path=annual_average, Mode=TwoWay}"      Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings"/>
+                                                        <TextBlock Width="120"><Hyperlink IsEnabled="False" Style="{StaticResource MaterialDesignBody1Hyperlink}"><Run Text="Reservoir"/></Hyperlink></TextBlock>
+                                                        <CheckBox  x:Name="ui_run_model_print_reservoir_day"   IsChecked="{Binding daily, Mode=TwoWay}"               Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="84, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings" />
+                                                        <CheckBox  x:Name="ui_run_model_print_reservoir_month" IsChecked="{Binding monthly, Mode=TwoWay}"             Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings"/>
+                                                        <CheckBox  x:Name="ui_run_model_print_reservoir_year"  IsChecked="{Binding yearly, Mode=TwoWay}"              Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings"/>
+                                                        <CheckBox  x:Name="ui_run_model_print_reservoir_aa"    IsChecked="{Binding annual_average, Mode=TwoWay}"      Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings"/>
                                                     </StackPanel>
 
                                                     <StackPanel Orientation="Horizontal" Margin="-10, 10, 0, 0">
-                                                        <TextBlock Width="120">
-                                                    <Hyperlink IsEnabled="False" Style="{StaticResource MaterialDesignBody1Hyperlink}">
-                                                        Aquifer
-                                                    </Hyperlink>
-                                                        </TextBlock>
-                                                        <CheckBox  x:Name="ui_run_model_print_aquifer_day"   IsChecked="{Binding Path=daily, Mode=TwoWay}"              Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="84, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings" />
-                                                        <CheckBox  x:Name="ui_run_model_print_aquifer_month" IsChecked="{Binding Path=monthly, Mode=TwoWay}"            Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings"/>
-                                                        <CheckBox  x:Name="ui_run_model_print_aquifer_year"  IsChecked="{Binding Path=yearly, Mode=TwoWay}"             Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings"/>
-                                                        <CheckBox  x:Name="ui_run_model_print_aquifer_aa"    IsChecked="{Binding Path=annual_average, Mode=TwoWay}"     Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings"/>
+                                                        <TextBlock Width="120"><Hyperlink IsEnabled="False" Style="{StaticResource MaterialDesignBody1Hyperlink}"><Run Text="Aquifer"/></Hyperlink></TextBlock>
+                                                        <CheckBox  x:Name="ui_run_model_print_aquifer_day"   IsChecked="{Binding daily, Mode=TwoWay}"              Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="84, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings" />
+                                                        <CheckBox  x:Name="ui_run_model_print_aquifer_month" IsChecked="{Binding monthly, Mode=TwoWay}"            Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings"/>
+                                                        <CheckBox  x:Name="ui_run_model_print_aquifer_year"  IsChecked="{Binding yearly, Mode=TwoWay}"             Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings"/>
+                                                        <CheckBox  x:Name="ui_run_model_print_aquifer_aa"    IsChecked="{Binding annual_average, Mode=TwoWay}"     Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings"/>
                                                     </StackPanel>
 
                                                 </StackPanel>
@@ -340,39 +279,27 @@
                                                 <StackPanel Orientation="Vertical" TextBlock.Foreground="{DynamicResource MaterialDesignBody}" Margin="24,8,24,16">
 
                                                     <StackPanel Orientation="Horizontal" Margin="-10, 10, 0, 0">
-                                                        <TextBlock Width="120">
-                                                    <Hyperlink IsEnabled="False" Style="{StaticResource MaterialDesignBody1Hyperlink}">
-                                                        Basin
-                                                    </Hyperlink>
-                                                        </TextBlock>
-                                                        <CheckBox  x:Name="ui_run_model_print_nut_basin_day"   IsChecked="{Binding Path=daily, Mode=TwoWay}"             Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="84, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings" />
-                                                        <CheckBox  x:Name="ui_run_model_print_nut_basin_month" IsChecked="{Binding Path=monthly, Mode=TwoWay}"           Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings"/>
-                                                        <CheckBox  x:Name="ui_run_model_print_nut_basin_year"  IsChecked="{Binding Path=yearly, Mode=TwoWay}"            Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings"/>
-                                                        <CheckBox  x:Name="ui_run_model_print_nut_basin_aa"    IsChecked="{Binding Path=annual_average, Mode=TwoWay}"    Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings"/>
+                                                        <TextBlock Width="120"><Hyperlink IsEnabled="False" Style="{StaticResource MaterialDesignBody1Hyperlink}"><Run Text="Basin"/></Hyperlink></TextBlock>
+                                                        <CheckBox  x:Name="ui_run_model_print_nut_basin_day"   IsChecked="{Binding daily, Mode=TwoWay}"             Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="84, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings" />
+                                                        <CheckBox  x:Name="ui_run_model_print_nut_basin_month" IsChecked="{Binding monthly, Mode=TwoWay}"           Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings"/>
+                                                        <CheckBox  x:Name="ui_run_model_print_nut_basin_year"  IsChecked="{Binding yearly, Mode=TwoWay}"            Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings"/>
+                                                        <CheckBox  x:Name="ui_run_model_print_nut_basin_aa"    IsChecked="{Binding annual_average, Mode=TwoWay}"    Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings"/>
                                                     </StackPanel>
 
                                                     <StackPanel Orientation="Horizontal" Margin="-10, 10, 0, 0">
-                                                        <TextBlock Width="120">
-                                                    <Hyperlink IsEnabled="False" Style="{StaticResource MaterialDesignBody1Hyperlink}">
-                                                        LSU
-                                                    </Hyperlink>
-                                                        </TextBlock>
-                                                        <CheckBox  x:Name="ui_run_model_print_nut_lsu_day"   IsChecked="{Binding Path=daily, Mode=TwoWay}"             Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="84, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings" />
-                                                        <CheckBox  x:Name="ui_run_model_print_nut_lsu_month" IsChecked="{Binding Path=monthly, Mode=TwoWay}"           Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings"/>
-                                                        <CheckBox  x:Name="ui_run_model_print_nut_lsu_year"  IsChecked="{Binding Path=yearly, Mode=TwoWay}"            Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings"/>
-                                                        <CheckBox  x:Name="ui_run_model_print_nut_lsu_aa"    IsChecked="{Binding Path=annual_average, Mode=TwoWay}"    Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings"/>
+                                                        <TextBlock Width="120"><Hyperlink IsEnabled="False" Style="{StaticResource MaterialDesignBody1Hyperlink}"><Run Text="LSU"/></Hyperlink></TextBlock>
+                                                        <CheckBox  x:Name="ui_run_model_print_nut_lsu_day"   IsChecked="{Binding daily, Mode=TwoWay}"             Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="84, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings" />
+                                                        <CheckBox  x:Name="ui_run_model_print_nut_lsu_month" IsChecked="{Binding monthly, Mode=TwoWay}"           Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings"/>
+                                                        <CheckBox  x:Name="ui_run_model_print_nut_lsu_year"  IsChecked="{Binding yearly, Mode=TwoWay}"            Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings"/>
+                                                        <CheckBox  x:Name="ui_run_model_print_nut_lsu_aa"    IsChecked="{Binding annual_average, Mode=TwoWay}"    Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings"/>
                                                     </StackPanel>
 
                                                     <StackPanel Orientation="Horizontal" Margin="-10, 10, 0, 0">
-                                                        <TextBlock Width="120">
-                                                    <Hyperlink IsEnabled="False" Style="{StaticResource MaterialDesignBody1Hyperlink}">
-                                                        HRU
-                                                    </Hyperlink>
-                                                        </TextBlock>
-                                                        <CheckBox  x:Name="ui_run_model_print_nut_hru_day"   IsChecked="{Binding Path=daily, Mode=TwoWay}"             Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="84, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings" />
-                                                        <CheckBox  x:Name="ui_run_model_print_nut_hru_month" IsChecked="{Binding Path=monthly, Mode=TwoWay}"           Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings"/>
-                                                        <CheckBox  x:Name="ui_run_model_print_nut_hru_year"  IsChecked="{Binding Path=yearly, Mode=TwoWay}"            Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings"/>
-                                                        <CheckBox  x:Name="ui_run_model_print_nut_hru_aa"    IsChecked="{Binding Path=annual_average, Mode=TwoWay}"    Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings"/>
+                                                        <TextBlock Width="120"><Hyperlink IsEnabled="False" Style="{StaticResource MaterialDesignBody1Hyperlink}"><Run Text="HRU"/></Hyperlink></TextBlock>
+                                                        <CheckBox  x:Name="ui_run_model_print_nut_hru_day"   IsChecked="{Binding daily, Mode=TwoWay}"             Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="84, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings" />
+                                                        <CheckBox  x:Name="ui_run_model_print_nut_hru_month" IsChecked="{Binding monthly, Mode=TwoWay}"           Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings"/>
+                                                        <CheckBox  x:Name="ui_run_model_print_nut_hru_year"  IsChecked="{Binding yearly, Mode=TwoWay}"            Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings"/>
+                                                        <CheckBox  x:Name="ui_run_model_print_nut_hru_aa"    IsChecked="{Binding annual_average, Mode=TwoWay}"    Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings"/>
                                                     </StackPanel>
 
                                                 </StackPanel>
@@ -388,39 +315,27 @@
                                                 <StackPanel Orientation="Vertical" TextBlock.Foreground="{DynamicResource MaterialDesignBody}" Margin="24,8,24,16">
 
                                                     <StackPanel Orientation="Horizontal" Margin="-10, 10, 0, 0">
-                                                        <TextBlock Width="120">
-                                                    <Hyperlink IsEnabled="False" Style="{StaticResource MaterialDesignBody1Hyperlink}">
-                                                        Basin
-                                                    </Hyperlink>
-                                                        </TextBlock>
-                                                        <CheckBox   x:Name="ui_run_model_print_wb_basin_day"   IsChecked="{Binding Path=daily, Mode=TwoWay}"              Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="84, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings" />
-                                                        <CheckBox   x:Name="ui_run_model_print_wb_basin_month" IsChecked="{Binding Path=monthly, Mode=TwoWay}"            Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings"/>
-                                                        <CheckBox   x:Name="ui_run_model_print_wb_basin_year"  IsChecked="{Binding Path=yearly, Mode=TwoWay}"             Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings"/>
-                                                        <CheckBox   x:Name="ui_run_model_print_wb_basin_aa"    IsChecked="{Binding Path=annual_average, Mode=TwoWay}"     Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings"/>
+                                                        <TextBlock Width="120"><Hyperlink IsEnabled="False" Style="{StaticResource MaterialDesignBody1Hyperlink}"><Run Text="Basin"/></Hyperlink></TextBlock>
+                                                        <CheckBox   x:Name="ui_run_model_print_wb_basin_day"   IsChecked="{Binding daily, Mode=TwoWay}"              Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="84, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings" />
+                                                        <CheckBox   x:Name="ui_run_model_print_wb_basin_month" IsChecked="{Binding monthly, Mode=TwoWay}"            Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings"/>
+                                                        <CheckBox   x:Name="ui_run_model_print_wb_basin_year"  IsChecked="{Binding yearly, Mode=TwoWay}"             Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings"/>
+                                                        <CheckBox   x:Name="ui_run_model_print_wb_basin_aa"    IsChecked="{Binding annual_average, Mode=TwoWay}"     Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings"/>
                                                     </StackPanel>
 
                                                     <StackPanel Orientation="Horizontal" Margin="-10, 10, 0, 0">
-                                                        <TextBlock Width="120">
-                                                    <Hyperlink IsEnabled="False" Style="{StaticResource MaterialDesignBody1Hyperlink}">
-                                                        LSU
-                                                    </Hyperlink>
-                                                        </TextBlock>
-                                                        <CheckBox  x:Name="ui_run_model_print_wb_lsu_day"   IsChecked="{Binding Path=daily, Mode=TwoWay}"              Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="84, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings" />
-                                                        <CheckBox  x:Name="ui_run_model_print_wb_lsu_month" IsChecked="{Binding Path=monthly, Mode=TwoWay}"            Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings"/>
-                                                        <CheckBox  x:Name="ui_run_model_print_wb_lsu_year"  IsChecked="{Binding Path=yearly, Mode=TwoWay}"             Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings"/>
-                                                        <CheckBox  x:Name="ui_run_model_print_wb_lsu_aa"    IsChecked="{Binding Path=annual_average, Mode=TwoWay}"     Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings"/>
+                                                        <TextBlock Width="120"><Hyperlink IsEnabled="False" Style="{StaticResource MaterialDesignBody1Hyperlink}"><Run Text="LSU"/></Hyperlink></TextBlock>
+                                                        <CheckBox  x:Name="ui_run_model_print_wb_lsu_day"   IsChecked="{Binding daily, Mode=TwoWay}"              Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="84, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings" />
+                                                        <CheckBox  x:Name="ui_run_model_print_wb_lsu_month" IsChecked="{Binding monthly, Mode=TwoWay}"            Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings"/>
+                                                        <CheckBox  x:Name="ui_run_model_print_wb_lsu_year"  IsChecked="{Binding yearly, Mode=TwoWay}"             Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings"/>
+                                                        <CheckBox  x:Name="ui_run_model_print_wb_lsu_aa"    IsChecked="{Binding annual_average, Mode=TwoWay}"     Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings"/>
                                                     </StackPanel>
 
                                                     <StackPanel Orientation="Horizontal" Margin="-10, 10, 0, 0">
-                                                        <TextBlock Width="120">
-                                                    <Hyperlink IsEnabled="False" Style="{StaticResource MaterialDesignBody1Hyperlink}">
-                                                        HRU
-                                                    </Hyperlink>
-                                                        </TextBlock>
-                                                        <CheckBox  x:Name="ui_run_model_print_wb_hru_day"   IsChecked="{Binding Path=daily, Mode=TwoWay}"             Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="84, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings" />
-                                                        <CheckBox  x:Name="ui_run_model_print_wb_hru_month" IsChecked="{Binding Path=monthly, Mode=TwoWay}"           Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings"/>
-                                                        <CheckBox  x:Name="ui_run_model_print_wb_hru_year"  IsChecked="{Binding Path=yearly, Mode=TwoWay}"            Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings"/>
-                                                        <CheckBox  x:Name="ui_run_model_print_wb_hru_aa"    IsChecked="{Binding Path=annual_average, Mode=TwoWay}"    Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings"/>
+                                                        <TextBlock Width="120"><Hyperlink IsEnabled="False" Style="{StaticResource MaterialDesignBody1Hyperlink}"><Run Text="HRU"/></Hyperlink></TextBlock>
+                                                        <CheckBox  x:Name="ui_run_model_print_wb_hru_day"   IsChecked="{Binding daily, Mode=TwoWay}"             Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="84, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings" />
+                                                        <CheckBox  x:Name="ui_run_model_print_wb_hru_month" IsChecked="{Binding monthly, Mode=TwoWay}"           Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings"/>
+                                                        <CheckBox  x:Name="ui_run_model_print_wb_hru_year"  IsChecked="{Binding yearly, Mode=TwoWay}"            Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings"/>
+                                                        <CheckBox  x:Name="ui_run_model_print_wb_hru_aa"    IsChecked="{Binding annual_average, Mode=TwoWay}"    Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings"/>
                                                     </StackPanel>
 
                                                 </StackPanel>
@@ -434,39 +349,27 @@
                                                 <StackPanel Orientation="Vertical" TextBlock.Foreground="{DynamicResource MaterialDesignBody}" Margin="24,8,24,16">
 
                                                     <StackPanel Orientation="Horizontal" Margin="-10, 10, 0, 0">
-                                                        <TextBlock Width="120">
-                                                    <Hyperlink IsEnabled="False" Style="{StaticResource MaterialDesignBody1Hyperlink}">
-                                                        Basin
-                                                    </Hyperlink>
-                                                        </TextBlock>
-                                                        <CheckBox  x:Name="ui_run_model_print_plt_basin_day"   IsChecked="{Binding Path=daily, Mode=TwoWay}"            Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="84, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings" />
-                                                        <CheckBox  x:Name="ui_run_model_print_plt_basin_month" IsChecked="{Binding Path=monthly, Mode=TwoWay}"          Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings"/>
-                                                        <CheckBox  x:Name="ui_run_model_print_plt_basin_year"  IsChecked="{Binding Path=yearly, Mode=TwoWay}"           Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings"/>
-                                                        <CheckBox  x:Name="ui_run_model_print_plt_basin_aa"    IsChecked="{Binding Path=annual_average, Mode=TwoWay}"   Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings"/>
+                                                        <TextBlock Width="120"><Hyperlink IsEnabled="False" Style="{StaticResource MaterialDesignBody1Hyperlink}"><Run Text="Basin"/></Hyperlink></TextBlock>
+                                                        <CheckBox  x:Name="ui_run_model_print_plt_basin_day"   IsChecked="{Binding daily, Mode=TwoWay}"            Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="84, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings" />
+                                                        <CheckBox  x:Name="ui_run_model_print_plt_basin_month" IsChecked="{Binding monthly, Mode=TwoWay}"          Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings"/>
+                                                        <CheckBox  x:Name="ui_run_model_print_plt_basin_year"  IsChecked="{Binding yearly, Mode=TwoWay}"           Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings"/>
+                                                        <CheckBox  x:Name="ui_run_model_print_plt_basin_aa"    IsChecked="{Binding annual_average, Mode=TwoWay}"   Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings"/>
                                                     </StackPanel>
 
                                                     <StackPanel Orientation="Horizontal" Margin="-10, 10, 0, 0">
-                                                        <TextBlock Width="120">
-                                                    <Hyperlink IsEnabled="False" Style="{StaticResource MaterialDesignBody1Hyperlink}">
-                                                        LSU
-                                                    </Hyperlink>
-                                                        </TextBlock>
-                                                        <CheckBox  x:Name="ui_run_model_print_plt_lsu_day"   IsChecked="{Binding Path=daily, Mode=TwoWay}"             Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="84, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings" />
-                                                        <CheckBox  x:Name="ui_run_model_print_plt_lsu_month" IsChecked="{Binding Path=monthly, Mode=TwoWay}"           Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings"/>
-                                                        <CheckBox  x:Name="ui_run_model_print_plt_lsu_year"  IsChecked="{Binding Path=yearly, Mode=TwoWay}"            Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings"/>
-                                                        <CheckBox  x:Name="ui_run_model_print_plt_lsu_aa"    IsChecked="{Binding Path=annual_average, Mode=TwoWay}"    Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings"/>
+                                                        <TextBlock Width="120"><Hyperlink IsEnabled="False" Style="{StaticResource MaterialDesignBody1Hyperlink}"><Run Text="LSU"/></Hyperlink></TextBlock>
+                                                        <CheckBox  x:Name="ui_run_model_print_plt_lsu_day"   IsChecked="{Binding daily, Mode=TwoWay}"             Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="84, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings" />
+                                                        <CheckBox  x:Name="ui_run_model_print_plt_lsu_month" IsChecked="{Binding monthly, Mode=TwoWay}"           Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings"/>
+                                                        <CheckBox  x:Name="ui_run_model_print_plt_lsu_year"  IsChecked="{Binding yearly, Mode=TwoWay}"            Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings"/>
+                                                        <CheckBox  x:Name="ui_run_model_print_plt_lsu_aa"    IsChecked="{Binding annual_average, Mode=TwoWay}"    Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings"/>
                                                     </StackPanel>
 
                                                     <StackPanel Orientation="Horizontal" Margin="-10, 10, 0, 0">
-                                                        <TextBlock Width="120">
-                                                    <Hyperlink IsEnabled="False" Style="{StaticResource MaterialDesignBody1Hyperlink}">
-                                                        HRU
-                                                    </Hyperlink>
-                                                        </TextBlock>
-                                                        <CheckBox  x:Name="ui_run_model_print_plt_hru_day"   IsChecked="{Binding Path=daily, Mode=TwoWay}"             Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="84, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings" />
-                                                        <CheckBox  x:Name="ui_run_model_print_plt_hru_month" IsChecked="{Binding Path=monthly, Mode=TwoWay}"           Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings"/>
-                                                        <CheckBox  x:Name="ui_run_model_print_plt_hru_year"  IsChecked="{Binding Path=yearly, Mode=TwoWay}"            Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings"/>
-                                                        <CheckBox  x:Name="ui_run_model_print_plt_hru_aa"    IsChecked="{Binding Path=annual_average, Mode=TwoWay}"    Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings"/>
+                                                        <TextBlock Width="120"><Hyperlink IsEnabled="False" Style="{StaticResource MaterialDesignBody1Hyperlink}"><Run Text="HRU"/></Hyperlink></TextBlock>
+                                                        <CheckBox  x:Name="ui_run_model_print_plt_hru_day"   IsChecked="{Binding daily, Mode=TwoWay}"             Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="84, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings" />
+                                                        <CheckBox  x:Name="ui_run_model_print_plt_hru_month" IsChecked="{Binding monthly, Mode=TwoWay}"           Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings"/>
+                                                        <CheckBox  x:Name="ui_run_model_print_plt_hru_year"  IsChecked="{Binding yearly, Mode=TwoWay}"            Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings"/>
+                                                        <CheckBox  x:Name="ui_run_model_print_plt_hru_aa"    IsChecked="{Binding annual_average, Mode=TwoWay}"    Style="{StaticResource MaterialDesignDarkCheckBox}" Content="" Margin="60, 0, 0, 0" Checked="update_print_settings" Unchecked="update_print_settings"/>
                                                     </StackPanel>
 
                                                 </StackPanel>
@@ -501,15 +404,9 @@
                                 <ProgressBar Value="0" x:Name="ui_run_model_annual_progress" Grid.Column="0" HorizontalAlignment="Right" Margin="0,0,0,0" Width="70" Height="70" Style="{StaticResource MaterialDesignCircularProgressBar}"/>
 
                                 <StackPanel Grid.Column="0" Margin="0, 0 , 18, 0" Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Center">
-                                    <TextBlock x:Name="ui_run_model_running_year" FontSize="16"  HorizontalAlignment="Center">
-
-                                    </TextBlock>
-                                    <TextBlock x:Name="ui_run_model_of_label" FontSize="12" HorizontalAlignment="Center">
-
-                                    </TextBlock>
-                                    <TextBlock x:Name="ui_run_model_total_years" FontSize="14"  HorizontalAlignment="Center">
-
-                                    </TextBlock>
+                                    <TextBlock x:Name="ui_run_model_running_year" FontSize="16"  HorizontalAlignment="Center"/>
+                                    <TextBlock x:Name="ui_run_model_of_label" FontSize="12" HorizontalAlignment="Center"/>
+                                    <TextBlock x:Name="ui_run_model_total_years" FontSize="14"  HorizontalAlignment="Center"/>
                                 </StackPanel>
 
                                 <Grid Grid.Column="1">
@@ -543,76 +440,40 @@
                                 <ComboBox x:Name="ui_parameter_group" Style="{StaticResource MaterialDesignFloatingHintComboBox}" materialDesign:TextFieldAssist.HasClearButton="False"
                                           materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource SecondaryAccentBrush}"
                                            materialDesign:HintAssist.Hint="Parameter Group" materialDesign:HintAssist.HintOpacity=".26" MinWidth="180" Margin="38, 0, 0, 0" DropDownClosed="list_available_parameters">
-                                    <ComboBoxItem IsSelected="False">
-                                        All
-                                    </ComboBoxItem>
-                                    <ComboBoxItem>
-                                        Hydrologic Response Unit
-                                    </ComboBoxItem>
-                                    <ComboBoxItem>
-                                        Aquifer
-                                    </ComboBoxItem>
-                                    <ComboBoxItem>
-                                        Routing
-                                    </ComboBoxItem>
-                                    <ComboBoxItem>
-                                        HRU LTE
-                                    </ComboBoxItem>
-                                    <ComboBoxItem>
-                                        Soil
-                                    </ComboBoxItem>
-                                    <ComboBoxItem>
-                                        Reservoir
-                                    </ComboBoxItem>
-                                    <ComboBoxItem>
-                                        SWQ
-                                    </ComboBoxItem>
+                                    <ComboBoxItem IsSelected="False" Content="All"/>
+                                    <ComboBoxItem Content="Hydrologic Response Unit"/>
+                                    <ComboBoxItem Content="Aquifer"/>
+                                    <ComboBoxItem Content="Routing"/>
+                                    <ComboBoxItem Content="HRU LTE"/>
+                                    <ComboBoxItem Content="Soil"/>
+                                    <ComboBoxItem Content="Reservoir"/>
+                                    <ComboBoxItem Content="SWQ"/>
                                 </ComboBox>
                                 <ComboBox Style="{StaticResource MaterialDesignFloatingHintComboBox}"  x:Name="ui_parameter_name"
                                           materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource SecondaryAccentBrush}"
-                                           materialDesign:HintAssist.Hint="Parameter Name" MinWidth="180" materialDesign:HintAssist.HintOpacity=".26" Margin="10, 0, 0, 0">
-
-                                </ComboBox>
+                                           materialDesign:HintAssist.Hint="Parameter Name" MinWidth="180" materialDesign:HintAssist.HintOpacity=".26" Margin="10, 0, 0, 0"/>
 
                                 <ComboBox Style="{StaticResource MaterialDesignFloatingHintComboBox}" x:Name="ui_parameter_change_type" Margin="30, 0, 0, 0"
                                           materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource SecondaryAccentBrush}"
                                            materialDesign:HintAssist.Hint="Change Type" MinWidth="120" materialDesign:HintAssist.HintOpacity=".26" >
-                                    <ComboBoxItem>
-                                        Percentage
-                                    </ComboBoxItem>
-                                    <ComboBoxItem>
-                                        Relative Value
-                                    </ComboBoxItem>
-                                    <ComboBoxItem>
-                                        Replace
-                                    </ComboBoxItem>
+                                    <ComboBoxItem Content="Percentage"/>
+                                    <ComboBoxItem Content="Relative Value"/>
+                                    <ComboBoxItem Content="Replace"/>
                                 </ComboBox>
 
                                 <ComboBox Style="{StaticResource MaterialDesignFloatingHintComboBox}" 
                                           materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource SecondaryAccentBrush}" x:Name="ui_parameter_minimum" IsEditable="True"
                                            materialDesign:HintAssist.Hint="Minimum" MinWidth="100" materialDesign:HintAssist.HintOpacity=".26" Margin="10, 0, 0, 0">
-                                    <ComboBoxItem>
-                                        -10
-                                    </ComboBoxItem>
-                                    <ComboBoxItem>
-                                        -20
-                                    </ComboBoxItem>
-                                    <ComboBoxItem>
-                                        -30
-                                    </ComboBoxItem>
+                                    <ComboBoxItem Content="-10"/>
+                                    <ComboBoxItem Content="-20"/>
+                                    <ComboBoxItem Content="-30"/>
                                 </ComboBox>
                                 <ComboBox Style="{StaticResource MaterialDesignFloatingHintComboBox}" 
                                           materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource SecondaryAccentBrush}" x:Name="ui_parameter_maximum" IsEditable="True"
                                            materialDesign:HintAssist.Hint="Maximum" MinWidth="100" materialDesign:HintAssist.HintOpacity=".26" Margin="10, 0, 0, 0">
-                                    <ComboBoxItem>
-                                        10
-                                    </ComboBoxItem>
-                                    <ComboBoxItem>
-                                        20
-                                    </ComboBoxItem>
-                                    <ComboBoxItem>
-                                        30
-                                    </ComboBoxItem>
+                                    <ComboBoxItem Content="10"/>
+                                    <ComboBoxItem Content="20"/>
+                                    <ComboBoxItem Content="30"/>
                                 </ComboBox>
 
                                 <Button Style="{StaticResource MaterialDesignFloatingActionMiniButton}" ToolTip="Add to observations table" Width="35"
@@ -624,18 +485,18 @@
                                 </Button>
                             </StackPanel>
 
-                            <TabControl TabStripPlacement="Bottom" Grid.Row="1" BorderBrush="SkyBlue" Margin="0,0,0,-29">
+                            <TabControl TabStripPlacement="Bottom" Grid.Row="1" BorderBrush="SkyBlue" Margin="-8,0,0,-31">
                                 <TabItem Header="TabItem">
                                     <Grid Background="{DynamicResource MaterialDesignPaper}" Margin="0, 0, 0, 0">
                                         <DataGrid x:Name="ui_selected_parameters" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                                                       Margin="18,0,18,0" CanUserAddRows="False"  AutoGenerateColumns="False">
                                             <DataGrid.Columns>
-                                                <DataGridTextColumn Header="Parameter Group" Binding="{Binding Path=object_type}" Width="2*"/>
-                                                <DataGridTextColumn Header="Parameter Name" Binding="{Binding Path=name}" Width="2*" />
-                                                <DataGridTextColumn Header="Change Type" Binding="{Binding Path=change_type}" Width="2*"/>
-                                                <DataGridTextColumn Header="Minimum" Binding="{Binding Path=minimum}" Width="*"/>
-                                                <DataGridTextColumn Header="Maximum" Binding="{Binding Path=maximum}" Width="*"/>
-                                                <DataGridTextColumn Header="Units" Binding="{Binding Path=units}" Width="*"/>
+                                                <DataGridTextColumn Header="Parameter Group" Binding="{Binding object_type}" Width="2*"/>
+                                                <DataGridTextColumn Header="Parameter Name" Binding="{Binding name}" Width="2*" />
+                                                <DataGridTextColumn Header="Change Type" Binding="{Binding change_type}" Width="2*"/>
+                                                <DataGridTextColumn Header="Minimum" Binding="{Binding minimum}" Width="*"/>
+                                                <DataGridTextColumn Header="Maximum" Binding="{Binding maximum}" Width="*"/>
+                                                <DataGridTextColumn Header="Units" Binding="{Binding units}" Width="*"/>
                                             </DataGrid.Columns>
 
                                         </DataGrid>
@@ -673,18 +534,10 @@
                                             <ComboBox Style="{StaticResource MaterialDesignFloatingHintComboBox}" materialDesign:TextFieldAssist.HasClearButton="False"
                                                 materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource SecondaryAccentBrush}" HorizontalAlignment="Left"
                                                 materialDesign:HintAssist.Hint="Object Type" Width="175" x:Name="ui_observations_object_type">
-                                                <ComboBoxItem IsSelected="False">
-                                                    Channel
-                                                </ComboBoxItem>
-                                                <ComboBoxItem>
-                                                    Landscape Unit
-                                                </ComboBoxItem>
-                                                <ComboBoxItem>
-                                                    Hydrologic Response Unit
-                                                </ComboBoxItem>
-                                                <ComboBoxItem>
-                                                    All Basin
-                                                </ComboBoxItem>
+                                                <ComboBoxItem IsSelected="False" Content="Channel"/>
+                                                <ComboBoxItem Content="Landscape Unit"/>
+                                                <ComboBoxItem Content="Hydrologic Response Unit"/>
+                                                <ComboBoxItem Content="All Basin"/>
                                             </ComboBox>
 
                                             <TextBox x:Name="ui_observations_object_number" materialDesign:HintAssist.Hint="Object Number" TextAlignment="Right" Margin="14, 0, 0, 3" Width="90"
@@ -697,7 +550,7 @@
                                          DeleteToolTip="Remove Selected File" Margin="10,38,10,30" HorizontalAlignment="Stretch" Click="pick_observation_file" DeleteClick="clear_observation_file">
                                         <StackPanel Orientation="Horizontal" Margin="0, 0, 0, -2">
                                             <materialDesign:PackIcon Kind="MicrosoftExcel" />
-                                            <TextBlock x:Name="ui_parameters_file_selection_path" Margin="6, 0, 0, 0"> Click to select an observation file</TextBlock>
+                                            <TextBlock x:Name="ui_parameters_file_selection_path" Margin="6, 0, 0, 0"><Run Text="Click to select an observation file"/></TextBlock>
                                         </StackPanel>
                                     </materialDesign:Chip>
 
@@ -707,48 +560,24 @@
                                                     materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource SecondaryAccentBrush}" HorizontalAlignment="Stretch"
                                                     materialDesign:HintAssist.Hint="Timestep" Width="80" Margin="10, 0, 0, 0"
                                                       x:Name="ui_observations_timestep">
-                                                <ComboBoxItem IsSelected="False">
-                                                    Daily
-                                                </ComboBoxItem>
-                                                <ComboBoxItem>
-                                                    Monthly
-                                                </ComboBoxItem>
-                                                <ComboBoxItem>
-                                                    Yearly
-                                                </ComboBoxItem>
+                                                <ComboBoxItem IsSelected="False" Content="Daily"/>
+                                                <ComboBoxItem Content="Monthly"/>
+                                                <ComboBoxItem Content="Yearly"/>
                                             </ComboBox>
-                                            
+
                                             <ComboBox Style="{StaticResource MaterialDesignFloatingHintComboBox}" materialDesign:TextFieldAssist.HasClearButton="False"
                                                     materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource SecondaryAccentBrush}" HorizontalAlignment="Stretch"
                                                     materialDesign:HintAssist.Hint="Observed Variable" Width="155" Margin="10, 0, 0, 0"
                                                       x:Name="ui_observations_observed_variable">
-                                                <ComboBoxItem IsSelected="False">
-                                                    Flow
-                                                </ComboBoxItem>
-                                                <ComboBoxItem>
-                                                    ET
-                                                </ComboBoxItem>
-                                                <ComboBoxItem>
-                                                    Sediments
-                                                </ComboBoxItem>
-                                                <ComboBoxItem>
-                                                    Organic Nitrogen
-                                                </ComboBoxItem>
-                                                <ComboBoxItem>
-                                                    Nitrate Nitrogen
-                                                </ComboBoxItem>
-                                                <ComboBoxItem>
-                                                    Amonium Nitrogen
-                                                </ComboBoxItem>
-                                                <ComboBoxItem>
-                                                    Nitrite Nitrogen
-                                                </ComboBoxItem>
-                                                <ComboBoxItem>
-                                                    Organic Phosphorus
-                                                </ComboBoxItem>
-                                                <ComboBoxItem>
-                                                    Mineral Phosphorus
-                                                </ComboBoxItem>
+                                                <ComboBoxItem IsSelected="False" Content="Flow"/>
+                                                <ComboBoxItem Content="ET"/>
+                                                <ComboBoxItem Content="Sediments"/>
+                                                <ComboBoxItem Content="Organic Nitrogen"/>
+                                                <ComboBoxItem Content="Nitrate Nitrogen"/>
+                                                <ComboBoxItem Content="Amonium Nitrogen"/>
+                                                <ComboBoxItem Content="Nitrite Nitrogen"/>
+                                                <ComboBoxItem Content="Organic Phosphorus"/>
+                                                <ComboBoxItem Content="Mineral Phosphorus"/>
                                             </ComboBox>
 
                                             <Button Style="{StaticResource MaterialDesignFloatingActionMiniButton}" ToolTip="Add to observations table"
@@ -766,17 +595,17 @@
 
 
 
-                                <TabControl HorizontalAlignment="Stretch" Grid.Row="1" TabStripPlacement="Bottom" Margin="0,0,0,-29">
+                                <TabControl HorizontalAlignment="Stretch" Grid.Row="1" TabStripPlacement="Bottom" Margin="-8,0,-7,-29">
                                     <TabItem Header="Parameters">
                                         <Grid>
                                             <DataGrid x:Name="ui_selected_observations" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                                                       Margin="0,0,0,0" CanUserAddRows="False"  AutoGenerateColumns="False">
                                                 <DataGrid.Columns>
-                                                    <DataGridTextColumn Header="Object Type" Binding="{Binding Path=object_type}" Width="200"/>
-                                                    <DataGridTextColumn Header="Object Number" Binding="{Binding Path=number}" Width="120" />
-                                                    <DataGridTextColumn Header="Observation File" Binding="{Binding Path=file}" Width="*"/>
-                                                    <DataGridTextColumn Header="Timestep" Binding="{Binding Path=timestep}" Width="120"/>
-                                                    <DataGridTextColumn Header="Observed Variable" Binding="{Binding Path=observed_variable}" Width="180"/>
+                                                    <DataGridTextColumn Header="Object Type" Binding="{Binding object_type}" Width="200"/>
+                                                    <DataGridTextColumn Header="Object Number" Binding="{Binding number}" Width="120" />
+                                                    <DataGridTextColumn Header="Observation File" Binding="{Binding file}" Width="*"/>
+                                                    <DataGridTextColumn Header="Timestep" Binding="{Binding timestep}" Width="120"/>
+                                                    <DataGridTextColumn Header="Observed Variable" Binding="{Binding observed_variable}" Width="180"/>
                                                 </DataGrid.Columns>
 
                                             </DataGrid>
@@ -808,13 +637,43 @@
                                 <TabItem Header="Manual Calibration" Background="{DynamicResource MaterialDesignPaper}">
                                     <Grid Background="{DynamicResource MaterialDesignPaper}">
                                         <Grid.RowDefinitions>
-                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="20*"/>
+                                            <RowDefinition Height="24*"/>
                                             <RowDefinition Height="140"/>
                                         </Grid.RowDefinitions>
 
-                                        <StackPanel Grid.Row="1" Orientation="Vertical">
-                                            <ProgressBar x:Name="ui_calibration_manual_run_swat_progress" Value="0" materialDesign:TransitionAssist.DisableTransitions="True" />
+                                        <Grid Grid.Row="1">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="20*"/>
+                                                <ColumnDefinition Width="8*"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <lvc:CartesianChart Visibility="Hidden" x:Name="ui_calibration_manual_chart" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                                                Series="{Binding SeriesCollection}">
+                                                
+                                                <lvc:CartesianChart.AxisY>
+                                                    <lvc:Axis Name="ui_calibration_manual_chart_x_axis" Title=""></lvc:Axis>
+                                                </lvc:CartesianChart.AxisY>
+                                                
+                                                <lvc:CartesianChart.AxisX>
+                                                    <lvc:Axis MinValue="0" Title="Date" Labels="{Binding Labels}"></lvc:Axis>
+                                                </lvc:CartesianChart.AxisX>
+
+                                            </lvc:CartesianChart>
                                             
+                                            <ListBox x:Name="ui_calibration_manual_available_charts"
+                                                     SelectionChanged="show_chart_for_selected_observation" Grid.Column="2"
+                                                    
+                                                     DisplayMemberPath="chart_name" MouseDown="show_chart_for_selected_observation_m" MouseDoubleClick="show_chart_for_selected_observation_d">
+                                            </ListBox>
+                                        </Grid>
+
+
+
+                                        <StackPanel Grid.Row="2" Orientation="Vertical">
+                                            <ProgressBar x:Name="ui_calibration_manual_run_swat_progress" Value="0" materialDesign:TransitionAssist.DisableTransitions="True" />
+
                                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0, 10, 0, 0" >
                                                 <Button Foreground="{DynamicResource MaterialDesignTextAreaBorder}" x:Name="ui_calibration_manual_run_swat_plus"
                                                         Grid.Row = "1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12,0,0,0"
@@ -831,77 +690,75 @@
                                                 </Button>
                                             </StackPanel>
                                         </StackPanel>
-                                        
-                                        
-                                        
-                                    <Grid Grid.Row="0" Background="{DynamicResource MaterialDesignPaper}">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="11*"/>
-                                            <ColumnDefinition Width="9*"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
 
-                                        <Grid Grid.Column="1" Margin="0, 0, 15, 0">
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="*"/>
-                                                <RowDefinition Height="10*"/>
-                                            </Grid.RowDefinitions>
 
-                                            <Grid Grid.Row="1" Margin="0, 0, 0, 0" Background="{DynamicResource MaterialDesignPaper}">
-                                                <DataGrid x:Name="ui_calibration_mannual_parameters" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+
+                                        <Grid Grid.Row="0" Background="{DynamicResource MaterialDesignPaper}">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="11*"/>
+                                                <ColumnDefinition Width="9*"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <Grid Grid.Column="1" Margin="0, 0, 15, 0">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="10*"/>
+                                                </Grid.RowDefinitions>
+
+                                                <Grid Grid.Row="1" Margin="0, 0, 0, 0" Background="{DynamicResource MaterialDesignPaper}">
+                                                    <DataGrid x:Name="ui_calibration_mannual_parameters" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                                                           Background="{DynamicResource MaterialDesignPaper}"
                                                       Margin="0,0,0,0" CanUserAddRows="False"  AutoGenerateColumns="False" CellEditEnding="update_parameter_value"
                                                      materialDesign:DataGridAssist.CellPadding="2 4 2 4" 
                                                           materialDesign:DataGridAssist.ColumnHeaderPadding="2 3 2 3">
-                                                    <DataGrid.Columns>
+                                                        <DataGrid.Columns>
 
-                                                            <DataGridTextColumn IsReadOnly="True"  Header="Group" Binding="{Binding Path=object_type}" Width="*" MinWidth="50"/>
-                                                            <DataGridTextColumn IsReadOnly="True"  Header="Name" Binding="{Binding Path=name}" MinWidth="55" Width="*"/>
-                                                            <DataGridTextColumn IsReadOnly="True"  Header="Change Type" Binding="{Binding Path=change_type}" Width="*" MinWidth="80"/>
-                                                            <DataGridTextColumn IsReadOnly="True"  Header="Abs.min" Binding="{Binding Path=absolute_minimum}" Width="*" MinWidth="50"/>
-                                                            <DataGridTextColumn IsReadOnly="True"  Header="Abs.max" Binding="{Binding Path=absolute_maximum}" Width="*" MinWidth="50"/>
-                                                            <DataGridTextColumn  IsReadOnly="False" Header="Value" Binding="{Binding Path=value, Mode=TwoWay}" Width="*"/>
-                                                            <DataGridTextColumn IsReadOnly="True"  Header="" Binding="{Binding Path=units}" Width="*" MinWidth="20"/>
-                                                    </DataGrid.Columns>
-                                                </DataGrid>
+                                                            <DataGridTextColumn IsReadOnly="True"  Header="Group" Binding="{Binding object_type}" Width="*" MinWidth="50"/>
+                                                            <DataGridTextColumn IsReadOnly="True"  Header="Name" Binding="{Binding name}" MinWidth="55" Width="*"/>
+                                                            <DataGridTextColumn IsReadOnly="True"  Header="Change Type" Binding="{Binding change_type}" Width="*" MinWidth="80"/>
+                                                            <DataGridTextColumn IsReadOnly="True"  Header="Abs.min" Binding="{Binding absolute_minimum}" Width="*" MinWidth="50"/>
+                                                            <DataGridTextColumn IsReadOnly="True"  Header="Abs.max" Binding="{Binding absolute_maximum}" Width="*" MinWidth="50"/>
+                                                            <DataGridTextColumn  IsReadOnly="False" Header="Value" Binding="{Binding value, Mode=TwoWay}" Width="*"/>
+                                                            <DataGridTextColumn IsReadOnly="True"  Header="" Binding="{Binding units}" Width="*" MinWidth="20"/>
+                                                        </DataGrid.Columns>
+                                                    </DataGrid>
+                                                </Grid>
                                             </Grid>
-                                        </Grid>
 
-                                        <Grid Grid.Column="2">
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="*"/>
-                                                <RowDefinition Height="10*"/>
-                                            </Grid.RowDefinitions>
+                                            <Grid Grid.Column="2">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="10*"/>
+                                                </Grid.RowDefinitions>
 
-                                            <Grid Grid.Row="1">
-                                                <DataGrid x:Name="ui_calibration_manual_performance" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                                <Grid Grid.Row="1">
+                                                    <DataGrid x:Name="ui_calibration_manual_performance" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                                                       Margin="0,0,0,0" CanUserAddRows="False"  AutoGenerateColumns="False"
                                                           materialDesign:DataGridAssist.CellPadding="2 4 2 4" 
                                                           materialDesign:DataGridAssist.ColumnHeaderPadding="2 3 2 3">
-                                                    <DataGrid.Columns>
-                                                            <DataGridTextColumn IsReadOnly="True" Header="" Binding="{Binding Path=object_type}" MinWidth="120" Width="2*"/>
-                                                        <DataGridTextColumn IsReadOnly="True" Header="" Binding="{Binding Path=number}" Width="*" />
-                                                        <DataGridTextColumn IsReadOnly="True" Header="" Binding="{Binding Path=timestep}" Width="*" />
-                                                        <DataGridTextColumn IsReadOnly="True" Header="" Binding="{Binding Path=observed_variable}" Width="*" />
-                                                        <DataGridTextColumn IsReadOnly="True" Header="NSE" Binding="{Binding Path=nse}" MinWidth="30"/>
-                                                        <!--<DataGridTextColumn IsReadOnly="True" Header="R2" Binding="{Binding Path=r2}" MinWidth="20"/>-->
-                                                        <DataGridTextColumn IsReadOnly="True" Header="PBias" Binding="{Binding Path=pbias}" MinWidth="30"/>
-                                                    </DataGrid.Columns>
-                                                </DataGrid>
+                                                        <DataGrid.Columns>
+                                                            <DataGridTextColumn IsReadOnly="True" Header="" Binding="{Binding object_type}" MinWidth="120" Width="2*"/>
+                                                            <DataGridTextColumn IsReadOnly="True" Header="" Binding="{Binding number}" Width="*" />
+                                                            <DataGridTextColumn IsReadOnly="True" Header="" Binding="{Binding timestep}" Width="*" />
+                                                            <DataGridTextColumn IsReadOnly="True" Header="" Binding="{Binding observed_variable}" Width="*" />
+                                                            <DataGridTextColumn IsReadOnly="True" Header="NSE" Binding="{Binding nse}" MinWidth="30"/>
+                                                            <!--<DataGridTextColumn IsReadOnly="True" Header="R2" Binding="{Binding Path=r2}" MinWidth="20"/>-->
+                                                            <DataGridTextColumn IsReadOnly="True" Header="PBias" Binding="{Binding pbias}" MinWidth="30"/>
+                                                        </DataGrid.Columns>
+                                                    </DataGrid>
+                                                </Grid>
+
+
+
                                             </Grid>
-                                            
-                                            
-                                            
+
                                         </Grid>
-
-                                    </Grid>
                                     </Grid>
                                 </TabItem>
 
-                                <TabItem Header="Automatic Calibration">
-
-                                </TabItem>
+                                <TabItem Header="Automatic Calibration"/>
                             </TabControl>
 
 
@@ -913,7 +770,7 @@
 
                                     <StackPanel Orientation="Horizontal" Margin="4" HorizontalAlignment="Center">
 
-                                        <RadioButton IsChecked="True"  IsEnabled="True" MinWidth="110" Content="Manual" ToolTip="Perform a Manual Calibration" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="0" Click="update_image"  />
+                                        <RadioButton IsChecked="True"  IsEnabled="True" MinWidth="110" Content="Manual" ToolTip="Perform a Manual Calibration" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="0"/>
                                         <RadioButton IsChecked="False" IsEnabled="False" MinWidth="110" Content="Automatic" ToolTip="Perform an Automatic Calibration" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="0"  />
 
                                     </StackPanel>
@@ -935,7 +792,14 @@
                             <TabControl Grid.Row="0" Margin="-8,-8,-7,-27" TabStripPlacement="Bottom" Grid.RowSpan="2">
                                 <TabItem Header="TabItem">
                                     <Grid Background="{DynamicResource MaterialDesignPaper}">
-                                        <Image x:Name="ui_model_check_hydrology_image" Source="C:\tmp\overview_analysis_hydrology.png" Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        <Image x:Name="ui_model_check_hydrology_image" Source="C:\tmp\analysis_hydrology.png" Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        <Button Width="32" Height="32" x:Name="ui_model_check_clear_wb" Click="disengage_wb_source"
+                                                HorizontalAlignment="Right" Style="{StaticResource MaterialDesignIconButton}"
+                                                ToolTip="Clear Water Balance Diagram" Background="{DynamicResource MaterialDesignTextFieldBoxBackground}"
+                                                VerticalAlignment="Top" Margin="0, 10, 25, 0">
+                                            <materialDesign:PackIcon Kind="Minus" Width="30" Height="30"/>
+                                        </Button>
+
                                     </Grid>
                                 </TabItem>
 
@@ -945,7 +809,7 @@
                                 <materialDesign:Card
                                     materialDesign:ShadowAssist.ShadowDepth="Depth1"
                                     Padding="1" MinWidth="450" Margin="0, 0, 0, 17"
-                                    HorizontalAlignment="Center">
+                                    HorizontalAlignment="Center" Opacity="0.6">
 
                                     <StackPanel Orientation="Horizontal" Margin="4" HorizontalAlignment="Center">
 
@@ -955,7 +819,7 @@
                                         </Button>
 
                                         <RadioButton IsChecked="False" IsEnabled="False" MinWidth="110" Content="Overview" ToolTip="Model Analysis of various components" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="0"/>
-                                        <RadioButton IsChecked="True"  IsEnabled="True" MinWidth="110" Content="Hydrology" ToolTip="Hydrological Mass Balance" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="0" Click="update_image"  />
+                                        <RadioButton IsChecked="True"  IsEnabled="True" MinWidth="110" Content="Hydrology" ToolTip="Hydrological Mass Balance" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="0"/>
                                         <RadioButton IsChecked="False" IsEnabled="False" MinWidth="110" Content="Nutrients" ToolTip="Nutrient Balance" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="0"  />
                                         <RadioButton IsChecked="False" IsEnabled="False" MinWidth="110" Content="Plants" ToolTip="Vegetation Information" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="0" />
                                     </StackPanel>

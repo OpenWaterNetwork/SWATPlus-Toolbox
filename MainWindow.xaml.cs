@@ -17,6 +17,9 @@ using System.Windows.Shapes;
 using System.Windows.Shell;
 using YamlDotNet.Serialization;
 
+using LiveCharts;
+using LiveCharts.Wpf;
+
 // Added
 using Microsoft.Win32;
 
@@ -57,9 +60,32 @@ namespace SWAT__Toolbox
 
         project current_project = new project();
 
+
+
+        public SeriesCollection SeriesCollection { get; set; }
+        public string[] Labels { get; set; }
+
+
         public MainWindow()
         {
             InitializeComponent();
+
+            SeriesCollection = new SeriesCollection
+            {
+                new LineSeries
+                {
+                    Title = "Observations",
+                    Values = new ChartValues<double> { },
+                    PointGeometry = null
+                },
+                new LineSeries
+                {
+                    Title = "Simulations",
+                    Values = new ChartValues<double> {},
+                    PointGeometry = null
+                },
+            };
+            DataContext = this;
 
             //ui init
             WindowChrome.SetWindowChrome(this, new WindowChrome());
@@ -71,14 +97,14 @@ namespace SWAT__Toolbox
             //Change the base theme to Ligh
             theme.SetBaseTheme(Theme.Light);
 
-            //Change all of the primary colors to Red
-            theme.SetPrimaryColor(System.Windows.Media.Color.FromRgb(21, 101, 192));
-
-            //Change all of the secondary colors to Blue
+          //  //Change all of the primary colors to Red
+          //  theme.SetPrimaryColor(System.Windows.Media.Color.FromRgb(21, 101, 192));
+          //
+            //Change all of the secondary colors to Orange
             theme.SetSecondaryColor(Colors.Orange);
 
-            //You can also change a single color on the theme, and optionally set the corresponding foreground color
-            theme.PrimaryMid = new ColorPair(Colors.Brown, Colors.White);
+          //  //You can also change a single color on the theme, and optionally set the corresponding foreground color
+          //  theme.PrimaryMid = new ColorPair(Colors.Brown, Colors.White);
 
             //Change the app's current theme
             paletteHelper.SetTheme(theme);
@@ -238,6 +264,7 @@ namespace SWAT__Toolbox
                                                    object_type = obj_type,
                                              observed_variable = obs_variable,
                                                       timestep = timestep,
+                                                    chart_name = $@"{obj_type} {obj_number} {timestep} {obs_variable}",
                                                 nse = 0, pbias = 0, r2 = 0 });
 
             ui_observations_object_type.Text = null;
@@ -405,6 +432,9 @@ namespace SWAT__Toolbox
         {
             ui_calibration_manual_performance.ItemsSource = current_project.current_observations;
             ui_calibration_manual_performance.DataContext = current_project.current_observations;
+
+            ui_calibration_manual_available_charts.DataContext = current_project.current_observations;
+            ui_calibration_manual_available_charts.ItemsSource = current_project.current_observations;
 
             ui_run_model_print_csv.DataContext = current_project;
             ui_calibration_mannual_parameters.ItemsSource = current_project.current_parameters;
@@ -634,15 +664,21 @@ ru                    n           n             n              n
             return print_prt;
         }
 
-        System.Drawing.Image bitmap;
+        
 
         private void analyse_model(object sender, RoutedEventArgs e)
         {
+            ui_model_check_hydrology_image.Source = new BitmapImage(new Uri(@"C:\\tmp\\analysis_hydrology.png"));
+
             results_analyse_wb();
             results_analyse_nb();
             results_analyse_plant_summary();
 
+
             int image_font_size = 55;
+
+
+            //System.Drawing.Image bitmap;
 
             System.Drawing.Point precipitation_point = new System.Drawing.Point(2025, 520);
             System.Drawing.Point evapotranspiration_point = new System.Drawing.Point(3610, 710);
@@ -657,75 +693,66 @@ ru                    n           n             n              n
             System.Drawing.Point deep_losses_point = new System.Drawing.Point(1670, 2330);
             System.Drawing.Point aquifer_recharge_point = new System.Drawing.Point(1640, 1890);
 
-            ui_model_check_hydrology_image.Source = new BitmapImage(new Uri(@"C:\\tmp\\overview_analysis_hydrology.png"));
 
+                System.Drawing.Bitmap bitmap;
+                bitmap = (Bitmap)System.Drawing.Image.FromFile("C:\\tmp\\analysis_hydrology_arrows.png");
 
-            bitmap = Bitmap.FromFile("C:\\tmp\\overview_analysis_hydrology.png");
+                Graphics image_graphics = Graphics.FromImage(bitmap);
+                image_graphics.SmoothingMode = SmoothingMode.AntiAlias; image_graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
 
-            Graphics image_graphics = Graphics.FromImage(bitmap);
-            image_graphics.SmoothingMode = SmoothingMode.AntiAlias; image_graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                StringFormat label_string_format = new StringFormat();
+                label_string_format.Alignment = StringAlignment.Near;
 
-            StringFormat label_string_format = new StringFormat();
-            label_string_format.Alignment = StringAlignment.Near;
+                System.Drawing.Color label_string_colour = ColorTranslator.FromHtml("#000000");
 
-            System.Drawing.Color label_string_colour = ColorTranslator.FromHtml("#000000");
+                // add recharge
+                image_graphics.DrawString($@"Recharge{System.Environment.NewLine}{current_project.water_balance.aqu_rchrg.ToString("0.##")}", new Font("Arial", image_font_size, System.Drawing.FontStyle.Regular),
+                    new SolidBrush(label_string_colour), aquifer_recharge_point, label_string_format);
+                
+                // add cn
+                image_graphics.DrawString($@"CN{System.Environment.NewLine}{current_project.water_balance.cn.ToString("0.##")}", new Font("Arial", image_font_size, System.Drawing.FontStyle.Regular),
+                    new SolidBrush(label_string_colour), cn_point, label_string_format);
+                
+                // add pet
+                image_graphics.DrawString($@"PET{System.Environment.NewLine}{current_project.water_balance.pet.ToString("0.##")}", new Font("Arial", image_font_size, System.Drawing.FontStyle.Regular),
+                    new SolidBrush(label_string_colour), pet_point, label_string_format);
+                
+                // add irrigation
+                image_graphics.DrawString($@"Irrigation{System.Environment.NewLine}{current_project.water_balance.irr.ToString("0.##")}", new Font("Arial", image_font_size, System.Drawing.FontStyle.Regular),
+                    new SolidBrush(label_string_colour), irrigation_point, label_string_format);
+                
+                // add pcp
+                image_graphics.DrawString($@"Precipitation{System.Environment.NewLine}{current_project.water_balance.precip.ToString("0.##")}", new Font("Arial", image_font_size, System.Drawing.FontStyle.Regular),
+                    new SolidBrush(label_string_colour), precipitation_point, label_string_format);
+                
+                // add et
+                image_graphics.DrawString($@"ET{System.Environment.NewLine}{current_project.water_balance.et.ToString("0.##")}", new Font("Arial", image_font_size, System.Drawing.FontStyle.Regular),
+                    new SolidBrush(label_string_colour), evapotranspiration_point, label_string_format);
+                 
+                // add sr
+                image_graphics.DrawString($@"Surface Runnof{System.Environment.NewLine}{current_project.water_balance.surq_gen.ToString("0.##")}", new Font("Arial", image_font_size, System.Drawing.FontStyle.Regular),
+                    new SolidBrush(label_string_colour), surface_runoff_point, label_string_format);
+                
+                // add lat_q
+                image_graphics.DrawString($@"Lateral Flow{System.Environment.NewLine}{current_project.water_balance.latq.ToString("0.##")}", new Font("Arial", image_font_size, System.Drawing.FontStyle.Regular),
+                    new SolidBrush(label_string_colour), lateral_flow_point, label_string_format);
+                
+                // add perc
+                image_graphics.DrawString($@"Perc{System.Environment.NewLine}{current_project.water_balance.perc.ToString("0.##")}", new Font("Arial", image_font_size, System.Drawing.FontStyle.Regular),
+                    new SolidBrush(label_string_colour), percolation_point, label_string_format);
+                
+                // add revap
+                image_graphics.DrawString($@"Revap{System.Environment.NewLine}{current_project.water_balance.aqu_revap.ToString("0.##")}", new Font("Arial", image_font_size, System.Drawing.FontStyle.Regular),
+                    new SolidBrush(label_string_colour), revap_point, label_string_format);
+                
+                // add return_flow
+                image_graphics.DrawString($@"Retun Flow{System.Environment.NewLine}{current_project.water_balance.aqu_flo_cha.ToString("0.##")}", new Font("Arial", image_font_size, System.Drawing.FontStyle.Regular),
+                    new SolidBrush(label_string_colour), return_flow_point, label_string_format);
 
-            // add recharge
-            image_graphics.DrawString($@"Recharge{System.Environment.NewLine}{current_project.water_balance.aqu_rchrg.ToString("0.##")}", new Font("Arial", image_font_size, System.Drawing.FontStyle.Regular),
-                new SolidBrush(label_string_colour), aquifer_recharge_point, label_string_format);
-            
-            // add cn
-            image_graphics.DrawString($@"CN{System.Environment.NewLine}{current_project.water_balance.cn.ToString("0.##")}", new Font("Arial", image_font_size, System.Drawing.FontStyle.Regular),
-                new SolidBrush(label_string_colour), cn_point, label_string_format);
-            
-            // add pet
-            image_graphics.DrawString($@"PET{System.Environment.NewLine}{current_project.water_balance.pet.ToString("0.##")}", new Font("Arial", image_font_size, System.Drawing.FontStyle.Regular),
-                new SolidBrush(label_string_colour), pet_point, label_string_format);
-            
-            // add irrigation
-            image_graphics.DrawString($@"Irrigation{System.Environment.NewLine}{current_project.water_balance.irr.ToString("0.##")}", new Font("Arial", image_font_size, System.Drawing.FontStyle.Regular),
-                new SolidBrush(label_string_colour), irrigation_point, label_string_format);
-            
-            // add pcp
-            image_graphics.DrawString($@"Precipitation{System.Environment.NewLine}{current_project.water_balance.precip.ToString("0.##")}", new Font("Arial", image_font_size, System.Drawing.FontStyle.Regular),
-                new SolidBrush(label_string_colour), precipitation_point, label_string_format);
-            
-            // add et
-            image_graphics.DrawString($@"ET{System.Environment.NewLine}{current_project.water_balance.et.ToString("0.##")}", new Font("Arial", image_font_size, System.Drawing.FontStyle.Regular),
-                new SolidBrush(label_string_colour), evapotranspiration_point, label_string_format);
-             
-            // add sr
-            image_graphics.DrawString($@"Surface Runnof{System.Environment.NewLine}{current_project.water_balance.surq_gen.ToString("0.##")}", new Font("Arial", image_font_size, System.Drawing.FontStyle.Regular),
-                new SolidBrush(label_string_colour), surface_runoff_point, label_string_format);
-            
-            // add lat_q
-            image_graphics.DrawString($@"Lateral Flow{System.Environment.NewLine}{current_project.water_balance.latq.ToString("0.##")}", new Font("Arial", image_font_size, System.Drawing.FontStyle.Regular),
-                new SolidBrush(label_string_colour), lateral_flow_point, label_string_format);
-            
-            // add perc
-            image_graphics.DrawString($@"Perc{System.Environment.NewLine}{current_project.water_balance.perc.ToString("0.##")}", new Font("Arial", image_font_size, System.Drawing.FontStyle.Regular),
-                new SolidBrush(label_string_colour), percolation_point, label_string_format);
-            
-            // add revap
-            image_graphics.DrawString($@"Revap{System.Environment.NewLine}{current_project.water_balance.aqu_revap.ToString("0.##")}", new Font("Arial", image_font_size, System.Drawing.FontStyle.Regular),
-                new SolidBrush(label_string_colour), revap_point, label_string_format);
-            
-            // add return_flow
-            image_graphics.DrawString($@"Retun Flow{System.Environment.NewLine}{current_project.water_balance.aqu_flo_cha.ToString("0.##")}", new Font("Arial", image_font_size, System.Drawing.FontStyle.Regular),
-                new SolidBrush(label_string_colour), return_flow_point, label_string_format);
+                // https://stackoverflow.com/questions/6588974/get-imagesource-from-memorystream-in-c-sharp-wpf
+                
+                ui_model_check_hydrology_image.Source = BitmapToImageSource(bitmap);
 
-            // to do fix second refresh (Exception)
-            bitmap.Save("C:\\tmp\\overview_analysis_mod.png");
-            bitmap = null;
-
-            ui_model_check_hydrology_image.Source = new BitmapImage(new Uri(@"C:\\tmp\\overview_analysis_mod.png"));
-
-
-        }
-
-        private void update_image(object sender, RoutedEventArgs e)
-        {
-            ui_model_check_hydrology_image.Source = new BitmapImage(new Uri(@"C:\\tmp\\overview_analysis_hydrology.png"));
         }
 
 
@@ -898,9 +925,86 @@ ru                    n           n             n              n
 
         private void calibration_manual_refresh_indices(object sender, RoutedEventArgs e)
         {
-            current_project = get_performance_indices(current_project);
+            (current_project, timeseries_data) = get_performance_indices(current_project);
             ui_calibration_manual_performance.Items.Refresh();
             update_project();
+        }
+
+        private void disengage_wb_source(object sender, RoutedEventArgs e)
+        {
+            ui_model_check_hydrology_image.Source = new BitmapImage(new Uri(@"C:\\tmp\\analysis_hydrology.png"));
+        }
+
+        evaluation_time_series timeseries_data;
+
+        private void show_chart_for_selected_observation(object sender, SelectionChangedEventArgs e)
+        {
+            plot_chart();
+        }
+
+        private void show_chart_for_selected_observation_m(object sender, MouseButtonEventArgs e)
+        {
+            plot_chart();
+        }
+
+        public void plot_chart()
+        {
+            ui_calibration_manual_chart.Visibility = Visibility.Visible;
+            SeriesCollection[0].Values.Clear();
+            SeriesCollection[1].Values.Clear();
+
+            if (timeseries_data == null)
+            {
+
+                System.Windows.MessageBox.Show("Null Data!");
+            }
+            else
+            {
+
+
+
+
+
+
+                List<string> chart_labels = new List<string> { };
+
+                foreach (var series_name in timeseries_data.observed_timeseries.Keys)
+                {
+                    if (series_name == current_project.current_observations[ui_calibration_manual_available_charts.SelectedIndex].chart_name)
+                    {
+                        switch (current_project.current_observations[ui_calibration_manual_available_charts.SelectedIndex].observed_variable)
+                        {
+                            case "Flow":
+                                break;
+                        }
+
+                        foreach (var date_stamp in timeseries_data.observed_timeseries[series_name].Keys)
+                        {
+                            if (timeseries_data.observed_timeseries[series_name][date_stamp] >= 0)
+                            {
+                                if (timeseries_data.simulated_timeseries[series_name].ContainsKey(date_stamp))
+                                {
+                                    Console.WriteLine($@"{date_stamp.ToString()}");
+                                    SeriesCollection[0].Values.Add(timeseries_data.observed_timeseries[series_name][date_stamp]);
+                                    SeriesCollection[1].Values.Add(timeseries_data.simulated_timeseries[series_name][date_stamp]);
+                                    chart_labels.Add($@"{date_stamp.Day}/{date_stamp.Month}/{date_stamp.Year}");
+                                }
+
+                            }
+
+
+                        }
+                    }
+                }
+
+                Labels = chart_labels.ToArray();
+
+            }
+        }
+
+        private void show_chart_for_selected_observation_d(object sender, MouseButtonEventArgs e)
+        {
+            plot_chart();
         }
     }
 }
