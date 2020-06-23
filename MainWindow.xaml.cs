@@ -46,6 +46,8 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Media.Media3D;
 using MaterialDesignColors;
+using System.ComponentModel;
+using System.Windows.Threading;
 
 namespace SWAT__Toolbox
 {
@@ -60,10 +62,10 @@ namespace SWAT__Toolbox
 
         project current_project = new project();
 
-
-
         public SeriesCollection SeriesCollection { get; set; }
+        public SeriesCollection SeriesCollection_auto { get; set; }
         public string[] Labels { get; set; }
+        public string[] Labels_auto { get; set; }
 
 
         public MainWindow()
@@ -71,6 +73,23 @@ namespace SWAT__Toolbox
             InitializeComponent();
 
             SeriesCollection = new SeriesCollection
+            {
+                new LineSeries
+                {
+                    Title = "Observations",
+                    Values = new ChartValues<double> { },
+                    PointGeometry = null
+                },
+                new LineSeries
+                {
+                    Title = "Simulations",
+                    Values = new ChartValues<double> {},
+                    PointGeometry = null
+                },
+            };
+            DataContext = this;
+
+            SeriesCollection_auto = new SeriesCollection
             {
                 new LineSeries
                 {
@@ -97,20 +116,17 @@ namespace SWAT__Toolbox
             //Change the base theme to Ligh
             theme.SetBaseTheme(Theme.Light);
 
-          //  //Change all of the primary colors to Red
-          //  theme.SetPrimaryColor(System.Windows.Media.Color.FromRgb(21, 101, 192));
-          //
+            //  //Change all of the primary colors to Red
+            //  theme.SetPrimaryColor(System.Windows.Media.Color.FromRgb(21, 101, 192));
+            //
             //Change all of the secondary colors to Orange
             theme.SetSecondaryColor(Colors.Orange);
 
-          //  //You can also change a single color on the theme, and optionally set the corresponding foreground color
-          //  theme.PrimaryMid = new ColorPair(Colors.Brown, Colors.White);
+            //  //You can also change a single color on the theme, and optionally set the corresponding foreground color
+            //  theme.PrimaryMid = new ColorPair(Colors.Brown, Colors.White);
 
             //Change the app's current theme
             paletteHelper.SetTheme(theme);
-
-
-
 
 
             selected_parameters = new ObservableCollection<parameter>();
@@ -120,6 +136,7 @@ namespace SWAT__Toolbox
             ui_selected_observations.ItemsSource = selected_observations;
 
             ui_calibration_manual_performance.ItemsSource = current_project.current_observations;
+            ui_calibration_automatic_performance.ItemsSource = current_project.current_observations;
 
 
 
@@ -259,13 +276,19 @@ namespace SWAT__Toolbox
             string timestep = ui_observations_timestep.SelectionBoxItem.ToString();
             int obj_number = int.Parse(ui_observations_object_number.Text);
 
-            selected_observations.Add(new observation() { file = ui_parameters_file_selection_path.Text,
-                                                            id = 1, number = obj_number,
-                                                   object_type = obj_type,
-                                             observed_variable = obs_variable,
-                                                      timestep = timestep,
-                                                    chart_name = $@"{obj_type} {obj_number} {timestep} {obs_variable}",
-                                                nse = 0, pbias = 0, r2 = 0 });
+            selected_observations.Add(new observation()
+            {
+                file = ui_parameters_file_selection_path.Text,
+                id = 1,
+                number = obj_number,
+                object_type = obj_type,
+                observed_variable = obs_variable,
+                timestep = timestep,
+                chart_name = $@"{obj_type} {obj_number} {timestep} {obs_variable}",
+                nse = 0,
+                pbias = 0,
+                r2 = 0
+            });
 
             ui_observations_object_type.Text = null;
             ui_observations_observed_variable.Text = null;
@@ -294,7 +317,7 @@ namespace SWAT__Toolbox
                 }
                 else
                 {
-                    
+
                 }
             }
 
@@ -344,6 +367,8 @@ namespace SWAT__Toolbox
             current_project.nutrient_balance = default_nutrient_balance();
             current_project.plant_summary = default_plant_results();
 
+            current_project.sensivity_settings = default_sensitivity_analysis_settings();
+
             // saving the project
             save_project(current_project);
 
@@ -351,12 +376,26 @@ namespace SWAT__Toolbox
             ui_selected_observations.ItemsSource = selected_observations;
 
             ui_calibration_manual_performance.ItemsSource = current_project.current_observations;
+            ui_calibration_automatic_performance.ItemsSource = current_project.current_observations;
 
             //binding checkboxes for printing
             set_binding_contexts();
+
+            //run_model settings
+            ui_run_model_start_date.SelectedDate = current_project.run_date_start;
+            ui_run_model_end_date.SelectedDate = current_project.run_date_end;
+
+            ui_run_model_warmup_period.Text = current_project.run_warmup.ToString();
         }
 
         private void home_open_project(object sender, RoutedEventArgs e)
+        {
+            open_project();
+            ui_sensitivity_seed_box.Text = current_project.sensivity_settings.seed.ToString();
+            ui_calibration_automatic_seed_box.Text = current_project.sensivity_settings.seed.ToString();
+        }
+
+        public void open_project()
         {
             current_project = new project();
 
@@ -375,7 +414,7 @@ namespace SWAT__Toolbox
             ui_selected_observations.ItemsSource = selected_observations;
 
             ui_calibration_manual_performance.ItemsSource = current_project.current_observations;
-
+            ui_calibration_automatic_performance.ItemsSource = current_project.current_observations;
 
             //update ui
             //home
@@ -391,7 +430,6 @@ namespace SWAT__Toolbox
 
             //
         }
-
 
         // run model functions
         private void update_project_start_date(object sender, RoutedEventArgs e)
@@ -431,14 +469,39 @@ namespace SWAT__Toolbox
         private void set_binding_contexts()
         {
             ui_calibration_manual_performance.ItemsSource = current_project.current_observations;
+            ui_calibration_automatic_performance.ItemsSource = current_project.current_observations;
+
+            ui_sensitivity_observation_selection.ItemsSource = current_project.current_observations;
+            ui_sensitivity_observation_selection.DisplayMemberPath = "chart_name";
+            ui_sensitivity_observation_selection.SelectedValuePath = "chart_name";
+
+            ui_calibration_automatic_observation_selection.ItemsSource = current_project.current_observations;
+            ui_calibration_automatic_observation_selection.DisplayMemberPath = "chart_name";
+            ui_calibration_automatic_observation_selection.SelectedValuePath = "chart_name";
+
             ui_calibration_manual_performance.DataContext = current_project.current_observations;
+            ui_calibration_automatic_performance.DataContext = current_project.current_observations;
+
+            ui_sensitivity_seed_box.DataContext = current_project.sensivity_settings;
 
             ui_calibration_manual_available_charts.DataContext = current_project.current_observations;
             ui_calibration_manual_available_charts.ItemsSource = current_project.current_observations;
 
+            ui_calibration_automatic_available_charts.DataContext = current_project.current_observations;
+            ui_calibration_automatic_available_charts.ItemsSource = current_project.current_observations;
+
+
+
             ui_run_model_print_csv.DataContext = current_project;
+
             ui_calibration_mannual_parameters.ItemsSource = current_project.current_parameters;
             ui_calibration_mannual_parameters.DataContext = current_project.current_parameters;
+
+            ui_calibration_automatic_parameters.ItemsSource = current_project.current_parameters;
+            ui_calibration_automatic_parameters.DataContext = current_project.current_parameters;
+
+            ui_sensitivity_parameters.ItemsSource = current_project.current_parameters;
+            ui_sensitivity_parameters.DataContext = current_project.current_parameters;
 
             ui_run_model_print_channel_day.DataContext = current_project.print_settings.channel;
             ui_run_model_print_channel_month.DataContext = current_project.print_settings.channel;
@@ -508,7 +571,7 @@ namespace SWAT__Toolbox
             //* Create your Process
             Process process = new Process();
 
-            process.StartInfo.FileName = "C:\\SWAT\\JAMES+\\model_files\\TxtInOut\\rev59_3_64rel.exe";
+            process.StartInfo.FileName = $@"{Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory)}\\assets\\rev59_3_64rel.exe";
             //process.StartInfo.Arguments = "/c DIR";
             process.StartInfo.UseShellExecute = false;
             process.StartInfo.RedirectStandardOutput = true;
@@ -522,16 +585,27 @@ namespace SWAT__Toolbox
             process.Start();
             process.BeginOutputReadLine();
             process.BeginErrorReadLine();
-            //process.WaitForExit();
+            if (is_sensitivity_run == true)
+            {
+                process.WaitForExit();
+            }
+            if (is_calibration_run == true)
+            {
+                process.WaitForExit();
+            }
+
+
+
         }
 
         public void OutputHandler(object sendingProcess, DataReceivedEventArgs outLine)
         {
 
             //* Do your stuff with the output (write to console/log/StringBuilder)
+            Console.WriteLine(outLine.Data);
             int current_year = 0;
-            int current_month= 0;
-            int current_day= 0;
+            int current_month = 0;
+            int current_day = 0;
 
             string no_space_line = "";
             try
@@ -558,17 +632,25 @@ namespace SWAT__Toolbox
                 //tell user when in warm up
                 //provide stopping mechanism
 
-
                 this.Dispatcher.Invoke(() =>
                 {
                     double all_total_days = Convert.ToDouble(new DateTime(current_project.run_date_end.Year, 12, 31).Subtract(new DateTime(current_project.run_date_start.Year, 1, 1)).TotalDays);
-                    double all_past_days  = Convert.ToDouble(current_date.Subtract(new DateTime(current_project.run_date_start.Year, 1, 1)).TotalDays);
-                    
+                    double all_past_days = Convert.ToDouble(current_date.Subtract(new DateTime(current_project.run_date_start.Year, 1, 1)).TotalDays);
+
                     ui_run_model_progress.Value = (double)(all_past_days / all_total_days) * 100;
                     ui_calibration_manual_run_swat_progress.Value = (double)(all_past_days / all_total_days) * 100;
 
                     double total_days = Convert.ToDouble(new DateTime(current_date.Year, 12, 31).Subtract(new DateTime(current_date.Year, 1, 1)).TotalDays);
                     ui_run_model_annual_progress.Value = (double)(Convert.ToDouble(current_date.DayOfYear) / total_days) * 100;
+
+                    if (is_sensitivity_run == true)
+                    {
+                        ui_sensitivity_progress.Value = (double)(Convert.ToDouble(par_set_id) / number_of_sens_samples) * 100;
+                    }
+                    if (is_calibration_run == true)
+                    {
+                        ui_calibration_automatic_progress.Value = (double)(Convert.ToDouble(par_set_id) / number_of_sens_samples) * 100;
+                    }
 
                     ui_run_model_running_year.Text = current_year.ToString();
                     ui_run_model_total_years.Text = current_project.run_date_end.Year.ToString();
@@ -664,11 +746,11 @@ ru                    n           n             n              n
             return print_prt;
         }
 
-        
+
 
         private void analyse_model(object sender, RoutedEventArgs e)
         {
-            ui_model_check_hydrology_image.Source = new BitmapImage(new Uri(@"C:\\tmp\\analysis_hydrology.png"));
+            ui_model_check_hydrology_image.Source = new BitmapImage(new Uri($@"{Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory)}\\assets\\analysis_hydrology.dll"));
 
             results_analyse_wb();
             results_analyse_nb();
@@ -694,64 +776,64 @@ ru                    n           n             n              n
             System.Drawing.Point aquifer_recharge_point = new System.Drawing.Point(1640, 1890);
 
 
-                System.Drawing.Bitmap bitmap;
-                bitmap = (Bitmap)System.Drawing.Image.FromFile("C:\\tmp\\analysis_hydrology_arrows.png");
+            System.Drawing.Bitmap bitmap;
+            bitmap = (Bitmap)System.Drawing.Image.FromFile($@"{Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory)}\\assets\\analysis_hydrology_arrows.dll");
 
-                Graphics image_graphics = Graphics.FromImage(bitmap);
-                image_graphics.SmoothingMode = SmoothingMode.AntiAlias; image_graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            Graphics image_graphics = Graphics.FromImage(bitmap);
+            image_graphics.SmoothingMode = SmoothingMode.AntiAlias; image_graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
 
-                StringFormat label_string_format = new StringFormat();
-                label_string_format.Alignment = StringAlignment.Near;
+            StringFormat label_string_format = new StringFormat();
+            label_string_format.Alignment = StringAlignment.Near;
 
-                System.Drawing.Color label_string_colour = ColorTranslator.FromHtml("#000000");
+            System.Drawing.Color label_string_colour = ColorTranslator.FromHtml("#000000");
 
-                // add recharge
-                image_graphics.DrawString($@"Recharge{System.Environment.NewLine}{current_project.water_balance.aqu_rchrg.ToString("0.##")}", new Font("Arial", image_font_size, System.Drawing.FontStyle.Regular),
-                    new SolidBrush(label_string_colour), aquifer_recharge_point, label_string_format);
-                
-                // add cn
-                image_graphics.DrawString($@"CN{System.Environment.NewLine}{current_project.water_balance.cn.ToString("0.##")}", new Font("Arial", image_font_size, System.Drawing.FontStyle.Regular),
-                    new SolidBrush(label_string_colour), cn_point, label_string_format);
-                
-                // add pet
-                image_graphics.DrawString($@"PET{System.Environment.NewLine}{current_project.water_balance.pet.ToString("0.##")}", new Font("Arial", image_font_size, System.Drawing.FontStyle.Regular),
-                    new SolidBrush(label_string_colour), pet_point, label_string_format);
-                
-                // add irrigation
-                image_graphics.DrawString($@"Irrigation{System.Environment.NewLine}{current_project.water_balance.irr.ToString("0.##")}", new Font("Arial", image_font_size, System.Drawing.FontStyle.Regular),
-                    new SolidBrush(label_string_colour), irrigation_point, label_string_format);
-                
-                // add pcp
-                image_graphics.DrawString($@"Precipitation{System.Environment.NewLine}{current_project.water_balance.precip.ToString("0.##")}", new Font("Arial", image_font_size, System.Drawing.FontStyle.Regular),
-                    new SolidBrush(label_string_colour), precipitation_point, label_string_format);
-                
-                // add et
-                image_graphics.DrawString($@"ET{System.Environment.NewLine}{current_project.water_balance.et.ToString("0.##")}", new Font("Arial", image_font_size, System.Drawing.FontStyle.Regular),
-                    new SolidBrush(label_string_colour), evapotranspiration_point, label_string_format);
-                 
-                // add sr
-                image_graphics.DrawString($@"Surface Runnof{System.Environment.NewLine}{current_project.water_balance.surq_gen.ToString("0.##")}", new Font("Arial", image_font_size, System.Drawing.FontStyle.Regular),
-                    new SolidBrush(label_string_colour), surface_runoff_point, label_string_format);
-                
-                // add lat_q
-                image_graphics.DrawString($@"Lateral Flow{System.Environment.NewLine}{current_project.water_balance.latq.ToString("0.##")}", new Font("Arial", image_font_size, System.Drawing.FontStyle.Regular),
-                    new SolidBrush(label_string_colour), lateral_flow_point, label_string_format);
-                
-                // add perc
-                image_graphics.DrawString($@"Perc{System.Environment.NewLine}{current_project.water_balance.perc.ToString("0.##")}", new Font("Arial", image_font_size, System.Drawing.FontStyle.Regular),
-                    new SolidBrush(label_string_colour), percolation_point, label_string_format);
-                
-                // add revap
-                image_graphics.DrawString($@"Revap{System.Environment.NewLine}{current_project.water_balance.aqu_revap.ToString("0.##")}", new Font("Arial", image_font_size, System.Drawing.FontStyle.Regular),
-                    new SolidBrush(label_string_colour), revap_point, label_string_format);
-                
-                // add return_flow
-                image_graphics.DrawString($@"Retun Flow{System.Environment.NewLine}{current_project.water_balance.aqu_flo_cha.ToString("0.##")}", new Font("Arial", image_font_size, System.Drawing.FontStyle.Regular),
-                    new SolidBrush(label_string_colour), return_flow_point, label_string_format);
+            // add recharge
+            image_graphics.DrawString($@"Recharge{System.Environment.NewLine}{current_project.water_balance.aqu_rchrg.ToString("0.##")}", new Font("Arial", image_font_size, System.Drawing.FontStyle.Regular),
+                new SolidBrush(label_string_colour), aquifer_recharge_point, label_string_format);
 
-                // https://stackoverflow.com/questions/6588974/get-imagesource-from-memorystream-in-c-sharp-wpf
-                
-                ui_model_check_hydrology_image.Source = BitmapToImageSource(bitmap);
+            // add cn
+            image_graphics.DrawString($@"CN{System.Environment.NewLine}{current_project.water_balance.cn.ToString("0.##")}", new Font("Arial", image_font_size, System.Drawing.FontStyle.Regular),
+                new SolidBrush(label_string_colour), cn_point, label_string_format);
+
+            // add pet
+            image_graphics.DrawString($@"PET{System.Environment.NewLine}{current_project.water_balance.pet.ToString("0.##")}", new Font("Arial", image_font_size, System.Drawing.FontStyle.Regular),
+                new SolidBrush(label_string_colour), pet_point, label_string_format);
+
+            // add irrigation
+            image_graphics.DrawString($@"Irrigation{System.Environment.NewLine}{current_project.water_balance.irr.ToString("0.##")}", new Font("Arial", image_font_size, System.Drawing.FontStyle.Regular),
+                new SolidBrush(label_string_colour), irrigation_point, label_string_format);
+
+            // add pcp
+            image_graphics.DrawString($@"Precipitation{System.Environment.NewLine}{current_project.water_balance.precip.ToString("0.##")}", new Font("Arial", image_font_size, System.Drawing.FontStyle.Regular),
+                new SolidBrush(label_string_colour), precipitation_point, label_string_format);
+
+            // add et
+            image_graphics.DrawString($@"ET{System.Environment.NewLine}{current_project.water_balance.et.ToString("0.##")}", new Font("Arial", image_font_size, System.Drawing.FontStyle.Regular),
+                new SolidBrush(label_string_colour), evapotranspiration_point, label_string_format);
+
+            // add sr
+            image_graphics.DrawString($@"Surface Runnof{System.Environment.NewLine}{current_project.water_balance.surq_gen.ToString("0.##")}", new Font("Arial", image_font_size, System.Drawing.FontStyle.Regular),
+                new SolidBrush(label_string_colour), surface_runoff_point, label_string_format);
+
+            // add lat_q
+            image_graphics.DrawString($@"Lateral Flow{System.Environment.NewLine}{current_project.water_balance.latq.ToString("0.##")}", new Font("Arial", image_font_size, System.Drawing.FontStyle.Regular),
+                new SolidBrush(label_string_colour), lateral_flow_point, label_string_format);
+
+            // add perc
+            image_graphics.DrawString($@"Perc{System.Environment.NewLine}{current_project.water_balance.perc.ToString("0.##")}", new Font("Arial", image_font_size, System.Drawing.FontStyle.Regular),
+                new SolidBrush(label_string_colour), percolation_point, label_string_format);
+
+            // add revap
+            image_graphics.DrawString($@"Revap{System.Environment.NewLine}{current_project.water_balance.aqu_revap.ToString("0.##")}", new Font("Arial", image_font_size, System.Drawing.FontStyle.Regular),
+                new SolidBrush(label_string_colour), revap_point, label_string_format);
+
+            // add return_flow
+            image_graphics.DrawString($@"Retun Flow{System.Environment.NewLine}{current_project.water_balance.aqu_flo_cha.ToString("0.##")}", new Font("Arial", image_font_size, System.Drawing.FontStyle.Regular),
+                new SolidBrush(label_string_colour), return_flow_point, label_string_format);
+
+            // https://stackoverflow.com/questions/6588974/get-imagesource-from-memorystream-in-c-sharp-wpf
+
+            ui_model_check_hydrology_image.Source = BitmapToImageSource(bitmap);
 
         }
 
@@ -932,24 +1014,70 @@ ru                    n           n             n              n
 
         private void disengage_wb_source(object sender, RoutedEventArgs e)
         {
-            ui_model_check_hydrology_image.Source = new BitmapImage(new Uri(@"C:\\tmp\\analysis_hydrology.png"));
+            ui_model_check_hydrology_image.Source = new BitmapImage(new Uri($@"{Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory)}\\assets\\analysis_hydrology.dll"));
         }
 
         evaluation_time_series timeseries_data;
 
         private void show_chart_for_selected_observation(object sender, SelectionChangedEventArgs e)
         {
-            plot_chart();
+            plot_chart_manual();
         }
 
         private void show_chart_for_selected_observation_m(object sender, MouseButtonEventArgs e)
         {
-            plot_chart();
+            plot_chart_manual();
         }
 
-        public void plot_chart()
+        public void plot_chart_auto()
+        {
+            ui_calibration_automatic_chart.Visibility = Visibility.Visible;
+
+            SeriesCollection_auto[0].Values.Clear();
+            SeriesCollection_auto[1].Values.Clear();
+
+            if (timeseries_data == null)
+            {
+
+                System.Windows.MessageBox.Show("Null Data!");
+            }
+            else
+            {
+                List<string> chart_labels = new List<string> { };
+
+                foreach (var series_name in timeseries_data.observed_timeseries.Keys)
+                {
+                    if (series_name == current_project.current_observations[ui_calibration_automatic_available_charts.SelectedIndex].chart_name)
+                    {
+                        switch (current_project.current_observations[ui_calibration_automatic_available_charts.SelectedIndex].observed_variable)
+                        {
+                            case "Flow":
+                                break;
+                        }
+
+                        foreach (var date_stamp in timeseries_data.observed_timeseries[series_name].Keys)
+                        {
+                            if (timeseries_data.observed_timeseries[series_name][date_stamp] >= 0)
+                            {
+                                if (timeseries_data.simulated_timeseries[series_name].ContainsKey(date_stamp))
+                                {
+                                    Console.WriteLine($@"{date_stamp.ToString()}");
+                                    SeriesCollection_auto[0].Values.Add(timeseries_data.observed_timeseries[series_name][date_stamp]);
+                                    SeriesCollection_auto[1].Values.Add(timeseries_data.simulated_timeseries[series_name][date_stamp]);
+                                    chart_labels.Add($@"{date_stamp.Day}/{date_stamp.Month}/{date_stamp.Year}");
+                                }
+                            }
+                        }
+                    }
+                }
+                Labels_auto = chart_labels.ToArray();
+            }
+        }
+
+        public void plot_chart_manual()
         {
             ui_calibration_manual_chart.Visibility = Visibility.Visible;
+            
             SeriesCollection[0].Values.Clear();
             SeriesCollection[1].Values.Clear();
 
@@ -960,11 +1088,6 @@ ru                    n           n             n              n
             }
             else
             {
-
-
-
-
-
 
                 List<string> chart_labels = new List<string> { };
 
@@ -989,22 +1112,244 @@ ru                    n           n             n              n
                                     SeriesCollection[1].Values.Add(timeseries_data.simulated_timeseries[series_name][date_stamp]);
                                     chart_labels.Add($@"{date_stamp.Day}/{date_stamp.Month}/{date_stamp.Year}");
                                 }
-
                             }
-
-
                         }
                     }
                 }
-
                 Labels = chart_labels.ToArray();
-
             }
         }
 
         private void show_chart_for_selected_observation_d(object sender, MouseButtonEventArgs e)
         {
-            plot_chart();
+            plot_chart_manual();
         }
+
+        bool is_sensitivity_run = false;
+        bool is_calibration_run = false;
+        int number_of_sens_samples = 0;
+        int par_set_id = 0;
+        bool is_swat_running = false;
+        int selected_obs_index = 0;
+
+
+
+        private void run_sensitivity(object sender, RoutedEventArgs e)
+        {
+            // get observation index for comparison
+            selected_obs_index = ui_sensitivity_observation_selection.SelectedIndex;
+
+            is_sensitivity_run = true;
+            // run loop
+            run_sensitivity_loop_async();
+        }
+
+        private void run_sample_parameter_calibration(object sender, RoutedEventArgs e)
+        {
+            // get observation index for comparison
+            ui_calibration_automatic_available_charts.SelectedIndex = 0;
+            selected_obs_index = ui_calibration_automatic_observation_selection.SelectedIndex;
+
+            // run loop
+            is_calibration_run = true;
+            run_sensitivity_loop_async();
+        }
+             
+
+
+        private void run_sensitivity_loop_async()
+        {
+            BackgroundWorker worker = new BackgroundWorker();
+            worker.DoWork += run_loop;
+            worker.WorkerReportsProgress = true;
+            worker.RunWorkerCompleted += notify_swat_run_status;
+            worker.RunWorkerAsync();
+        }
+
+
+        private void run_loop(object sender, DoWorkEventArgs e)
+        {
+            
+            // save parameter data name,min,max
+            string parameter_data = "par_name,min,max" + Environment.NewLine;
+            foreach (var sel_parameter in current_project.current_parameters)
+            {
+                parameter_data = parameter_data + $@"{sel_parameter.name},{sel_parameter.minimum},{sel_parameter.maximum}" + Environment.NewLine;
+            }
+            File.WriteAllText($@"{current_project.txtinout}\par_data.stb", parameter_data);
+
+            //generate sample
+            string sensitivity_api_path = $@"{ Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory)}\\assets\\sensitivity_api.exe";
+
+            using (System.Diagnostics.Process p_gen_process = new System.Diagnostics.Process())
+            {
+                p_gen_process.StartInfo.FileName = sensitivity_api_path;
+                p_gen_process.StartInfo.Arguments = $@"generate_sample {current_project.txtinout.Replace(" ", "__space__")} {current_project.sensivity_settings.seed}"; //argument
+                p_gen_process.StartInfo.UseShellExecute = false;
+                p_gen_process.StartInfo.RedirectStandardOutput = true;
+                p_gen_process.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
+                p_gen_process.StartInfo.CreateNoWindow = true; //not diplay a windows
+                p_gen_process.Start();
+                string output = p_gen_process.StandardOutput.ReadToEnd(); //The output result
+                p_gen_process.WaitForExit();
+            }
+
+
+            //read generated sample
+            string[] parameter_sample = read_from($@"{current_project.txtinout}\par_sample.stb");
+
+            Console.WriteLine(parameter_sample[0]);
+
+            // loop for sensitivity analysis
+            string report = "";
+            par_set_id = 0;
+
+            foreach (var par_line in parameter_sample)
+            {
+                par_set_id = par_set_id + 1;
+
+                //set parameters
+                string[] par_parts = par_line.Split(',');
+
+                for (int i = 0; i < current_project.current_parameters.Count(); i++)
+                {
+                    current_project.current_parameters[i].value = double.Parse(par_parts[i]);
+                }
+                update_project();
+
+                //run the model with new parameters
+                set_new_parameters();
+                number_of_sens_samples = parameter_sample.Count();
+
+                
+                Environment.CurrentDirectory = current_project.txtinout;
+                                
+                run_swat();
+                
+                //evaluate
+                (current_project, timeseries_data) = get_performance_indices(current_project);
+                update_project();
+
+                if (current_project.best_sensitivity_nse < current_project.current_observations[selected_obs_index].nse)
+                {
+                    current_project.best_sensitivity_nse = current_project.current_observations[selected_obs_index].nse;
+
+                    for (int cj = 0; cj < current_project.current_parameters.Count(); cj++)
+                    {
+                        current_project.current_parameters[cj].best_sens_parameter = current_project.current_parameters[cj].value;
+                    }
+                    update_project();
+
+                }
+
+                report = report + $@"{current_project.current_observations[selected_obs_index].nse}" + Environment.NewLine;
+
+                this.Dispatcher.Invoke(() =>
+                {
+                    ui_calibration_manual_performance.Items.Refresh();
+                    ui_calibration_mannual_parameters.Items.Refresh();
+
+                    ui_sensitivity_parameters.Items.Refresh();
+
+                    ui_calibration_automatic_performance.Items.Refresh();
+                    ui_calibration_automatic_parameters.Items.Refresh();
+
+                    if (is_calibration_run == true)
+                    {
+                        plot_chart_auto();
+                        ui_calibration_automatic_best_obj_function_label.Text = $@"Best NSE: {current_project.best_sensitivity_nse}";
+                    }
+
+
+
+                    
+                });
+            }
+
+            File.WriteAllText($@"{current_project.txtinout}\perf_report.stb", report);
+
+            ((BackgroundWorker)sender).ReportProgress(par_set_id);
+
+            //calculate sensitivity
+            using (System.Diagnostics.Process p_gen_process = new System.Diagnostics.Process())
+            {
+                p_gen_process.StartInfo.FileName = sensitivity_api_path;
+                p_gen_process.StartInfo.Arguments = $@"analyse_sensitivity {current_project.txtinout.Replace(" ", "__space__")}"; //argument
+                p_gen_process.StartInfo.UseShellExecute = false;
+                p_gen_process.StartInfo.RedirectStandardOutput = true;
+                p_gen_process.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
+                p_gen_process.StartInfo.CreateNoWindow = true; //not diplay a windows
+                p_gen_process.Start();
+                string output = p_gen_process.StandardOutput.ReadToEnd(); //The output result
+                p_gen_process.WaitForExit();
+            }
+
+            string[] sensitivity_content = read_from($@"{current_project.txtinout}\s1_sensitivity.stb");
+
+            for (int i = 0; i < current_project.current_parameters.Count(); i++)
+            {
+                current_project.current_parameters[i].sensitivity = double.Parse(sensitivity_content[i]);
+            }
+            update_project();
+
+            this.Dispatcher.Invoke(() =>
+            {
+                ui_calibration_manual_performance.Items.Refresh();
+                ui_calibration_mannual_parameters.Items.Refresh();
+                ui_sensitivity_parameters.Items.Refresh();
+                
+            });
+        
+
+        }
+        private void notify_swat_run_status(object sender, RunWorkerCompletedEventArgs e)
+        {
+            File.WriteAllText($@"{current_project.txtinout}\is_model_running.stb", "False");
+            Console.WriteLine($@"Notifier is done with {par_set_id}");
+            is_swat_running = false;
+            is_sensitivity_run = false;
+            is_calibration_run = false;
+
+
+        }
+
+        private void update_sensitivity_seed(object sender, RoutedEventArgs e)
+        {
+            current_project.sensivity_settings.seed = int.Parse(ui_sensitivity_seed_box.Text);
+            ui_calibration_automatic_seed_box.Text = ui_sensitivity_seed_box.Text;
+            update_project();
+        }
+        private void update_sensitivity_seed_auto(object sender, RoutedEventArgs e)
+        {
+            current_project.sensivity_settings.seed = int.Parse(ui_calibration_automatic_seed_box.Text);
+            ui_sensitivity_seed_box.Text = ui_calibration_automatic_seed_box.Text;
+
+            update_project();
+        }
+
+        private void navigate_calibration_automatic(object sender, RoutedEventArgs e)
+        {
+            ui_calibration_tab_pages.SelectedIndex = 1;
+        }
+
+        private void navigate_calibration_manual(object sender, RoutedEventArgs e)
+        {
+            ui_calibration_tab_pages.SelectedIndex = 0;
+        }
+
+        private void show_chart_for_selected_observation_m_auto(object sender, MouseButtonEventArgs e)
+        {
+            plot_chart_auto();
+        }
+
+        private void show_chart_for_selected_observation_d_auto(object sender, MouseButtonEventArgs e)
+        {
+            plot_chart_auto();
+        }
+        private void show_chart_for_selected_observation_auto(object sender, SelectionChangedEventArgs e)
+        {
+            plot_chart_auto();
+        }
+
     }
 }

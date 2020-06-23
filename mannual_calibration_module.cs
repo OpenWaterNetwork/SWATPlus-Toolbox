@@ -186,10 +186,10 @@ namespace SWAT__Toolbox
                             }
                         }
 
+                        // this will be sent over for graphing
                         time_series_data.observed_timeseries[eval_project.current_observations[i].chart_name] = obs_dictionary;
                         time_series_data.simulated_timeseries[eval_project.current_observations[i].chart_name] = sim_dictionary;
-
-                        // this will be sent over for graphing
+                        
                         eval_project.current_observations[i].nse = Math.Round((1 - (NSE_numerator / NSE_denominator)), 2);
                         eval_project.current_observations[i].pbias = Math.Round((1 - (NSE_numerator * 100 / PBIAS_denominator)), 2);
 

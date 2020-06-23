@@ -20,6 +20,10 @@ namespace SWAT__Toolbox
             public string change_type { get; set; }
             public string object_type { get; set; }
             public string units { get; set; }
+            public double sensitivity { get; set; } = 0;
+            public double best_sens_parameter { get; set; } = 0;
+            public double best_cal_parameter { get; set; } = 0;
+
             //public List<int> assigned { get; set; }
         }
 
