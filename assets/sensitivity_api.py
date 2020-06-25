@@ -28,18 +28,20 @@ def define_a_problem(parameter_names: list, min_max_bounds:list):
 def sample_parameters(problem:dict, seed:int):
     return saltelli.sample(problem, seed)
 
-# get option
 command = sys.argv[1]
-txtinout = sys.argv[2].replace("__space__", " ")
 
 # generate sample code
 if command == "generate_sample":
+        
+    # get option
+    txtinout = sys.argv[2].replace("__space__", " ")
     seed = int(sys.argv[3])
 
     parameters = []
     bounds = []
 
     for line in read_from(f"{txtinout}/par_data.stb")[1:]:
+        line = line.strip("\n")
         name, min, max = line.split(",")
         parameters.append(name)
         bounds.append([float(min), float(max)])
@@ -52,8 +54,10 @@ if command == "generate_sample":
     with open(f'{txtinout}/sens_def.stb', 'wb') as f:
         pickle.dump(problem, f)
 
+# calculate sensitivity code
 if command == "analyse_sensitivity":
 
+    # get option
     txtinout = sys.argv[2].replace("__space__", " ")
     report_file = f"{txtinout}/perf_report.stb"
     par_performance = numpy.loadtxt(report_file)
@@ -68,5 +72,3 @@ if command == "analyse_sensitivity":
     # Print the first-order sensitivity indices
     numpy.savetxt(f"{txtinout}/s1_sensitivity.stb", Si['S1'], delimiter=",", newline="\n")
     numpy.savetxt(f"{txtinout}/s2_sensitivity.stb", Si['S2'], delimiter=",", newline="\n")
-
-

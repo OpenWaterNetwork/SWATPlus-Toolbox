@@ -2,3 +2,7 @@
 /obj/Debug
 /bin
 /obj
+assets/build
+assets/dist
+assets/sensitivity_api.spec
+assets/__pycache__

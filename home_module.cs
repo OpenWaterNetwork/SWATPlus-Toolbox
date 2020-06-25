@@ -34,6 +34,7 @@ namespace SWAT__Toolbox
             public water_balance_results water_balance { get; set; }
             public nutrient_balance_results nutrient_balance { get; set; }
             public plant_results plant_summary { get; set; }
+            public int selected_eval_index { get; set; } = 0;
         }
 
         public class sensitivity_analysis_settings

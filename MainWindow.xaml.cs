@@ -106,6 +106,7 @@ namespace SWAT__Toolbox
             };
             DataContext = this;
 
+            ui_model_check_hydrology_image.Source = new BitmapImage(new Uri($@"{Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory)}\\assets\\analysis_hydrology.dll"));
             //ui init
             WindowChrome.SetWindowChrome(this, new WindowChrome());
 
@@ -386,6 +387,15 @@ namespace SWAT__Toolbox
             ui_run_model_end_date.SelectedDate = current_project.run_date_end;
 
             ui_run_model_warmup_period.Text = current_project.run_warmup.ToString();
+            try
+            {
+                ui_calibration_automatic_observation_selection.SelectedIndex = current_project.selected_eval_index;
+                ui_sensitivity_observation_selection.SelectedIndex = current_project.selected_eval_index;
+            }
+            catch (Exception)
+            {
+
+            }
         }
 
         private void home_open_project(object sender, RoutedEventArgs e)
@@ -398,6 +408,15 @@ namespace SWAT__Toolbox
         public void open_project()
         {
             current_project = new project();
+            try
+            {
+                ui_calibration_automatic_observation_selection.SelectedIndex = current_project.selected_eval_index;
+                ui_sensitivity_observation_selection.SelectedIndex = current_project.selected_eval_index;
+            }
+            catch (Exception)
+            {
+
+            }
 
             using (StreamReader streamReader = new StreamReader(pick_file("SWAT+ Toolbox Project|*.spt", "Choose Existing SWAT+ Toolbox Project", "OK")))
             {
@@ -1179,19 +1198,36 @@ ru                    n           n             n              n
             File.WriteAllText($@"{current_project.txtinout}\par_data.stb", parameter_data);
 
             //generate sample
-            string sensitivity_api_path = $@"{ Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory)}\\assets\\sensitivity_api.exe";
+            string sensitivity_api_path = $@"""{Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory)}\\assets\\sensitivity_api.py""";
 
             using (System.Diagnostics.Process p_gen_process = new System.Diagnostics.Process())
             {
-                p_gen_process.StartInfo.FileName = sensitivity_api_path;
-                p_gen_process.StartInfo.Arguments = $@"generate_sample {current_project.txtinout.Replace(" ", "__space__")} {current_project.sensivity_settings.seed}"; //argument
-                p_gen_process.StartInfo.UseShellExecute = false;
+
+                p_gen_process.StartInfo.FileName = "cmd.exe";
+                p_gen_process.StartInfo.RedirectStandardInput = true;
                 p_gen_process.StartInfo.RedirectStandardOutput = true;
-                p_gen_process.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
-                p_gen_process.StartInfo.CreateNoWindow = true; //not diplay a windows
+                p_gen_process.StartInfo.CreateNoWindow = true;
+                p_gen_process.StartInfo.UseShellExecute = false;
                 p_gen_process.Start();
-                string output = p_gen_process.StandardOutput.ReadToEnd(); //The output result
+
+                p_gen_process.StandardInput.WriteLine($@"{sensitivity_api_path} generate_sample {current_project.txtinout.Replace(" ", "__space__")} {current_project.sensivity_settings.seed}"); //argument);
+                p_gen_process.StandardInput.Flush();
+                p_gen_process.StandardInput.Close();
                 p_gen_process.WaitForExit();
+                Console.WriteLine(p_gen_process.StandardOutput.ReadToEnd());
+
+
+
+
+                //p_gen_process.StartInfo.FileName = @"C:\Windows\System32\cmd.exe";
+                //p_gen_process.StartInfo.Arguments = $@"{sensitivity_api_path} generate_sample {current_project.txtinout.Replace(" ", "__space__")} {current_project.sensivity_settings.seed}"; //argument
+                //p_gen_process.StartInfo.UseShellExecute = false;
+                //p_gen_process.StartInfo.RedirectStandardOutput = true;
+                //p_gen_process.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
+                //p_gen_process.StartInfo.CreateNoWindow = true; //not diplay a windows
+                //p_gen_process.Start();
+                //string output = p_gen_process.StandardOutput.ReadToEnd(); //The output result
+                //p_gen_process.WaitForExit();
             }
 
 
@@ -1273,15 +1309,29 @@ ru                    n           n             n              n
             //calculate sensitivity
             using (System.Diagnostics.Process p_gen_process = new System.Diagnostics.Process())
             {
-                p_gen_process.StartInfo.FileName = sensitivity_api_path;
-                p_gen_process.StartInfo.Arguments = $@"analyse_sensitivity {current_project.txtinout.Replace(" ", "__space__")}"; //argument
-                p_gen_process.StartInfo.UseShellExecute = false;
+                p_gen_process.StartInfo.FileName = "cmd.exe";
+                p_gen_process.StartInfo.RedirectStandardInput = true;
                 p_gen_process.StartInfo.RedirectStandardOutput = true;
-                p_gen_process.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
-                p_gen_process.StartInfo.CreateNoWindow = true; //not diplay a windows
+                p_gen_process.StartInfo.CreateNoWindow = true;
+                p_gen_process.StartInfo.UseShellExecute = false;
                 p_gen_process.Start();
-                string output = p_gen_process.StandardOutput.ReadToEnd(); //The output result
+
+                p_gen_process.StandardInput.WriteLine($@"{sensitivity_api_path} analyse_sensitivity {current_project.txtinout.Replace(" ", "__space__")}"); //argument);
+                p_gen_process.StandardInput.Flush();
+                p_gen_process.StandardInput.Close();
                 p_gen_process.WaitForExit();
+                Console.WriteLine(p_gen_process.StandardOutput.ReadToEnd());
+
+
+                //p_gen_process.StartInfo.FileName = "cmd.exe";
+                //p_gen_process.StartInfo.Arguments = $@"{sensitivity_api_path} analyse_sensitivity {current_project.txtinout.Replace(" ", "__space__")}"; //argument
+                //p_gen_process.StartInfo.UseShellExecute = false;
+                //p_gen_process.StartInfo.RedirectStandardOutput = true;
+                //p_gen_process.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
+                //p_gen_process.StartInfo.CreateNoWindow = true; //not diplay a windows
+                //p_gen_process.Start();
+                //string output = p_gen_process.StandardOutput.ReadToEnd(); //The output result
+                //p_gen_process.WaitForExit();
             }
 
             string[] sensitivity_content = read_from($@"{current_project.txtinout}\s1_sensitivity.stb");
