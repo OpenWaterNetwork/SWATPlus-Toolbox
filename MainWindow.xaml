@@ -13,7 +13,7 @@
         TextOptions.TextRenderingMode="Auto"        
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
-        Title="MainWindow" Height="720" Width="954" MinHeight="720" MinWidth="950" Icon="toolbox_icon.png" WindowStartupLocation="CenterScreen" WindowStyle="None">
+        Title="MainWindow" Height="700" Width="1100" MinHeight="700" MinWidth="950" Icon="toolbox_icon.png" WindowStartupLocation="CenterScreen" WindowStyle="None">
 
     <Grid>
 
@@ -26,6 +26,10 @@
         <materialDesign:ColorZone Grid.Row="0" Mode="PrimaryLight" VerticalAlignment="Stretch" 
                                   HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Background="#FF06467A"/>
 
+        <TextBlock FontSize="20" Margin="12, 5, 0, 0" Foreground="White">
+            SWAT+ Toolbox
+        </TextBlock>
+        
         <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" WindowChrome.IsHitTestVisibleInChrome="True" Height="32" Width="138">
             <Button Width = "46" Style="{StaticResource MaterialDesignFlatButton}" Foreground="{DynamicResource MaterialDesignPaper}" ToolTip="Minimise" Click="WindowMinimise" Cursor="Arrow">
                 <materialDesign:PackIcon Kind="WindowMinimize" />
@@ -38,7 +42,7 @@
             </Button>
         </StackPanel>
 
-        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,86,0,0" Width="896" >
+        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,86,0,0" Width="1095" >
             <RadioButton Style="{StaticResource MaterialDesignTabRadioButton}" Margin="4" IsChecked="True" Click="navigate_homepage" Cursor="Hand">
                 <TextBlock Style="{StaticResource MaterialDesignSubtitle1TextBlock}" Foreground="{DynamicResource MaterialDesignPaper}"><Run Text="Home"/></TextBlock>
             </RadioButton>
@@ -76,7 +80,7 @@
                                 <RowDefinition Height="145*"/>
                             </Grid.RowDefinitions>
 
-                            <TextBlock TextAlignment="Center" Grid.Row="0" Style="{StaticResource MaterialDesignHeadline2TextBlock}" MinWidth="500" HorizontalAlignment="Center" VerticalAlignment="Center" Height="72"><Hyperlink IsEnabled="False"><Run Text="SWAT+ Toolbox"/></Hyperlink></TextBlock>
+                            <TextBlock TextAlignment="Center" Grid.Row="0" Style="{StaticResource MaterialDesignHeadline2TextBlock}" MinWidth="500" HorizontalAlignment="Center" VerticalAlignment="Top" Height="98" Margin="294.5,57.564,294.5,0"><Hyperlink IsEnabled="False"><Run Text="SWAT+ Toolbox"/></Hyperlink></TextBlock>
 
                             <Grid Grid.Row="1">
                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
@@ -121,7 +125,7 @@
                                                             <materialDesign:PackIcon VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" Kind="FolderOpen" Width="28" Height="28"/>
                                                             <TextBox TextAlignment="Left" x:Name="ui_home_new_project_txtinout_path" VerticalAlignment="Center" Grid.Row="0" Grid.Column="1" Margin="8 0 8 0" HorizontalAlignment="Stretch" materialDesign:HintAssist.Hint="Set TxtInOut Directory" IsEnabled="False" />
 
-                                                            <Button VerticalAlignment="Center" Width="32" Height="32" Grid.Row="0" Grid.Column="2" Style="{StaticResource MaterialDesignIconButton}" ToolTip="Browse for TxtInOut Directory" Background="{DynamicResource MaterialDesignTextFieldBoxBackground}" Click="home_set_txtinout_directory">
+                                                            <Button VerticalAlignment="Center" Width="32" Height="32" Grid.Row="0" Grid.Column="2" Style="{StaticResource MaterialDesignIconButton}" ToolTip="Browse for TxtInOut Directory" Background="{DynamicResource MaterialDesignTextFieldBoxBackground}">
                                                                 <materialDesign:PackIcon Kind="Plus" />
                                                             </Button>
 
@@ -129,16 +133,15 @@
                                                             <materialDesign:PackIcon VerticalAlignment="Center" Grid.Row="1" Grid.Column="0" Kind="File" Width="28" Height="28"/>
                                                             <TextBox TextAlignment="Left" x:Name="ui_home_new_project_file_path" VerticalAlignment="Center" Grid.Row="1" Grid.Column="1" Margin="8 0 8 0" HorizontalAlignment="Stretch" materialDesign:HintAssist.Hint="Set Project Save Location" IsEnabled="False" />
 
-                                                            <Button VerticalAlignment="Center" Width="32" Height="32" Grid.Row="1" Grid.Column="2" Style="{StaticResource MaterialDesignIconButton}" ToolTip="Browse for Project Save Location" Background="{DynamicResource MaterialDesignTextFieldBoxBackground}" Click="home_set_project_location">
+                                                            <Button VerticalAlignment="Center" Width="32" Height="32" Grid.Row="1" Grid.Column="2" Style="{StaticResource MaterialDesignIconButton}" ToolTip="Browse for Project Save Location" Background="{DynamicResource MaterialDesignTextFieldBoxBackground}" Click="home_set_project">
                                                                 <materialDesign:PackIcon Kind="Plus"/>
                                                             </Button>
-
                                                         </Grid>
 
                                                         <materialDesign:ColorZone Mode="PrimaryMid" Grid.Row="1" Effect="{DynamicResource MaterialDesignShadowDepth5}" Background="#FF06467A">
                                                             <TextBlock Margin="16"><Run Text="New Project"/></TextBlock>
                                                         </materialDesign:ColorZone>
-                                                        <Button x:Name="ui_home_new_project_save" Background="#FF2962FF" BorderThickness="0" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" ToolTip="Save SWAT+ Toolbox Project" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" VerticalAlignment="Bottom" HorizontalAlignment="Right" Grid.Row="0" Margin="0 0 28 -20" Click="home_new_project_save" BorderBrush="#00000000">
+                                                        <Button x:Name="ui_home_new_project_save" Background="#FF2962FF" BorderThickness="0" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" ToolTip="Save SWAT+ Toolbox Project" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" VerticalAlignment="Bottom" HorizontalAlignment="Right" Grid.Row="0" Margin="0 0 28 -20" BorderBrush="#00000000">
                                                             <materialDesign:PackIcon Kind="ContentSave" Height="22" Width="22" />
                                                         </Button>
                                                     </Grid>
@@ -147,10 +150,10 @@
                                             </StackPanel>
                                         </materialDesign:DialogHost.DialogContent>
                                         <StackPanel Orientation="Horizontal">
-                                            <Button x:Name="ui_home_new_project" Foreground="{DynamicResource MaterialDesignTextAreaBorder}" Style="{StaticResource MaterialDesignFlatButton}"  Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}" ToolTip="Start a New Project">
+                                            <Button x:Name="ui_home_new_project" Click="home_set_project" Foreground="{DynamicResource MaterialDesignTextAreaBorder}" Style="{StaticResource MaterialDesignFlatButton}"   ToolTip="Start a New Project"> <!--Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"-->
                                                 <StackPanel Orientation="Horizontal">
                                                     <materialDesign:PackIcon Kind="Plus" />
-                                                    <TextBlock><Run Text="New Project"/></TextBlock>
+                                                    <TextBlock Text="New Project" />
                                                 </StackPanel>
                                             </Button>
 
@@ -175,7 +178,7 @@
 
                     <!--page 2-->
                     <TabItem Header="Run Model" Height="22" VerticalAlignment="Top">
-                        <Grid Background="{DynamicResource MaterialDesignPaper}" Margin="0, 10, 0, 0">
+                        <Grid x:Name="ui_run_model_grid" Background="{DynamicResource MaterialDesignPaper}" Margin="0, 10, 0, 0">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="3*"/>
                                 <RowDefinition Height="17*"/>
@@ -193,7 +196,7 @@
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0, 5, 0, 0">
                                         <DatePicker x:Name="ui_run_model_start_date" Margin="0, 0, 0, 0" HorizontalAlignment="Right" Width="110" materialDesign:HintAssist.Hint="Start Date"
                                                     Style="{StaticResource MaterialDesignFloatingHintDatePicker}" CalendarClosed="update_project_start_date" LostFocus="update_project_start_date"/>
-                                        <DatePicker x:Name="ui_run_model_end_date" Margin="20, 0, 0, 0" HorizontalAlignment="Right" Width="110" materialDesign:HintAssist.Hint="Start Date"
+                                        <DatePicker x:Name="ui_run_model_end_date" Margin="20, 0, 0, 0" HorizontalAlignment="Right" Width="110" materialDesign:HintAssist.Hint="End Date"
                                                     Style="{StaticResource MaterialDesignFloatingHintDatePicker}" CalendarClosed="update_project_end_date" LostFocus="update_project_end_date"/>
                                     </StackPanel>
 
@@ -397,10 +400,10 @@
 
                                 <ProgressBar Value="0" x:Name="ui_run_model_annual_progress" Grid.Column="0" HorizontalAlignment="Right" Margin="0,0,0,0" Width="70" Height="70" Style="{StaticResource MaterialDesignCircularProgressBar}"/>
 
-                                <StackPanel Grid.Column="0" Margin="0, 0 , 18, 0" Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Center">
-                                    <TextBlock x:Name="ui_run_model_running_year" FontSize="16"  HorizontalAlignment="Center"/>
-                                    <TextBlock x:Name="ui_run_model_of_label" FontSize="12" HorizontalAlignment="Center"/>
-                                    <TextBlock x:Name="ui_run_model_total_years" FontSize="14"  HorizontalAlignment="Center"/>
+                                <StackPanel x:Name="running_swat_info" Grid.Column="0" Margin="0, 0 , 18, 0" Orientation="Vertical"
+                                            HorizontalAlignment="Right" VerticalAlignment="Center">
+                                    <TextBlock Text=" " x:Name="ui_run_model_running_year" FontSize="16"  HorizontalAlignment="Center"/>
+                                    <TextBlock Text=" " x:Name="ui_run_model_total_years" FontSize="14"  HorizontalAlignment="Center"/>
                                 </StackPanel>
 
                                 <Grid Grid.Column="1">
@@ -411,7 +414,9 @@
 
                                     <ProgressBar materialDesign:TransitionAssist.DisableTransitions="True" x:Name="ui_run_model_progress" Value = "0" VerticalAlignment="Bottom" Margin="12,0,0,5" Width="510" HorizontalAlignment="Left" Height="5"  />
 
-                                    <Button Foreground="{DynamicResource MaterialDesignTextAreaBorder}" x:Name="ui_run_model_run_swat_plus" Grid.Row = "1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12,0,0,0" Style="{StaticResource MaterialDesignFlatButton}" ToolTip="Run SWAT+ with current settings" Click="run_swat_plus_model">
+                                    <Button Foreground="{DynamicResource MaterialDesignTextAreaBorder}" x:Name="ui_run_model_run_swat_plus"
+                                            Grid.Row = "1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12,0,0,0"
+                                            Style="{StaticResource MaterialDesignFlatButton}" ToolTip="Run SWAT+ with current settings" Click="run_swat_plus_model">
                                         <StackPanel Orientation="Horizontal">
                                             <materialDesign:PackIcon x:Name="ui_run_model_run_icon" Kind="Play" />
                                             <TextBlock  x:Name="ui_run_model_run_swat_button_text" Text=" Run SWAT+"/>
@@ -425,7 +430,7 @@
                     <!--page 3-->
 
                     <TabItem Header="Parameters" Height="22" VerticalAlignment="Top">
-                        <Grid Background="{DynamicResource MaterialDesignPaper}">
+                        <Grid x:Name="ui_parameters_grid" Background="{DynamicResource MaterialDesignPaper}">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="100"/>
                                 <RowDefinition Height="*"/>
@@ -436,59 +441,68 @@
                                     <ColumnDefinition Width="10*"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                 
-                                <StackPanel Grid.Column="1" Orientation="Horizontal" Grid.ColumnSpan="2">
-                                                                
-                                    <ComboBox x:Name="ui_parameter_group" Style="{StaticResource MaterialDesignFloatingHintComboBox}" materialDesign:TextFieldAssist.HasClearButton="False"
-                                              materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource SecondaryAccentBrush}"
-                                               materialDesign:HintAssist.Hint="Parameter Group" materialDesign:HintAssist.HintOpacity=".26" MinWidth="180" Margin="0, 0, 0, 0" DropDownClosed="list_available_parameters">
-                                        <ComboBoxItem IsSelected="False" Content="All"/>
-                                        <ComboBoxItem Content="Hydrologic Response Unit"/>
-                                        <ComboBoxItem Content="Aquifer"/>
-                                        <ComboBoxItem Content="Routing"/>
-                                        <ComboBoxItem Content="HRU LTE"/>
-                                        <ComboBoxItem Content="Soil"/>
-                                        <ComboBoxItem Content="Reservoir"/>
-                                        <ComboBoxItem Content="SWQ"/>
-                                    </ComboBox>
-                                    <ComboBox Style="{StaticResource MaterialDesignFloatingHintComboBox}"  x:Name="ui_parameter_name"
-                                              materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource SecondaryAccentBrush}"
-                                               materialDesign:HintAssist.Hint="Parameter Name" MinWidth="180" materialDesign:HintAssist.HintOpacity=".26" Margin="10, 0, 0, 0"/>
 
-                                    <ComboBox Style="{StaticResource MaterialDesignFloatingHintComboBox}" x:Name="ui_parameter_change_type" Margin="30, 0, 0, 0"
-                                              materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource SecondaryAccentBrush}"
-                                               materialDesign:HintAssist.Hint="Change Type" MinWidth="120" materialDesign:HintAssist.HintOpacity=".26" >
-                                        <ComboBoxItem Content="Percentage"/>
-                                        <ComboBoxItem Content="Relative Value"/>
-                                        <ComboBoxItem Content="Replace"/>
-                                    </ComboBox>
+                                    <Grid Grid.Column="1">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="46"/>
+                                        </Grid.ColumnDefinitions>
 
-                                    <ComboBox Style="{StaticResource MaterialDesignFloatingHintComboBox}" 
-                                              materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource SecondaryAccentBrush}" x:Name="ui_parameter_minimum" IsEditable="True"
-                                               materialDesign:HintAssist.Hint="Minimum" MinWidth="100" materialDesign:HintAssist.HintOpacity=".26" Margin="10, 0, 0, 0">
-                                        <ComboBoxItem Content="-10"/>
-                                        <ComboBoxItem Content="-20"/>
-                                        <ComboBoxItem Content="-30"/>
-                                    </ComboBox>
-                                    <ComboBox Style="{StaticResource MaterialDesignFloatingHintComboBox}" 
-                                              materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource SecondaryAccentBrush}" x:Name="ui_parameter_maximum" IsEditable="True"
-                                               materialDesign:HintAssist.Hint="Maximum" MinWidth="100" materialDesign:HintAssist.HintOpacity=".26" Margin="10, 0, 0, 0">
-                                        <ComboBoxItem Content="10"/>
-                                        <ComboBoxItem Content="20"/>
-                                        <ComboBoxItem Content="30"/>
-                                    </ComboBox>
+                                        <Grid Grid.Column="0">
+                                            <StackPanel Orientation="Horizontal">
+                                                <ComboBox x:Name="ui_parameter_group" Style="{StaticResource MaterialDesignFloatingHintComboBox}" materialDesign:TextFieldAssist.HasClearButton="False"
+                                                      materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource SecondaryAccentBrush}"
+                                                       materialDesign:HintAssist.Hint="Parameter Group" materialDesign:HintAssist.HintOpacity=".26" MinWidth="180" Margin="0, 0, 0, 0" DropDownClosed="list_available_parameters">
+                                                    <ComboBoxItem IsSelected="False" Content="All"/>
+                                                    <ComboBoxItem Content="Hydrologic Response Unit"/>
+                                                    <ComboBoxItem Content="Aquifer"/>
+                                                    <ComboBoxItem Content="Routing"/>
+                                                    <ComboBoxItem Content="HRU LTE"/>
+                                                    <ComboBoxItem Content="Soil"/>
+                                                    <ComboBoxItem Content="Reservoir"/>
+                                                    <ComboBoxItem Content="SWQ"/>
+                                                </ComboBox>
+                                                <ComboBox Style="{StaticResource MaterialDesignFloatingHintComboBox}"  x:Name="ui_parameter_name"
+                                                      materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource SecondaryAccentBrush}"
+                                                       materialDesign:HintAssist.Hint="Parameter Name" MinWidth="180" materialDesign:HintAssist.HintOpacity=".26" Margin="10, 0, 0, 0"/>
 
-                                    <Button Style="{StaticResource MaterialDesignFloatingActionMiniButton}" ToolTip="Add to observations table" Width="35"
+                                                <ComboBox Style="{StaticResource MaterialDesignFloatingHintComboBox}" x:Name="ui_parameter_change_type" Margin="30, 0, 0, 0"
+                                                      materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource SecondaryAccentBrush}"
+                                                       materialDesign:HintAssist.Hint="Change Type" MinWidth="120" materialDesign:HintAssist.HintOpacity=".26" >
+                                                    <ComboBoxItem Content="Percentage"/>
+                                                    <ComboBoxItem Content="Relative Value"/>
+                                                    <ComboBoxItem Content="Replace"/>
+                                                </ComboBox>
+
+                                                <ComboBox Style="{StaticResource MaterialDesignFloatingHintComboBox}" 
+                                                      materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource SecondaryAccentBrush}" x:Name="ui_parameter_minimum" IsEditable="True"
+                                                       materialDesign:HintAssist.Hint="Minimum" MinWidth="100" materialDesign:HintAssist.HintOpacity=".26" Margin="10, 0, 0, 0">
+                                                    <ComboBoxItem Content="-10"/>
+                                                    <ComboBoxItem Content="-20"/>
+                                                    <ComboBoxItem Content="-30"/>
+                                                </ComboBox>
+                                                <ComboBox Style="{StaticResource MaterialDesignFloatingHintComboBox}" 
+                                                      materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource SecondaryAccentBrush}" x:Name="ui_parameter_maximum" IsEditable="True"
+                                                       materialDesign:HintAssist.Hint="Maximum" MinWidth="100" materialDesign:HintAssist.HintOpacity=".26" Margin="10, 0, 0, 0">
+                                                    <ComboBoxItem Content="10"/>
+                                                    <ComboBoxItem Content="20"/>
+                                                    <ComboBoxItem Content="30"/>
+                                                </ComboBox>
+                                            </StackPanel>
+                                        </Grid>
+                                        <Grid Grid.Column="1" HorizontalAlignment="Right">
+                                            <Button Style="{StaticResource MaterialDesignFloatingActionMiniButton}" ToolTip="Add to observations table" Width="35"
                                                 Height="35" Margin="10, 0, 0, 0"
                                                 HorizontalAlignment ="Right" Click="add_parameter"
                                                 >
-                                        <materialDesign:PackIcon Kind="Add" />
+                                                <materialDesign:PackIcon Kind="Add" />
 
-                                    </Button>
-                                </StackPanel>
-                                
+                                            </Button>
+                                        </Grid>
+                                    </Grid>
+
                             </Grid>
-                            
+
                             <TabControl BorderThickness="0" TabStripPlacement="Bottom" Grid.Row="1" BorderBrush="SkyBlue" Margin="-8,0,-12,-31">
                                 <TabItem Header="TabItem">
                                     <Grid Background="{DynamicResource MaterialDesignPaper}" Margin="0, 0, 0, 0">
@@ -500,12 +514,12 @@
                                         <DataGrid Grid.Column="1" x:Name="ui_selected_parameters" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                                                       Margin="0,0,0,0" CanUserAddRows="False"  AutoGenerateColumns="False">
                                             <DataGrid.Columns>
-                                                <DataGridTextColumn Header="Parameter Group" Binding="{Binding object_type}" Width="2*"/>
-                                                <DataGridTextColumn Header="Parameter Name" Binding="{Binding name}" Width="2*" />
-                                                <DataGridTextColumn Header="Change Type" Binding="{Binding change_type}" Width="2*"/>
-                                                <DataGridTextColumn Header="Minimum" Binding="{Binding minimum}" Width="*"/>
-                                                <DataGridTextColumn Header="Maximum" Binding="{Binding maximum}" Width="*"/>
-                                                <DataGridTextColumn Header="Units" Binding="{Binding units}" Width="*"/>
+                                                <DataGridTextColumn IsReadOnly="True" Header="Parameter Group" Binding="{Binding object_type}" Width="2*"/>
+                                                <DataGridTextColumn IsReadOnly="True" Header="Parameter Name" Binding="{Binding name}" Width="2*" />
+                                                <DataGridTextColumn IsReadOnly="True" Header="Change Type" Binding="{Binding change_type}" Width="2*"/>
+                                                <DataGridTextColumn IsReadOnly="True" Header="Minimum" Binding="{Binding minimum}" Width="*"/>
+                                                <DataGridTextColumn IsReadOnly="True" Header="Maximum" Binding="{Binding maximum}" Width="*"/>
+                                                <DataGridTextColumn IsReadOnly="True" Header="Units" Binding="{Binding units}" Width="*"/>
                                             </DataGrid.Columns>
 
                                         </DataGrid>
@@ -521,7 +535,7 @@
 
                     <TabItem Header="Observations" Height="24" VerticalAlignment="Top">
 
-                        <Grid Background="{DynamicResource MaterialDesignPaper}">
+                        <Grid x:Name="ui_observations_grid" Background="{DynamicResource MaterialDesignPaper}">
 
                             <Grid Grid.Column="1" Background="{DynamicResource MaterialDesignPaper}">
 
@@ -538,7 +552,7 @@
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
                                         <Grid Grid.Column="1">
-                                            
+
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="280"/>
                                                 <ColumnDefinition Width="*"/>
@@ -557,8 +571,9 @@
                                                     </ComboBox>
 
                                                     <TextBox x:Name="ui_observations_object_number" materialDesign:HintAssist.Hint="Object Number" TextAlignment="Right" Margin="14, 0, 0, 3" Width="90"
-                                              Style="{StaticResource MaterialDesignFloatingHintTextBox}" HorizontalAlignment="Left"
-                                              VerticalAlignment="Center" />
+                                                        Style="{StaticResource MaterialDesignFloatingHintTextBox}" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                                        
+                                                    </TextBox>
                                                 </StackPanel>
                                             </StackPanel>
 
@@ -566,44 +581,44 @@
                                              DeleteToolTip="Remove Selected File" Margin="10,38,10,30" HorizontalAlignment="Stretch" Click="pick_observation_file" DeleteClick="clear_observation_file">
                                                 <StackPanel Orientation="Horizontal" Margin="0, 0, 0, -2">
                                                     <materialDesign:PackIcon Kind="MicrosoftExcel" />
-                                                    <TextBlock x:Name="ui_parameters_file_selection_path" Margin="6, 0, 0, 0"><Run Text="Click to select an observation file"/></TextBlock>
+                                                    <TextBlock x:Name="ui_parameters_file_selection_path" Margin="6, 0, 0, 0">Click to select an observation file</TextBlock>
                                                 </StackPanel>
                                             </materialDesign:Chip>
 
-                                        <Grid Grid.Column="2">
-                                            <StackPanel Orientation="Horizontal">
-                                                <ComboBox Style="{StaticResource MaterialDesignFloatingHintComboBox}" materialDesign:TextFieldAssist.HasClearButton="False"
+                                            <Grid Grid.Column="2">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <ComboBox Style="{StaticResource MaterialDesignFloatingHintComboBox}" materialDesign:TextFieldAssist.HasClearButton="False"
                                                         materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource SecondaryAccentBrush}" HorizontalAlignment="Stretch"
                                                         materialDesign:HintAssist.Hint="Timestep" Width="80" Margin="10, 0, 0, 0"
                                                           x:Name="ui_observations_timestep">
-                                                    <ComboBoxItem IsSelected="False" Content="Daily"/>
-                                                    <ComboBoxItem Content="Monthly"/>
-                                                    <ComboBoxItem Content="Yearly"/>
-                                                </ComboBox>
+                                                        <ComboBoxItem IsSelected="False" Content="Daily"/>
+                                                        <ComboBoxItem Content="Monthly"/>
+                                                        <ComboBoxItem Content="Yearly"/>
+                                                    </ComboBox>
 
-                                                <ComboBox Style="{StaticResource MaterialDesignFloatingHintComboBox}" materialDesign:TextFieldAssist.HasClearButton="False"
+                                                    <ComboBox Style="{StaticResource MaterialDesignFloatingHintComboBox}" materialDesign:TextFieldAssist.HasClearButton="False"
                                                         materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource SecondaryAccentBrush}" HorizontalAlignment="Stretch"
                                                         materialDesign:HintAssist.Hint="Observed Variable" Width="155" Margin="10, 0, 0, 0"
                                                           x:Name="ui_observations_observed_variable">
-                                                    <ComboBoxItem IsSelected="False" Content="Flow"/>
-                                                    <ComboBoxItem Content="ET"/>
-                                                    <ComboBoxItem Content="Sediments"/>
-                                                    <ComboBoxItem Content="Organic Nitrogen"/>
-                                                    <ComboBoxItem Content="Nitrate Nitrogen"/>
-                                                    <ComboBoxItem Content="Amonium Nitrogen"/>
-                                                    <ComboBoxItem Content="Nitrite Nitrogen"/>
-                                                    <ComboBoxItem Content="Organic Phosphorus"/>
-                                                    <ComboBoxItem Content="Mineral Phosphorus"/>
-                                                </ComboBox>
+                                                        <ComboBoxItem IsSelected="False" Content="Flow"/>
+                                                        <ComboBoxItem Content="ET"/>
+                                                        <ComboBoxItem Content="Sediments"/>
+                                                        <ComboBoxItem Content="Organic Nitrogen"/>
+                                                        <ComboBoxItem Content="Nitrate Nitrogen"/>
+                                                        <ComboBoxItem Content="Amonium Nitrogen"/>
+                                                        <ComboBoxItem Content="Nitrite Nitrogen"/>
+                                                        <ComboBoxItem Content="Organic Phosphorus"/>
+                                                        <ComboBoxItem Content="Mineral Phosphorus"/>
+                                                    </ComboBox>
 
-                                                <Button Style="{StaticResource MaterialDesignFloatingActionMiniButton}" ToolTip="Add to observations table"
+                                                    <Button Style="{StaticResource MaterialDesignFloatingActionMiniButton}" ToolTip="Add to observations table"
                                                         Width="35" Height="35" Margin="10, 0, 0, 0" HorizontalAlignment ="Right" Click="add_observation">
 
-                                                    <materialDesign:PackIcon Kind="Add" />
+                                                        <materialDesign:PackIcon Kind="Add" />
 
-                                                </Button>
-                                            </StackPanel>
-                                        </Grid>
+                                                    </Button>
+                                                </StackPanel>
+                                            </Grid>
                                         </Grid>
 
                                     </Grid>
@@ -620,11 +635,11 @@
                                                 <DataGrid Grid.Column="1" Background="{DynamicResource MaterialDesignPaper}" x:Name="ui_selected_observations" BorderThickness="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                                                       Margin="0,0,0,0" CanUserAddRows="False"  AutoGenerateColumns="False">
                                                     <DataGrid.Columns>
-                                                        <DataGridTextColumn Header="Object Type" Binding="{Binding object_type}" Width="200"/>
-                                                        <DataGridTextColumn Header="Object Number" Binding="{Binding number}" Width="120" />
-                                                        <DataGridTextColumn Header="Observation File" Binding="{Binding file}" Width="*"/>
-                                                        <DataGridTextColumn Header="Timestep" Binding="{Binding timestep}" Width="120"/>
-                                                        <DataGridTextColumn Header="Observed Variable" Binding="{Binding observed_variable}" Width="180"/>
+                                                        <DataGridTextColumn IsReadOnly="True" Header="Object Type" Binding="{Binding object_type}" Width="200"/>
+                                                        <DataGridTextColumn IsReadOnly="True" Header="Object Number" Binding="{Binding number}" Width="120" />
+                                                        <DataGridTextColumn IsReadOnly="True" Header="Observation File" Binding="{Binding file}" Width="*"/>
+                                                        <DataGridTextColumn IsReadOnly="True" Header="Timestep" Binding="{Binding timestep}" Width="120"/>
+                                                        <DataGridTextColumn IsReadOnly="True" Header="Observed Variable" Binding="{Binding observed_variable}" Width="180"/>
                                                     </DataGrid.Columns>
 
                                                 </DataGrid>
@@ -642,10 +657,10 @@
 
                             </Grid>
                         </Grid>
-                        
+
                     </TabItem>
                     <TabItem Header="Sensitivity">
-                        <Grid Background="{DynamicResource MaterialDesignPaper}">
+                        <Grid x:Name="ui_sensitivity_grid" Background="{DynamicResource MaterialDesignPaper}">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="100"/>
                                 <RowDefinition Height="12*"/>
@@ -662,6 +677,7 @@
                                 <StackPanel Orientation="Horizontal" Grid.Column="1">
                                     <ComboBox
                                         Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                                        x:Name="ui_sensitivity_analysis_method"
                                         materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource SecondaryAccentBrush}"
                                         materialDesign:HintAssist.Hint="Sensitivity Analysis Method"
                                         MinWidth="185">
@@ -678,7 +694,7 @@
                                         materialDesign:HintAssist.Hint="Observation" Margin="15, 0, 0, 0"
                                         MinWidth="200">
                                     </ComboBox>
-                                    
+
                                     <TextBox materialDesign:HintAssist.Hint="Seed"
                                              Margin="25, 0, 0, 3" MinWidth="70" x:Name="ui_sensitivity_seed_box"
                                              ToolTip="This number determines how many parameter samples are generated"
@@ -686,12 +702,12 @@
                                              Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                              VerticalAlignment="Center" LostFocus="update_sensitivity_seed" />
 
-                                    <materialDesign:Chip Margin="15, 0, 0, -5" MinWidth="200">
-                                        <TextBlock TextAlignment="Center"> Number of Samples: 2000 </TextBlock>
+                                    <materialDesign:Chip Visibility="Hidden" Margin="15, 0, 0, -5" MinWidth="200">
+                                        <TextBlock TextAlignment="Center"> Number of Samples: 2000</TextBlock>
                                     </materialDesign:Chip>
-                                    
+
                                     <TextBlock >
-                                        
+
                                     </TextBlock>
 
                                 </StackPanel>
@@ -718,14 +734,14 @@
                                             <DataGridTextColumn IsReadOnly="True"  Header="Name" Binding="{Binding name}" MinWidth="55" Width="*"/>
                                             <DataGridTextColumn IsReadOnly="True"  Header="" Binding="{Binding units}" Width="*" MaxWidth="120"/>
                                             <DataGridTextColumn IsReadOnly="True"  Header="Sensitivity" Binding="{Binding sensitivity}" Width="*" MinWidth="50"/>
-                                            
+
                                         </DataGrid.Columns>
                                     </DataGrid>
                                 </Grid>
-                                
-                                
+
+
                             </Grid>
-                            
+
 
                             <Grid Grid.Row="2">
                                 <StackPanel Orientation="Vertical">
@@ -747,7 +763,7 @@
                         </Grid>
                     </TabItem>
                     <TabItem Header="Calibration" Background="{DynamicResource MaterialDesignPaper}">
-                        <Grid Background="{DynamicResource MaterialDesignPaper}">
+                        <Grid x:Name="ui_calibration_grid" Background="{DynamicResource MaterialDesignPaper}">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="70"/>
@@ -797,7 +813,7 @@
                                             <ProgressBar Grid.Row="1" VerticalAlignment="Top" x:Name="ui_calibration_manual_run_swat_progress" Value="0" materialDesign:TransitionAssist.DisableTransitions="True" />
 
                                             <StackPanel Grid.Row="2" Orientation="Vertical">
-                                                
+
 
                                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0, 10, 0, 0" >
                                                     <Button Foreground="{DynamicResource MaterialDesignTextAreaBorder}" x:Name="ui_calibration_manual_run_swat_plus"
@@ -883,11 +899,11 @@
                                         </Grid>
 
                                     </Grid>
-                                    
-                                    
-                                    
-                                    
-                                    
+
+
+
+
+
                                 </TabItem>
 
                                 <TabItem Header="Automatic Calibration">
@@ -905,16 +921,16 @@
                                                 <ColumnDefinition Width="10*"/>
                                                 <ColumnDefinition Width="*"/>
                                             </Grid.ColumnDefinitions>
-                                            
+
                                             <StackPanel Orientation="Horizontal" Grid.Column="1">
                                                 <ComboBox Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                                                          materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource SecondaryAccentBrush}"
                                                          materialDesign:HintAssist.Hint="Calibration Method" MinWidth="140"
                                                           IsEnabled="False">
 
-                                                        <ComboBoxItem IsSelected="True">
-                                                            Sampled Parameters
-                                                        </ComboBoxItem>
+                                                    <ComboBoxItem IsSelected="True">
+                                                        Sampled Parameters
+                                                    </ComboBoxItem>
                                                 </ComboBox>
 
                                                 <ComboBox Style="{StaticResource MaterialDesignFloatingHintComboBox}"
@@ -931,7 +947,7 @@
                                                     <ComboBoxItem IsSelected="True">
                                                         NSE
                                                     </ComboBoxItem>
-                                                    
+
                                                 </ComboBox>
 
                                                 <TextBox materialDesign:HintAssist.Hint="Seed" Margin="25, 0, 0, 3" MinWidth="70"
@@ -940,7 +956,7 @@
                                                          Text="{Binding seed, Mode=TwoWay}" Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                                          VerticalAlignment="Center" LostFocus="update_sensitivity_seed_auto" />
 
-                                                <materialDesign:Chip Margin="15, 0, 0, -5" Width="80">
+                                                <materialDesign:Chip Visibility="Hidden" Margin="15, 0, 0, -5" Width="80">
                                                     <TextBlock TextAlignment="Center"> Runs: 2000</TextBlock>
                                                 </materialDesign:Chip>
 
@@ -950,10 +966,10 @@
                                                         Style="{StaticResource MaterialDesignFlatButton}"
                                                         ToolTip="Run automatic calibration" Click="run_sample_parameter_calibration">
 
-                                                        <StackPanel Orientation="Horizontal">
-                                                            <materialDesign:PackIcon x:Name="ui_calibration_automatic_run_icon" Kind="Play"/>
-                                                            <TextBlock Margin="0, 1, 0, 0" x:Name="ui_calibration_automatic_calibration_run_calibration" Text=" Calibrate"/>
-                                                        </StackPanel>   
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <materialDesign:PackIcon x:Name="ui_calibration_automatic_run_icon" Kind="Play"/>
+                                                        <TextBlock Margin="0, 1, 0, 0" x:Name="ui_calibration_automatic_calibration_run_calibration" Text=" Calibrate"/>
+                                                    </StackPanel>
                                                 </Button>
 
                                             </StackPanel>
@@ -980,7 +996,7 @@
                                                               Margin="0,0,0,0" CanUserAddRows="False"  AutoGenerateColumns="False"
                                                               materialDesign:DataGridAssist.CellPadding="2 4 2 4" 
                                                               materialDesign:DataGridAssist.ColumnHeaderPadding="2 3 2 3">
-                                                        
+
                                                         <DataGrid.Columns>
                                                             <DataGridTextColumn IsReadOnly="True"  Header="Group" Binding="{Binding object_type}" Width="*" MinWidth="50"/>
                                                             <DataGridTextColumn IsReadOnly="True"  Header="Name" Binding="{Binding name}" MinWidth="55" Width="*"/>
@@ -996,27 +1012,27 @@
                                                     <TextBlock HorizontalAlignment="Right" Margin="2, 5, 2, 0" VerticalAlignment="Top"
                                                                IsEnabled="False" Style="{StaticResource MaterialDesignBody2TextBlock}"
                                                                x:Name="ui_calibration_automatic_best_obj_function_label">
-                                                               Best NSE: - 
+                                                               Best NSE: -
                                                     </TextBlock>
                                                 </Grid>
                                             </Grid>
 
                                             <Grid Grid.Column="2">
-                                                    <DataGrid HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                                <DataGrid HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                                                           x:Name="ui_calibration_automatic_performance" 
                                                           Margin="0,0,0,0" CanUserAddRows="False"  AutoGenerateColumns="False"
                                                           materialDesign:DataGridAssist.CellPadding="2 4 2 4" 
                                                           materialDesign:DataGridAssist.ColumnHeaderPadding="2 3 2 3">
-                                                        <DataGrid.Columns>
-                                                            <DataGridTextColumn IsReadOnly="True" Header="" Binding="{Binding object_type}" MinWidth="120" Width="2*"/>
-                                                            <DataGridTextColumn IsReadOnly="True" Header="" Binding="{Binding number}" Width="*" />
-                                                            <DataGridTextColumn IsReadOnly="True" Header="" Binding="{Binding timestep}" Width="*" />
-                                                            <DataGridTextColumn IsReadOnly="True" Header="" Binding="{Binding observed_variable}" Width="*" />
-                                                            <DataGridTextColumn IsReadOnly="True" Header="NSE" Binding="{Binding nse}" MinWidth="30"/>
-                                                            <!--<DataGridTextColumn IsReadOnly="True" Header="R2" Binding="{Binding Path=r2}" MinWidth="20"/>-->
-                                                            <DataGridTextColumn IsReadOnly="True" Header="PBias" Binding="{Binding pbias}" MinWidth="30"/>
-                                                        </DataGrid.Columns>
-                                                    </DataGrid>
+                                                    <DataGrid.Columns>
+                                                        <DataGridTextColumn IsReadOnly="True" Header="" Binding="{Binding object_type}" MinWidth="120" Width="2*"/>
+                                                        <DataGridTextColumn IsReadOnly="True" Header="" Binding="{Binding number}" Width="*" />
+                                                        <DataGridTextColumn IsReadOnly="True" Header="" Binding="{Binding timestep}" Width="*" />
+                                                        <DataGridTextColumn IsReadOnly="True" Header="" Binding="{Binding observed_variable}" Width="*" />
+                                                        <DataGridTextColumn IsReadOnly="True" Header="NSE" Binding="{Binding nse}" MinWidth="30"/>
+                                                        <!--<DataGridTextColumn IsReadOnly="True" Header="R2" Binding="{Binding Path=r2}" MinWidth="20"/>-->
+                                                        <DataGridTextColumn IsReadOnly="True" Header="PBias" Binding="{Binding pbias}" MinWidth="30"/>
+                                                    </DataGrid.Columns>
+                                                </DataGrid>
 
                                             </Grid>
 
@@ -1031,7 +1047,7 @@
                                                 </Grid.ColumnDefinitions>
                                                 <ProgressBar Grid.Column="1" x:Name="ui_calibration_automatic_progress" Value="0" materialDesign:TransitionAssist.DisableTransitions="True" />
                                             </Grid>
-                                            
+
                                         </StackPanel>
                                         <Grid Grid.Row="2">
                                             <Grid.ColumnDefinitions>
@@ -1088,7 +1104,7 @@
 
 
                     <TabItem Header="Model Check">
-                        <Grid Background="{DynamicResource MaterialDesignPaper}">
+                        <Grid x:Name="ui_model_check_grid" Background="{DynamicResource MaterialDesignPaper}">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="70"/>
