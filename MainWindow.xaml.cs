@@ -346,6 +346,15 @@ namespace SWAT__Toolbox
         private void add_observation(object sender, RoutedEventArgs e)
         {
             // check user input for errors
+
+            // block other observed variables
+            if (ui_observations_observed_variable.SelectedIndex > 2)
+            {
+                //select the observed model component
+                System.Windows.MessageBox.Show($@"{ui_observations_observed_variable.Items[ui_observations_observed_variable.SelectedIndex].ToString().Split(':').Last()} is not yet supported in SWAT+ Toolbox");
+                return;
+            }
+
             if (ui_observations_object_type.SelectedIndex < 0)
             {
                 //select the observed model component
