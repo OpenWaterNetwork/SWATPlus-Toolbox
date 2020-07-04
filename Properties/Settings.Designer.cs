@@ -25,12 +25,13 @@ namespace SWAT__Toolbox.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public global::System.Collections.Specialized.HybridDictionary Recents {
+        [global::System.Configuration.DefaultSettingValueAttribute("{\"-\":\"-\"}")]
+        public string recent_projects {
             get {
-                return ((global::System.Collections.Specialized.HybridDictionary)(this["Recents"]));
+                return ((string)(this["recent_projects"]));
             }
             set {
-                this["Recents"] = value;
+                this["recent_projects"] = value;
             }
         }
     }

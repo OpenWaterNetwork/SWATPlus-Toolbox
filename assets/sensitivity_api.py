@@ -72,3 +72,5 @@ if command == "analyse_sensitivity":
     # Print the first-order sensitivity indices
     numpy.savetxt(f"{txtinout}/s1_sensitivity.stb", Si['S1'], delimiter=",", newline="\n")
     numpy.savetxt(f"{txtinout}/s2_sensitivity.stb", Si['S2'], delimiter=",", newline="\n")
+
+print(sys.argv)

@@ -7,3 +7,5 @@ assets/dist
 assets/sensitivity_api.spec
 assets/__pycache__
 /assets/setup_exe.py
+/assets/sensitivity_api
+/releases

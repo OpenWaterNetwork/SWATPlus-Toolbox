@@ -60,6 +60,7 @@ namespace SWAT__Toolbox
                 double[] valid_observations = Array.Empty<double>();
                 double NSE_numerator = 0;
                 double NSE_denominator = 0;
+                double PBIAS_numerator = 0;
                 double PBIAS_denominator = 0;
 
                 //populate observations dictionary
@@ -434,11 +435,286 @@ namespace SWAT__Toolbox
                                 break;
                         }
                         break;
+
+                    case "Organic Nitrogen":
+                        //populate simulations dictionary
+                        switch (eval_project.current_observations[i].object_type)
+                        {
+                            case "Channel":
+                                switch (eval_project.current_observations[i].timestep)
+                                {
+                                    case "Daily":
+
+                                        string[] simulations_content_day = read_from($@"{eval_project.txtinout}\channel_sd_day.txt");
+
+                                        for (int k = 3; k < simulations_content_day.Count(); k++)
+                                        {
+                                            DateTime date_value;
+                                            string[] parts = split_string_by_space(simulations_content_day[k]);
+                                            if (int.Parse(parts[4]) == eval_project.current_observations[i].number)
+                                            {
+                                                date_value = new DateTime(int.Parse(parts[3]), int.Parse(parts[1]), int.Parse(parts[2]));
+                                                sim_dictionary.Add(date_value, double.Parse(parts[49]));
+                                            }
+                                        }
+                                        break;
+
+                                    case "Monthly":
+
+                                        string[] simulations_content_month = read_from($@"{eval_project.txtinout}\channel_sd_mon.txt");
+
+                                        //populate simulations dictionary
+                                        for (int k = 3; k < simulations_content_month.Count(); k++)
+                                        {
+                                            DateTime date_value;
+                                            string[] parts = split_string_by_space(simulations_content_month[k]);
+
+                                            if (int.Parse(parts[4]) == eval_project.current_observations[i].number)
+                                            {
+                                                date_value = new DateTime(int.Parse(parts[3]), int.Parse(parts[1]), 1);
+                                                sim_dictionary.Add(date_value, double.Parse(parts[49]));
+                                            }
+
+                                        }
+                                        break;
+
+                                    case "Yearly":
+
+                                        string[] simulations_content_year = read_from($@"{eval_project.txtinout}\channel_sd_yr.txt");
+
+                                        //populate simulations dictionary
+                                        for (int k = 3; k < simulations_content_year.Count(); k++)
+                                        {
+                                            DateTime date_value;
+                                            string[] parts = split_string_by_space(simulations_content_year[k]);
+
+                                            if (int.Parse(parts[4]) == eval_project.current_observations[i].number)
+                                            {
+                                                date_value = new DateTime(int.Parse(parts[3]), 1, 1);
+                                                sim_dictionary.Add(date_value, double.Parse(parts[49]));
+                                            }
+                                        }
+
+                                        break;
+
+                                    default:
+                                        break;
+                                }
+
+                                break;
+                        }
+                        break;
+
+                    case "Nitrate Nitrogen":
+                        //populate simulations dictionary
+                        switch (eval_project.current_observations[i].object_type)
+                        {
+                            case "Channel":
+                                switch (eval_project.current_observations[i].timestep)
+                                {
+                                    case "Daily":
+
+                                        string[] simulations_content_day = read_from($@"{eval_project.txtinout}\channel_sd_day.txt");
+
+                                        for (int k = 3; k < simulations_content_day.Count(); k++)
+                                        {
+                                            DateTime date_value;
+                                            string[] parts = split_string_by_space(simulations_content_day[k]);
+                                            if (int.Parse(parts[4]) == eval_project.current_observations[i].number)
+                                            {
+                                                date_value = new DateTime(int.Parse(parts[3]), int.Parse(parts[1]), int.Parse(parts[2]));
+                                                sim_dictionary.Add(date_value, double.Parse(parts[51]));
+                                            }
+                                        }
+                                        break;
+
+                                    case "Monthly":
+
+                                        string[] simulations_content_month = read_from($@"{eval_project.txtinout}\channel_sd_mon.txt");
+
+                                        //populate simulations dictionary
+                                        for (int k = 3; k < simulations_content_month.Count(); k++)
+                                        {
+                                            DateTime date_value;
+                                            string[] parts = split_string_by_space(simulations_content_month[k]);
+
+                                            if (int.Parse(parts[4]) == eval_project.current_observations[i].number)
+                                            {
+                                                date_value = new DateTime(int.Parse(parts[3]), int.Parse(parts[1]), 1);
+                                                sim_dictionary.Add(date_value, double.Parse(parts[51]));
+                                            }
+
+                                        }
+                                        break;
+
+                                    case "Yearly":
+
+                                        string[] simulations_content_year = read_from($@"{eval_project.txtinout}\channel_sd_yr.txt");
+
+                                        //populate simulations dictionary
+                                        for (int k = 3; k < simulations_content_year.Count(); k++)
+                                        {
+                                            DateTime date_value;
+                                            string[] parts = split_string_by_space(simulations_content_year[k]);
+
+                                            if (int.Parse(parts[4]) == eval_project.current_observations[i].number)
+                                            {
+                                                date_value = new DateTime(int.Parse(parts[3]), 1, 1);
+                                                sim_dictionary.Add(date_value, double.Parse(parts[51]));
+                                            }
+                                        }
+
+                                        break;
+
+                                    default:
+                                        break;
+                                }
+
+                                break;
+                           }
+                        break;
+
+                    case "Amonium Nitrogen":
+                        //populate simulations dictionary
+                        switch (eval_project.current_observations[i].object_type)
+                        {
+                            case "Channel":
+                                switch (eval_project.current_observations[i].timestep)
+                                {
+                                    case "Daily":
+
+                                        string[] simulations_content_day = read_from($@"{eval_project.txtinout}\channel_sd_day.txt");
+
+                                        for (int k = 3; k < simulations_content_day.Count(); k++)
+                                        {
+                                            DateTime date_value;
+                                            string[] parts = split_string_by_space(simulations_content_day[k]);
+                                            if (int.Parse(parts[4]) == eval_project.current_observations[i].number)
+                                            {
+                                                date_value = new DateTime(int.Parse(parts[3]), int.Parse(parts[1]), int.Parse(parts[2]));
+                                                sim_dictionary.Add(date_value, double.Parse(parts[54]));
+                                            }
+                                        }
+                                        break;
+
+                                    case "Monthly":
+
+                                        string[] simulations_content_month = read_from($@"{eval_project.txtinout}\channel_sd_mon.txt");
+
+                                        //populate simulations dictionary
+                                        for (int k = 3; k < simulations_content_month.Count(); k++)
+                                        {
+                                            DateTime date_value;
+                                            string[] parts = split_string_by_space(simulations_content_month[k]);
+
+                                            if (int.Parse(parts[4]) == eval_project.current_observations[i].number)
+                                            {
+                                                date_value = new DateTime(int.Parse(parts[3]), int.Parse(parts[1]), 1);
+                                                sim_dictionary.Add(date_value, double.Parse(parts[54]));
+                                            }
+
+                                        }
+                                        break;
+
+                                    case "Yearly":
+
+                                        string[] simulations_content_year = read_from($@"{eval_project.txtinout}\channel_sd_yr.txt");
+
+                                        //populate simulations dictionary
+                                        for (int k = 3; k < simulations_content_year.Count(); k++)
+                                        {
+                                            DateTime date_value;
+                                            string[] parts = split_string_by_space(simulations_content_year[k]);
+
+                                            if (int.Parse(parts[4]) == eval_project.current_observations[i].number)
+                                            {
+                                                date_value = new DateTime(int.Parse(parts[3]), 1, 1);
+                                                sim_dictionary.Add(date_value, double.Parse(parts[54]));
+                                            }
+                                        }
+
+                                        break;
+
+                                    default:
+                                        break;
+                                }
+
+                                break;
+                            }
+                            break;
+
+                    case "Nitrite Nitrogen":
+                        //populate simulations dictionary
+                        switch (eval_project.current_observations[i].object_type)
+                        {
+                            case "Channel":
+                                switch (eval_project.current_observations[i].timestep)
+                                {
+                                    case "Daily":
+
+                                        string[] simulations_content_day = read_from($@"{eval_project.txtinout}\channel_sd_day.txt");
+
+                                        for (int k = 3; k < simulations_content_day.Count(); k++)
+                                        {
+                                            DateTime date_value;
+                                            string[] parts = split_string_by_space(simulations_content_day[k]);
+                                            if (int.Parse(parts[4]) == eval_project.current_observations[i].number)
+                                            {
+                                                date_value = new DateTime(int.Parse(parts[3]), int.Parse(parts[1]), int.Parse(parts[2]));
+                                                sim_dictionary.Add(date_value, double.Parse(parts[55]));
+                                            }
+                                        }
+                                        break;
+
+                                    case "Monthly":
+
+                                        string[] simulations_content_month = read_from($@"{eval_project.txtinout}\channel_sd_mon.txt");
+
+                                        //populate simulations dictionary
+                                        for (int k = 3; k < simulations_content_month.Count(); k++)
+                                        {
+                                            DateTime date_value;
+                                            string[] parts = split_string_by_space(simulations_content_month[k]);
+
+                                            if (int.Parse(parts[4]) == eval_project.current_observations[i].number)
+                                            {
+                                                date_value = new DateTime(int.Parse(parts[3]), int.Parse(parts[1]), 1);
+                                                sim_dictionary.Add(date_value, double.Parse(parts[55]));
+                                            }
+
+                                        }
+                                        break;
+
+                                    case "Yearly":
+
+                                        string[] simulations_content_year = read_from($@"{eval_project.txtinout}\channel_sd_yr.txt");
+
+                                        //populate simulations dictionary
+                                        for (int k = 3; k < simulations_content_year.Count(); k++)
+                                        {
+                                            DateTime date_value;
+                                            string[] parts = split_string_by_space(simulations_content_year[k]);
+
+                                            if (int.Parse(parts[4]) == eval_project.current_observations[i].number)
+                                            {
+                                                date_value = new DateTime(int.Parse(parts[3]), 1, 1);
+                                                sim_dictionary.Add(date_value, double.Parse(parts[55]));
+                                            }
+                                        }
+
+                                        break;
+
+                                    default:
+                                        break;
+                                }
+
+                                break;
+                        }
+                        break;
                 }
 
                 // calculate indices
 
-                //get observation average
                 foreach (var date_stamp_obs in obs_dictionary.Keys)
                 {
                     if (obs_dictionary[date_stamp_obs] >= 0)
@@ -449,6 +725,7 @@ namespace SWAT__Toolbox
                             NSE_numerator = NSE_numerator + ((sim_dictionary[date_stamp_obs] - obs_dictionary[date_stamp_obs]) * (sim_dictionary[date_stamp_obs] - obs_dictionary[date_stamp_obs]));
                             NSE_denominator = NSE_denominator + ((obs_dictionary[date_stamp_obs] - valid_observations.Average()) * (obs_dictionary[date_stamp_obs] - valid_observations.Average()));
 
+                            PBIAS_numerator = PBIAS_numerator + (obs_dictionary[date_stamp_obs] - sim_dictionary[date_stamp_obs]);
                             PBIAS_denominator = PBIAS_denominator + obs_dictionary[date_stamp_obs];
 
                         }
@@ -460,7 +737,7 @@ namespace SWAT__Toolbox
                 time_series_data.simulated_timeseries[eval_project.current_observations[i].chart_name] = sim_dictionary;
 
                 eval_project.current_observations[i].nse = Math.Round((1 - (NSE_numerator / NSE_denominator)), 2);
-                eval_project.current_observations[i].pbias = Math.Round((1 - (NSE_numerator * 100 / PBIAS_denominator)), 2);
+                eval_project.current_observations[i].pbias = Math.Round((PBIAS_numerator * 100 / PBIAS_denominator), 2);
 
             }
             return (eval_project, time_series_data);

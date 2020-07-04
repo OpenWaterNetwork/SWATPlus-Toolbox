@@ -26,10 +26,10 @@
         <materialDesign:ColorZone Grid.Row="0" Mode="PrimaryLight" VerticalAlignment="Stretch" 
                                   HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Background="#FF06467A"/>
 
-        <TextBlock FontSize="20" Margin="12, 5, 0, 0" Foreground="White">
+        <TextBlock FontSize="16" Margin="12, 12, 0, 0" Foreground="White">
             SWAT+ Toolbox
         </TextBlock>
-        
+
         <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" WindowChrome.IsHitTestVisibleInChrome="True" Height="32" Width="138">
             <Button Width = "46" Style="{StaticResource MaterialDesignFlatButton}" Foreground="{DynamicResource MaterialDesignPaper}" ToolTip="Minimise" Click="WindowMinimise" Cursor="Arrow">
                 <materialDesign:PackIcon Kind="WindowMinimize" />
@@ -37,7 +37,7 @@
             <Button Width = "46" Style="{StaticResource MaterialDesignFlatButton}" Foreground="{DynamicResource MaterialDesignPaper}" ToolTip="Maxmise" Click="RestoreMaximise" Cursor="Arrow">
                 <materialDesign:PackIcon Kind="WindowMaximize" />
             </Button>
-            <Button Width = "46" Style="{StaticResource MaterialDesignFlatButton}" Foreground="{DynamicResource MaterialDesignPaper}" ToolTip="Close" Click="CloseWindow" Cursor="Arrow" Background="#00000000">
+            <Button Width = "46" Style="{StaticResource MaterialDesignFlatButton}" Foreground="{DynamicResource MaterialDesignPaper}" x:Name="ui_close_button" ToolTip="Close" Click="CloseWindow" Cursor="Arrow" Background="#00000000">
                 <materialDesign:PackIcon Kind="WindowClose" />
             </Button>
         </StackPanel>
@@ -80,7 +80,7 @@
                                 <RowDefinition Height="145*"/>
                             </Grid.RowDefinitions>
 
-                            <TextBlock TextAlignment="Center" Grid.Row="0" Style="{StaticResource MaterialDesignHeadline2TextBlock}" MinWidth="500" HorizontalAlignment="Center" VerticalAlignment="Top" Height="98" Margin="294.5,57.564,294.5,0"><Hyperlink IsEnabled="False"><Run Text="SWAT+ Toolbox"/></Hyperlink></TextBlock>
+                            <TextBlock TextAlignment="Center" Grid.Row="0" Style="{StaticResource MaterialDesignHeadline2TextBlock}" MinWidth="500" HorizontalAlignment="Center" VerticalAlignment="Top" Height="69" Margin="293,87,293,0"><Hyperlink IsEnabled="False"><Run Text="SWAT+ Toolbox"/></Hyperlink></TextBlock>
 
                             <Grid Grid.Row="1">
                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
@@ -150,7 +150,8 @@
                                             </StackPanel>
                                         </materialDesign:DialogHost.DialogContent>
                                         <StackPanel Orientation="Horizontal">
-                                            <Button x:Name="ui_home_new_project" Click="home_set_project" Foreground="{DynamicResource MaterialDesignTextAreaBorder}" Style="{StaticResource MaterialDesignFlatButton}"   ToolTip="Start a New Project"> <!--Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"-->
+                                            <Button x:Name="ui_home_new_project" Click="home_set_project" Foreground="{DynamicResource MaterialDesignTextAreaBorder}" Style="{StaticResource MaterialDesignFlatButton}"   ToolTip="Start a New Project">
+                                                <!--Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"-->
                                                 <StackPanel Orientation="Horizontal">
                                                     <materialDesign:PackIcon Kind="Plus" />
                                                     <TextBlock Text="New Project" />
@@ -169,6 +170,23 @@
 
                                 </StackPanel>
 
+                            </Grid>
+
+                            <Grid Grid.Row="2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="10*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <DataGrid Grid.Column="1" x:Name="ui_home_recent_listdatagrid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                                      Margin="0,0,0,0" CanUserAddRows="False"  AutoGenerateColumns="False">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn IsReadOnly="True" Header="Project Name" Binding="{Binding Key}" Width="Auto" />
+                                        <DataGridTextColumn IsReadOnly="True" Header="TxtInOut Directory" Binding="{Binding Value}" Width="*"/>
+                                        <DataGridTextColumn IsReadOnly="True" Header="x" Binding="{Binding minimum}" Width="30"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
                             </Grid>
 
 
@@ -442,64 +460,64 @@
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
 
-                                    <Grid Grid.Column="1">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="46"/>
-                                        </Grid.ColumnDefinitions>
+                                <Grid Grid.Column="1">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="46"/>
+                                    </Grid.ColumnDefinitions>
 
-                                        <Grid Grid.Column="0">
-                                            <StackPanel Orientation="Horizontal">
-                                                <ComboBox x:Name="ui_parameter_group" Style="{StaticResource MaterialDesignFloatingHintComboBox}" materialDesign:TextFieldAssist.HasClearButton="False"
+                                    <Grid Grid.Column="0">
+                                        <StackPanel Orientation="Horizontal">
+                                            <ComboBox x:Name="ui_parameter_group" Style="{StaticResource MaterialDesignFloatingHintComboBox}" materialDesign:TextFieldAssist.HasClearButton="False"
                                                       materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource SecondaryAccentBrush}"
                                                        materialDesign:HintAssist.Hint="Parameter Group" materialDesign:HintAssist.HintOpacity=".26" MinWidth="180" Margin="0, 0, 0, 0" DropDownClosed="list_available_parameters">
-                                                    <ComboBoxItem IsSelected="False" Content="All"/>
-                                                    <ComboBoxItem Content="Hydrologic Response Unit"/>
-                                                    <ComboBoxItem Content="Aquifer"/>
-                                                    <ComboBoxItem Content="Routing"/>
-                                                    <ComboBoxItem Content="HRU LTE"/>
-                                                    <ComboBoxItem Content="Soil"/>
-                                                    <ComboBoxItem Content="Reservoir"/>
-                                                    <ComboBoxItem Content="SWQ"/>
-                                                </ComboBox>
-                                                <ComboBox Style="{StaticResource MaterialDesignFloatingHintComboBox}"  x:Name="ui_parameter_name"
+                                                <ComboBoxItem IsSelected="False" Content="All"/>
+                                                <ComboBoxItem Content="Hydrologic Response Unit"/>
+                                                <ComboBoxItem Content="Aquifer"/>
+                                                <ComboBoxItem Content="Routing"/>
+                                                <ComboBoxItem Content="HRU LTE"/>
+                                                <ComboBoxItem Content="Soil"/>
+                                                <ComboBoxItem Content="Reservoir"/>
+                                                <ComboBoxItem Content="SWQ"/>
+                                            </ComboBox>
+                                            <ComboBox Style="{StaticResource MaterialDesignFloatingHintComboBox}"  x:Name="ui_parameter_name"
                                                       materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource SecondaryAccentBrush}"
                                                        materialDesign:HintAssist.Hint="Parameter Name" MinWidth="180" materialDesign:HintAssist.HintOpacity=".26" Margin="10, 0, 0, 0"/>
 
-                                                <ComboBox Style="{StaticResource MaterialDesignFloatingHintComboBox}" x:Name="ui_parameter_change_type" Margin="30, 0, 0, 0"
+                                            <ComboBox Style="{StaticResource MaterialDesignFloatingHintComboBox}" x:Name="ui_parameter_change_type" Margin="30, 0, 0, 0"
                                                       materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource SecondaryAccentBrush}"
                                                        materialDesign:HintAssist.Hint="Change Type" MinWidth="120" materialDesign:HintAssist.HintOpacity=".26" >
-                                                    <ComboBoxItem Content="Percentage"/>
-                                                    <ComboBoxItem Content="Relative Value"/>
-                                                    <ComboBoxItem Content="Replace"/>
-                                                </ComboBox>
+                                                <ComboBoxItem Content="Percentage"/>
+                                                <ComboBoxItem Content="Relative Value"/>
+                                                <ComboBoxItem Content="Replace"/>
+                                            </ComboBox>
 
-                                                <ComboBox Style="{StaticResource MaterialDesignFloatingHintComboBox}" 
+                                            <ComboBox Style="{StaticResource MaterialDesignFloatingHintComboBox}" 
                                                       materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource SecondaryAccentBrush}" x:Name="ui_parameter_minimum" IsEditable="True"
                                                        materialDesign:HintAssist.Hint="Minimum" MinWidth="100" materialDesign:HintAssist.HintOpacity=".26" Margin="10, 0, 0, 0">
-                                                    <ComboBoxItem Content="-10"/>
-                                                    <ComboBoxItem Content="-20"/>
-                                                    <ComboBoxItem Content="-30"/>
-                                                </ComboBox>
-                                                <ComboBox Style="{StaticResource MaterialDesignFloatingHintComboBox}" 
+                                                <ComboBoxItem Content="-10"/>
+                                                <ComboBoxItem Content="-20"/>
+                                                <ComboBoxItem Content="-30"/>
+                                            </ComboBox>
+                                            <ComboBox Style="{StaticResource MaterialDesignFloatingHintComboBox}" 
                                                       materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource SecondaryAccentBrush}" x:Name="ui_parameter_maximum" IsEditable="True"
                                                        materialDesign:HintAssist.Hint="Maximum" MinWidth="100" materialDesign:HintAssist.HintOpacity=".26" Margin="10, 0, 0, 0">
-                                                    <ComboBoxItem Content="10"/>
-                                                    <ComboBoxItem Content="20"/>
-                                                    <ComboBoxItem Content="30"/>
-                                                </ComboBox>
-                                            </StackPanel>
-                                        </Grid>
-                                        <Grid Grid.Column="1" HorizontalAlignment="Right">
-                                            <Button Style="{StaticResource MaterialDesignFloatingActionMiniButton}" ToolTip="Add to observations table" Width="35"
+                                                <ComboBoxItem Content="10"/>
+                                                <ComboBoxItem Content="20"/>
+                                                <ComboBoxItem Content="30"/>
+                                            </ComboBox>
+                                        </StackPanel>
+                                    </Grid>
+                                    <Grid Grid.Column="1" HorizontalAlignment="Right">
+                                        <Button Style="{StaticResource MaterialDesignFloatingActionMiniButton}" ToolTip="Add to observations table" Width="35"
                                                 Height="35" Margin="10, 0, 0, 0"
                                                 HorizontalAlignment ="Right" Click="add_parameter"
                                                 >
-                                                <materialDesign:PackIcon Kind="Add" />
+                                            <materialDesign:PackIcon Kind="Add" />
 
-                                            </Button>
-                                        </Grid>
+                                        </Button>
                                     </Grid>
+                                </Grid>
 
                             </Grid>
 
@@ -572,7 +590,7 @@
 
                                                     <TextBox x:Name="ui_observations_object_number" materialDesign:HintAssist.Hint="Object Number" TextAlignment="Right" Margin="14, 0, 0, 3" Width="90"
                                                         Style="{StaticResource MaterialDesignFloatingHintTextBox}" HorizontalAlignment="Left" VerticalAlignment="Center">
-                                                        
+
                                                     </TextBox>
                                                 </StackPanel>
                                             </StackPanel>
@@ -607,8 +625,8 @@
                                                         <ComboBoxItem Content="Nitrate Nitrogen"/>
                                                         <ComboBoxItem Content="Amonium Nitrogen"/>
                                                         <ComboBoxItem Content="Nitrite Nitrogen"/>
-                                                        <ComboBoxItem Content="Organic Phosphorus"/>
-                                                        <ComboBoxItem Content="Mineral Phosphorus"/>
+                                                        <!--<ComboBoxItem Content="Organic Phosphorus"/>
+                                                        <ComboBoxItem Content="Mineral Phosphorus"/>-->
                                                     </ComboBox>
 
                                                     <Button Style="{StaticResource MaterialDesignFloatingActionMiniButton}" ToolTip="Add to observations table"
@@ -738,14 +756,15 @@
                                         </DataGrid.Columns>
                                     </DataGrid>
                                 </Grid>
-
-
                             </Grid>
 
 
                             <Grid Grid.Row="2">
                                 <StackPanel Orientation="Vertical">
-                                    <ProgressBar x:Name="ui_sensitivity_progress" Value="0" materialDesign:TransitionAssist.DisableTransitions="True" />
+                                    <ProgressBar Visibility="Collapsed" x:Name="ui_sensitivity_progress" Value="0" materialDesign:TransitionAssist.DisableTransitions="True" />
+                                    
+                                    <ProgressBar x:Name="ui_sensitivity_is_running" Width="32" Height="32" Style="{StaticResource MaterialDesignCircularProgressBar}" Value="0" IsIndeterminate="True" />
+                                    
                                     <Button Foreground="{DynamicResource MaterialDesignTextAreaBorder}"
                                         x:Name="ui_sensitivity_run_swat_plus_sensitivity"
                                         HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,15,0,0"
@@ -781,25 +800,35 @@
 
                                         <Grid Grid.Column="1" Background="{DynamicResource MaterialDesignPaper}">
                                             <Grid.RowDefinitions>
-                                                <RowDefinition Height="20*"/>
-                                                <RowDefinition Height="24*"/>
-                                                <RowDefinition Height="140"/>
+                                                <RowDefinition Height="100"/>
+                                                <RowDefinition Height="7*"/>
+                                                <RowDefinition Height="10*"/>
+                                                <RowDefinition Height="2*"/>
                                             </Grid.RowDefinitions>
 
-                                            <Grid Grid.Row="1">
+                                            <Grid Grid.Row="2">
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="20*"/>
                                                     <ColumnDefinition Width="8*"/>
                                                 </Grid.ColumnDefinitions>
-                                                <lvc:CartesianChart Margin="0, 10, 0, 0" Visibility="Hidden" x:Name="ui_calibration_manual_chart" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                                <Grid.Resources>
+                                                    <Style TargetType="lvc:LineSeries">
+                                                        <Setter Property="StrokeThickness" Value="2"></Setter>
+                                                        <!--<Setter Property="Stroke" Value="White"></Setter>-->
+                                                        <!--<Setter Property="Fill" Value="#4EFFFFFF"></Setter>-->
+                                                        <Setter Property="PointGeometrySize" Value="0"></Setter>
+                                                        <Setter Property="LineSmoothness" Value="0"></Setter>
+                                                    </Style>
+                                                </Grid.Resources>
+                                                <lvc:CartesianChart Margin="0, 10, 0, 0" Visibility="Visible" x:Name="ui_calibration_manual_chart" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                                                                 Series="{Binding SeriesCollection}">
 
                                                     <lvc:CartesianChart.AxisY>
-                                                        <lvc:Axis Name="ui_calibration_manual_chart_x_axis" Title=""></lvc:Axis>
+                                                        <lvc:Axis MinValue="0" Name="ui_calibration_manual_chart_x_axis" Title=""></lvc:Axis>
                                                     </lvc:CartesianChart.AxisY>
 
                                                     <lvc:CartesianChart.AxisX>
-                                                        <lvc:Axis MinValue="0" Title="Date" Labels="{Binding Labels}"></lvc:Axis>
+                                                        <lvc:Axis Title="Date" Labels="{Binding Labels}"></lvc:Axis>
                                                     </lvc:CartesianChart.AxisX>
 
                                                 </lvc:CartesianChart>
@@ -810,12 +839,14 @@
                                                      DisplayMemberPath="chart_name" MouseDown="show_chart_for_selected_observation_m" MouseDoubleClick="show_chart_for_selected_observation_d">
                                                 </ListBox>
                                             </Grid>
-                                            <ProgressBar Grid.Row="1" VerticalAlignment="Top" x:Name="ui_calibration_manual_run_swat_progress" Value="0" materialDesign:TransitionAssist.DisableTransitions="True" />
+                                            <ProgressBar Visibility="Collapsed" Grid.Row="1" VerticalAlignment="Top" x:Name="ui_calibration_manual_run_swat_progress" Value="0" materialDesign:TransitionAssist.DisableTransitions="True" />
 
-                                            <StackPanel Grid.Row="2" Orientation="Vertical">
+                                            <StackPanel Grid.Row="0" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
 
 
                                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0, 10, 0, 0" >
+                                                    <!--<ProgressBar Visibility="Collapsed" x:Name="ui_calibration_mannual_is_running" Width="32" Height="32" Style="{StaticResource MaterialDesignCircularProgressBar}" Value="0" IsIndeterminate="True" />-->
+
                                                     <Button Foreground="{DynamicResource MaterialDesignTextAreaBorder}" x:Name="ui_calibration_manual_run_swat_plus"
                                                         Grid.Row = "1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12,0,0,0"
                                                         Style="{StaticResource MaterialDesignFlatButton}" ToolTip="Run SWAT+ with current parameters"
@@ -835,7 +866,7 @@
 
 
 
-                                            <Grid Grid.Row="0" Background="{DynamicResource MaterialDesignPaper}">
+                                            <Grid Grid.Row="1" Background="{DynamicResource MaterialDesignPaper}">
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="11*"/>
                                                     <ColumnDefinition Width="9*"/>
@@ -854,7 +885,6 @@
                                                      materialDesign:DataGridAssist.CellPadding="2 4 2 4" 
                                                           materialDesign:DataGridAssist.ColumnHeaderPadding="2 3 2 3">
                                                             <DataGrid.Columns>
-
                                                                 <DataGridTextColumn IsReadOnly="True"  Header="Group" Binding="{Binding object_type}" Width="*" MinWidth="50"/>
                                                                 <DataGridTextColumn IsReadOnly="True"  Header="Name" Binding="{Binding name}" MinWidth="55" Width="*"/>
                                                                 <DataGridTextColumn IsReadOnly="True"  Header="Change Type" Binding="{Binding change_type}" Width="*" MinWidth="80"/>
@@ -918,12 +948,14 @@
                                         <Grid Grid.Row="0">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="10*"/>
+                                                <ColumnDefinition Width="8*"/>
+                                                <ColumnDefinition Width="2*"/>
                                                 <ColumnDefinition Width="*"/>
                                             </Grid.ColumnDefinitions>
 
                                             <StackPanel Orientation="Horizontal" Grid.Column="1">
                                                 <ComboBox Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                                                          x:Name="ui_calibration_automatic_method"
                                                          materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource SecondaryAccentBrush}"
                                                          materialDesign:HintAssist.Hint="Calibration Method" MinWidth="140"
                                                           IsEnabled="False">
@@ -959,10 +991,16 @@
                                                 <materialDesign:Chip Visibility="Hidden" Margin="15, 0, 0, -5" Width="80">
                                                     <TextBlock TextAlignment="Center"> Runs: 2000</TextBlock>
                                                 </materialDesign:Chip>
+                                                
+
+                                            </StackPanel>
+
+                                            <StackPanel Orientation="Horizontal" Grid.Column="2" HorizontalAlignment="Right">
+                                                <ProgressBar Margin="10, 0, 0, 0" Visibility="Hidden" x:Name="ui_calibration_automatic_is_running" Width="32" Height="32" Style="{StaticResource MaterialDesignCircularProgressBar}" Value="0" IsIndeterminate="True" />
 
                                                 <Button Foreground="{DynamicResource MaterialDesignTextAreaBorder}"
                                                         x:Name="ui_calibration_automatic_run"
-                                                        HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,0,0,0"
+                                                        HorizontalAlignment="Center" VerticalAlignment="Center" Margin="2,0,0,0"
                                                         Style="{StaticResource MaterialDesignFlatButton}"
                                                         ToolTip="Run automatic calibration" Click="run_sample_parameter_calibration">
 
@@ -971,8 +1009,8 @@
                                                         <TextBlock Margin="0, 1, 0, 0" x:Name="ui_calibration_automatic_calibration_run_calibration" Text=" Calibrate"/>
                                                     </StackPanel>
                                                 </Button>
-
                                             </StackPanel>
+                                            
                                         </Grid>
 
                                         <Grid Grid.Row="1" Background="{DynamicResource MaterialDesignPaper}">
@@ -1045,7 +1083,7 @@
                                                     <ColumnDefinition Width="10*"/>
                                                     <ColumnDefinition Width="*"/>
                                                 </Grid.ColumnDefinitions>
-                                                <ProgressBar Grid.Column="1" x:Name="ui_calibration_automatic_progress" Value="0" materialDesign:TransitionAssist.DisableTransitions="True" />
+                                                <ProgressBar Visibility="Collapsed" Grid.Column="1" x:Name="ui_calibration_automatic_progress" Value="0" materialDesign:TransitionAssist.DisableTransitions="True" />
                                             </Grid>
 
                                         </StackPanel>
@@ -1056,26 +1094,59 @@
                                                 <ColumnDefinition Width="3*"/>
                                                 <ColumnDefinition Width="*"/>
                                             </Grid.ColumnDefinitions>
+                                            <Grid.Resources>
+                                                <Style TargetType="lvc:LineSeries">
+                                                    <Setter Property="StrokeThickness" Value="2"></Setter>
+                                                    <!--<Setter Property="Stroke" Value="White"></Setter>-->
+                                                    <!--<Setter Property="Fill" Value="#4EFFFFFF"></Setter>-->
+                                                    <Setter Property="PointGeometrySize" Value="0"></Setter>
+                                                    <Setter Property="LineSmoothness" Value="0"></Setter>
+                                                </Style>
+                                            </Grid.Resources>
 
-                                            <lvc:CartesianChart Margin="0, 10, 0, 0" Visibility="Hidden" x:Name="ui_calibration_automatic_chart" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                            <lvc:CartesianChart Margin="0, 10, 0, 0" Visibility="Visible" x:Name="ui_calibration_automatic_chart" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                                                                 Series="{Binding SeriesCollection_auto}">
 
                                                 <lvc:CartesianChart.AxisY>
-                                                    <lvc:Axis Name="ui_calibration_automatic_chart_x_axis" Title=""></lvc:Axis>
+                                                    <lvc:Axis MinValue="0" Name="ui_calibration_automatic_chart_x_axis" Title=""></lvc:Axis>
                                                 </lvc:CartesianChart.AxisY>
 
                                                 <lvc:CartesianChart.AxisX>
-                                                    <lvc:Axis MinValue="0" Title="Date" Labels="{Binding Labels_auto}"></lvc:Axis>
+                                                    <lvc:Axis Title="Date" Labels="{Binding Labels_auto}"></lvc:Axis>
                                                 </lvc:CartesianChart.AxisX>
 
                                             </lvc:CartesianChart>
 
-                                            <ListBox x:Name="ui_calibration_automatic_available_charts"
-                                                     SelectionChanged="show_chart_for_selected_observation_auto" Grid.Column="2"
-                                                    
-                                                     DisplayMemberPath="chart_name" MouseDown="show_chart_for_selected_observation_m_auto" MouseDoubleClick="show_chart_for_selected_observation_d_auto">
-                                            </ListBox>
+                                            <Grid Grid.Column="2" >
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="2*"/>
+                                                </Grid.RowDefinitions>
 
+                                                <Grid.Resources>
+                                                    <Style TargetType="lvc:LineSeries">
+                                                        <Setter Property="StrokeThickness" Value="2"></Setter>
+                                                        <!--<Setter Property="Stroke" Value="White"></Setter>-->
+                                                        <!--<Setter Property="Fill" Value="#4EFFFFFF"></Setter>-->
+                                                        <Setter Property="PointGeometrySize" Value="0"></Setter>
+                                                        <Setter Property="LineSmoothness" Value="0"></Setter>
+                                                    </Style>
+                                                    <Style TargetType="lvc:Axis">
+                                                        <Setter Property="ShowLabels" Value="False"></Setter>
+                                                        <Setter Property="IsEnabled" Value="False"></Setter>
+                                                    </Style>
+                                                </Grid.Resources>
+
+                                                <ListBox Grid.Row="0" x:Name="ui_calibration_automatic_available_charts" SelectionChanged="show_chart_for_selected_observation_auto" Grid.Column="2"
+                                                         DisplayMemberPath="chart_name" MouseDown="show_chart_for_selected_observation_m_auto" MouseDoubleClick="show_chart_for_selected_observation_d_auto">
+                                                </ListBox>
+                                                <lvc:CartesianChart Visibility="Hidden" Grid.Row="1" Margin="0, 0, 0, 0" Series="{Binding last_performance_range}" Hoverable="False" DataTooltip="{x:Null}">
+                                                    <lvc:CartesianChart.AxisX>
+                                                        <!--a small visual improvement, lets hide the first points (x = 0, x=1) to get better animations-->
+                                                        <lvc:Axis ></lvc:Axis>
+                                                    </lvc:CartesianChart.AxisX>
+                                                </lvc:CartesianChart>
+                                             </Grid>
                                         </Grid>
 
 
@@ -1086,7 +1157,7 @@
 
                             <Grid Grid.Row="1" HorizontalAlignment="Stretch">
                                 <materialDesign:Card
-                                    materialDesign:ShadowAssist.ShadowDepth="Depth1"
+                                    materialDesign:ShadowAssist.ShadowDepth="Depth0"
                                     Padding="1" MinWidth="280" Margin="0, 0, 0, 17"
                                     HorizontalAlignment="Center">
 
@@ -1148,17 +1219,9 @@
 
                                 </materialDesign:Card>
                             </Grid>
-
-
-
                         </Grid>
                     </TabItem>
                 </TabControl>
-
-
-
-
-
             </Grid>
             <materialDesign:TransitionerSlide>
                 <materialDesign:TransitionerSlide.BackwardWipe>
@@ -1171,7 +1234,7 @@
         </materialDesign:Transitioner>
 
         <StackPanel Grid.Row="2">
-            <ProgressBar Value="0" Height="10" />
+            <ProgressBar x:Name="ui_master_progress_bar" Value="0" Height="10" />
         </StackPanel>
 
 
