@@ -169,7 +169,13 @@ namespace SWAT__Toolbox
             //Change the app's current theme
             paletteHelper.SetTheme(theme);
 
+            //set up nutrients
+            ui_model_check_nutrients_image.Source = new BitmapImage(new Uri($@"{Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory)}\\assets\\analysis_nutrients.dll"));
 
+            //set up water balance
+            ui_model_check_hydrology_image.Source = new BitmapImage(new Uri($@"{Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory)}\\assets\\analysis_hydrology.dll"));
+
+            ui_model_check_pages.SelectedIndex = 1;
             selected_parameters = new ObservableCollection<parameter>();
             selected_observations = new ObservableCollection<observation>();
 
@@ -1133,7 +1139,10 @@ ru                    n           n             n              n
                 System.Windows.MessageBox.Show($@"Cannot analyse model, sensitivity{Environment.NewLine}analysis is running. Please, Wait.");
                 return;
             }
+            //set up nutrients
+            ui_model_check_nutrients_image.Source = new BitmapImage(new Uri($@"{Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory)}\\assets\\analysis_nutrients.dll"));
 
+            //set up water balance
             ui_model_check_hydrology_image.Source = new BitmapImage(new Uri($@"{Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory)}\\assets\\analysis_hydrology.dll"));
             try
             {
@@ -1867,5 +1876,24 @@ ru                    n           n             n              n
             plot_chart_auto();
         }
 
+        //model check navigation
+
+        private void navigate_ui_model_check_overview(object sender, RoutedEventArgs e)
+        {
+            ui_model_check_pages.SelectedIndex = 0;
+        }
+        private void navigate_ui_model_check_mass_balance(object sender, RoutedEventArgs e)
+        {
+            ui_model_check_pages.SelectedIndex = 1;
+        }
+        private void navigate_ui_model_check_nutrients(object sender, RoutedEventArgs e)
+        {
+            ui_model_check_pages.SelectedIndex = 2;
+            ui_model_check_nutrients_image.Source = new BitmapImage(new Uri($@"{Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory)}\\assets\\analysis_nutrients.dll"));
+        }
+        private void navigate_ui_model_check_plants(object sender, RoutedEventArgs e)
+        {
+            ui_model_check_pages.SelectedIndex = 3;
+        }
     }
 }

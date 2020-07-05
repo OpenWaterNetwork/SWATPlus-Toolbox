@@ -785,7 +785,7 @@
                         <Grid x:Name="ui_calibration_grid" Background="{DynamicResource MaterialDesignPaper}">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="*"/>
-                                <RowDefinition Height="70"/>
+                                <RowDefinition Height="85"/>
                             </Grid.RowDefinitions>
 
                             <TabControl x:Name="ui_calibration_tab_pages" Grid.Row="0" TabStripPlacement="Bottom" Margin="-8,-8,-12,-28" Grid.RowSpan="2">
@@ -803,13 +803,13 @@
                                                 <RowDefinition Height="100"/>
                                                 <RowDefinition Height="7*"/>
                                                 <RowDefinition Height="10*"/>
-                                                <RowDefinition Height="2*"/>
+                                                <RowDefinition Height="3*"/>
                                             </Grid.RowDefinitions>
 
                                             <Grid Grid.Row="2">
                                                 <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="20*"/>
-                                                    <ColumnDefinition Width="8*"/>
+                                                    <ColumnDefinition Width="7*"/>
+                                                    <ColumnDefinition Width="3*"/>
                                                 </Grid.ColumnDefinitions>
                                                 <Grid.Resources>
                                                     <Style TargetType="lvc:LineSeries">
@@ -942,7 +942,7 @@
                                             <RowDefinition Height="100"/>
                                             <RowDefinition Height="7*"/>
                                             <RowDefinition Height="10*"/>
-                                            <RowDefinition Height="2*"/>
+                                            <RowDefinition Height="3*"/>
                                         </Grid.RowDefinitions>
 
                                         <Grid Grid.Row="0">
@@ -1056,7 +1056,12 @@
                                             </Grid>
 
                                             <Grid Grid.Column="2">
-                                                <DataGrid HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="10*"/>
+                                                </Grid.RowDefinitions>
+                                                
+                                                <DataGrid Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                                                           x:Name="ui_calibration_automatic_performance" 
                                                           Margin="0,0,0,0" CanUserAddRows="False"  AutoGenerateColumns="False"
                                                           materialDesign:DataGridAssist.CellPadding="2 4 2 4" 
@@ -1155,7 +1160,7 @@
                             </TabControl>
 
 
-                            <Grid Grid.Row="1" HorizontalAlignment="Stretch">
+                            <Grid Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Top">
                                 <materialDesign:Card
                                     materialDesign:ShadowAssist.ShadowDepth="Depth0"
                                     Padding="1" MinWidth="280" Margin="0, 0, 0, 17"
@@ -1182,13 +1187,30 @@
                             </Grid.RowDefinitions>
 
 
-                            <TabControl Grid.Row="0" Margin="-8,-8,-7,-27" TabStripPlacement="Bottom" Grid.RowSpan="2">
+                            <TabControl x:Name="ui_model_check_pages" Grid.Row="0" Margin="-8,-8,-7,-27" TabStripPlacement="Bottom" Grid.RowSpan="2">
+                                <TabItem Header="TabItem">
+                                    
+                                </TabItem>
                                 <TabItem Header="TabItem">
                                     <Grid Background="{DynamicResource MaterialDesignPaper}">
                                         <Image x:Name="ui_model_check_hydrology_image" Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                         <Button Width="32" Height="32" x:Name="ui_model_check_clear_wb" Click="disengage_wb_source"
                                                 HorizontalAlignment="Right" Style="{StaticResource MaterialDesignIconButton}"
                                                 ToolTip="Clear Water Balance Diagram" Background="{DynamicResource MaterialDesignTextFieldBoxBackground}"
+                                                VerticalAlignment="Top" Margin="0, 10, 25, 0">
+                                            <materialDesign:PackIcon Kind="Minus" Width="30" Height="30"/>
+                                        </Button>
+
+                                    </Grid>
+                                </TabItem>
+                                <TabItem Header="TabItem">
+                                    <Grid Background="{DynamicResource MaterialDesignPaper}">
+                                        <Image x:Name="ui_model_check_nutrients_image" Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+                                        <!--x:Name="ui_model_check_clear_nb"  Click="disengage_nb_source" -->
+                                        <Button Width="32" Height="32" 
+                                                HorizontalAlignment="Right" Style="{StaticResource MaterialDesignIconButton}"
+                                                ToolTip="Clear Nutrients Diagram" Background="{DynamicResource MaterialDesignTextFieldBoxBackground}"
                                                 VerticalAlignment="Top" Margin="0, 10, 25, 0">
                                             <materialDesign:PackIcon Kind="Minus" Width="30" Height="30"/>
                                         </Button>
@@ -1211,10 +1233,10 @@
                                             <materialDesign:PackIcon Kind="Sync" Height="30" Width="30"/>
                                         </Button>
 
-                                        <RadioButton IsChecked="False" IsEnabled="False" MinWidth="110" Content="Overview" ToolTip="Model Analysis of various components" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="0"/>
-                                        <RadioButton IsChecked="True"  IsEnabled="True" MinWidth="110" Content="Hydrology" ToolTip="Hydrological Mass Balance" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="0" Cursor="Hand"/>
-                                        <RadioButton IsChecked="False" IsEnabled="False" MinWidth="110" Content="Nutrients" ToolTip="Nutrient Balance" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="0"  />
-                                        <RadioButton IsChecked="False" IsEnabled="False" MinWidth="110" Content="Plants" ToolTip="Vegetation Information" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="0" />
+                                        <RadioButton Click = "navigate_ui_model_check_overview" IsChecked="False" IsEnabled="False" MinWidth="110" Content="Overview" ToolTip="Model Analysis of various components" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="0" Cursor="Hand"/>
+                                        <RadioButton Click = "navigate_ui_model_check_mass_balance" IsChecked="True"  IsEnabled="True" MinWidth="110" Content="Hydrology" ToolTip="Hydrological Mass Balance" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="0" Cursor="Hand"/>
+                                        <RadioButton Click = "navigate_ui_model_check_nutrients" IsChecked="False" IsEnabled="True" MinWidth="110" Content="Nutrients" ToolTip="Nutrient Balance" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="0" Cursor="Hand" />
+                                        <RadioButton Click = "navigate_ui_model_check_plants" IsChecked="False" IsEnabled="False" MinWidth="110" Content="Plants" ToolTip="Vegetation Information" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="0" Cursor="Hand"/>
                                     </StackPanel>
 
                                 </materialDesign:Card>
