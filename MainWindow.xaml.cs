@@ -1519,6 +1519,17 @@ ru                    n           n             n              n
 
         public void plot_chart_manual()
         {
+
+            try
+            {
+                (current_project, timeseries_data) = get_performance_indices(current_project);
+                ui_calibration_manual_performance.Items.Refresh();
+                update_project();
+            }
+            catch (Exception)
+            {
+
+            }
             ui_calibration_manual_chart.Visibility = Visibility.Visible;
             
             SeriesCollection[0].Values.Clear();
@@ -1526,7 +1537,6 @@ ru                    n           n             n              n
 
             if (timeseries_data == null)
             {
-
                 System.Windows.MessageBox.Show("Null Data!");
             }
             else

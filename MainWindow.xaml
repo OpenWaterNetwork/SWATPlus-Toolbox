@@ -13,7 +13,7 @@
         TextOptions.TextRenderingMode="Auto"        
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
-        Title="MainWindow" Height="700" Width="1100" MinHeight="700" MinWidth="950" Icon="toolbox_icon.png" WindowStartupLocation="CenterScreen" WindowStyle="None">
+        Title="SWAT+ Toolbox" Height="700" Width="1100" MinHeight="700" MinWidth="950" Icon="swat_plus_toolbox.png" WindowStartupLocation="CenterScreen" WindowStyle="None">
 
     <Grid>
 
@@ -26,7 +26,7 @@
         <materialDesign:ColorZone Grid.Row="0" Mode="PrimaryLight" VerticalAlignment="Stretch" 
                                   HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Background="#FF06467A"/>
 
-        <TextBlock FontSize="16" Margin="12, 12, 0, 0" Foreground="White">
+        <TextBlock FontSize="16" Height="20" HorizontalAlignment="Left"  VerticalAlignment="Top" Margin="12, 12, 0, 0" Foreground="White">
             SWAT+ Toolbox
         </TextBlock>
 
@@ -80,7 +80,7 @@
                                 <RowDefinition Height="145*"/>
                             </Grid.RowDefinitions>
 
-                            <TextBlock TextAlignment="Center" Grid.Row="0" Style="{StaticResource MaterialDesignHeadline2TextBlock}" MinWidth="500" HorizontalAlignment="Center" VerticalAlignment="Top" Height="69" Margin="293,87,293,0"><Hyperlink IsEnabled="False"><Run Text="SWAT+ Toolbox"/></Hyperlink></TextBlock>
+                            <TextBlock TextAlignment="Center" Grid.Row="0" Style="{StaticResource MaterialDesignHeadline2TextBlock}" MinWidth="900" HorizontalAlignment="Center" VerticalAlignment="Top" Height="69" Margin="0,87,0,0"><Hyperlink IsEnabled="False"><Run Text="SWAT+ Toolbox"/></Hyperlink></TextBlock>
 
                             <Grid Grid.Row="1">
                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
@@ -188,6 +188,7 @@
                                     </DataGrid.Columns>
                                 </DataGrid>
                             </Grid>
+                            <Image HorizontalAlignment="Center" Grid.Row="0" Margin="0,40,0,0" Grid.RowSpan="2" Width="80" Height="80" Source="swat_plus_toolbox.png"/>
 
 
                         </Grid>
@@ -762,9 +763,9 @@
                             <Grid Grid.Row="2">
                                 <StackPanel Orientation="Vertical">
                                     <ProgressBar Visibility="Collapsed" x:Name="ui_sensitivity_progress" Value="0" materialDesign:TransitionAssist.DisableTransitions="True" />
-                                    
+
                                     <ProgressBar x:Name="ui_sensitivity_is_running" Width="32" Height="32" Style="{StaticResource MaterialDesignCircularProgressBar}" Value="0" IsIndeterminate="True" />
-                                    
+
                                     <Button Foreground="{DynamicResource MaterialDesignTextAreaBorder}"
                                         x:Name="ui_sensitivity_run_swat_plus_sensitivity"
                                         HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,15,0,0"
@@ -991,7 +992,7 @@
                                                 <materialDesign:Chip Visibility="Hidden" Margin="15, 0, 0, -5" Width="80">
                                                     <TextBlock TextAlignment="Center"> Runs: 2000</TextBlock>
                                                 </materialDesign:Chip>
-                                                
+
 
                                             </StackPanel>
 
@@ -1010,7 +1011,7 @@
                                                     </StackPanel>
                                                 </Button>
                                             </StackPanel>
-                                            
+
                                         </Grid>
 
                                         <Grid Grid.Row="1" Background="{DynamicResource MaterialDesignPaper}">
@@ -1060,7 +1061,7 @@
                                                     <RowDefinition Height="*"/>
                                                     <RowDefinition Height="10*"/>
                                                 </Grid.RowDefinitions>
-                                                
+
                                                 <DataGrid Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                                                           x:Name="ui_calibration_automatic_performance" 
                                                           Margin="0,0,0,0" CanUserAddRows="False"  AutoGenerateColumns="False"
@@ -1151,7 +1152,7 @@
                                                         <lvc:Axis ></lvc:Axis>
                                                     </lvc:CartesianChart.AxisX>
                                                 </lvc:CartesianChart>
-                                             </Grid>
+                                            </Grid>
                                         </Grid>
 
 
@@ -1189,7 +1190,7 @@
 
                             <TabControl x:Name="ui_model_check_pages" Grid.Row="0" Margin="-8,-8,-7,-27" TabStripPlacement="Bottom" Grid.RowSpan="2">
                                 <TabItem Header="TabItem">
-                                    
+
                                 </TabItem>
                                 <TabItem Header="TabItem">
                                     <Grid Background="{DynamicResource MaterialDesignPaper}">
