@@ -72,14 +72,21 @@
                     <TabItem Header="Home">
                         <Grid Background="{DynamicResource MaterialDesignPaper}" Margin="0,0,0,24">
 
-
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="140*"/>
                                 <RowDefinition Height="119*"/>
                                 <RowDefinition Height="145*"/>
                             </Grid.RowDefinitions>
 
-                            <TextBlock TextAlignment="Center" Grid.Row="0" Style="{StaticResource MaterialDesignHeadline2TextBlock}" MinWidth="900" HorizontalAlignment="Center" VerticalAlignment="Top" Height="69" Margin="0,87,0,0"><Hyperlink IsEnabled="False"><Run Text="SWAT+ Toolbox"/></Hyperlink></TextBlock>
+                            <Grid HorizontalAlignment="Center">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image HorizontalAlignment="Center" VerticalAlignment="Top" Grid.Row="0" Margin="0,82,10,0" Grid.RowSpan="2" Width="90" Height="90" Source="swat_plus_toolbox.png"/>
+                                    <TextBlock TextAlignment="Center" Grid.Row="0" Style="{StaticResource MaterialDesignHeadline2TextBlock}"
+                                           HorizontalAlignment="Center" VerticalAlignment="Top" Height="69" Margin="0,87,0,0">
+                                        <Hyperlink IsEnabled="False"><Run Text="SWAT+ Toolbox"/></Hyperlink>
+                                    </TextBlock>
+                                </StackPanel>
+                            </Grid>
 
                             <Grid Grid.Row="1">
                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
@@ -187,7 +194,7 @@
                                     </DataGrid.Columns>
                                 </DataGrid>
                             </Grid>
-                            <Image HorizontalAlignment="Center" Grid.Row="0" Margin="0,40,0,0" Grid.RowSpan="2" Width="80" Height="80" Source="swat_plus_toolbox.png"/>
+                            
 
 
                         </Grid>
