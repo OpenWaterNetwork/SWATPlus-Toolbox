@@ -9,14 +9,13 @@
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         TextElement.FontWeight="Regular"
         TextElement.FontSize="13"
-        TextOptions.TextFormattingMode="Ideal" 
-        TextOptions.TextRenderingMode="Auto"        
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
         Title="SWAT+ Toolbox" Height="700" Width="1100" MinHeight="700" MinWidth="950" Icon="swat_plus_toolbox.png" WindowStartupLocation="CenterScreen" WindowStyle="None">
 
     <Grid>
-
         <Grid.RowDefinitions>
             <RowDefinition Height="130"/>
             <RowDefinition/>
@@ -224,6 +223,35 @@
                                     <TextBox x:Name="ui_run_model_warmup_period" HorizontalAlignment="Right" Width="110" materialDesign:HintAssist.Hint="Warm-Up Period"
                                          Style="{StaticResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Center"
                                          materialDesign:TextFieldAssist.SuffixText=" Years" TextAlignment="Right" LostFocus="update_project_warmup" Text="2"/>
+
+                                    <StackPanel Orientation="Vertical" >
+
+                                        <ComboBox x:Name="ui_run_model_routing_method" Style="{StaticResource MaterialDesignFloatingHintComboBox}" materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource SecondaryAccentBrush}"
+                                              materialDesign:HintAssist.Hint="Routing Method" HorizontalAlignment="Stretch" Margin="0, 30, 0, 0" MinWidth="110" DropDownClosed="update_run_options">
+                                            <ComboBoxItem>
+                                                Variable Storage
+                                            </ComboBoxItem>
+                                            <ComboBoxItem IsSelected="True">
+                                                Muskingum
+                                            </ComboBoxItem>
+                                        </ComboBox>
+
+                                        <ComboBox x:Name="ui_run_model_pet_method" Style="{StaticResource MaterialDesignFloatingHintComboBox}" materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource SecondaryAccentBrush}"
+                                              materialDesign:HintAssist.Hint="PET Method" HorizontalAlignment="Stretch" Margin="0, 5, 0, 0" MinWidth="110" DropDownClosed="update_run_options">
+                                            <ComboBoxItem>
+                                                Priestly and Taylor
+                                            </ComboBoxItem>
+                                            <ComboBoxItem IsSelected="True">
+                                                Penman-Monteith
+                                            </ComboBoxItem>
+                                            <ComboBoxItem>
+                                                Hargreaves
+                                            </ComboBoxItem>
+                                            <ComboBoxItem>
+                                                Read PET From File
+                                            </ComboBoxItem>
+                                        </ComboBox>
+                                    </StackPanel>
 
                                     <TextBlock HorizontalAlignment="Right" Margin="0,40,0,7"><Run Text="Print CSV Output"/></TextBlock>
 
@@ -596,7 +624,7 @@
                                                 </StackPanel>
                                             </StackPanel>
 
-                                            <materialDesign:Chip Grid.Column="1"  IsDeletable="True" ToolTip="Observation File"
+                                            <materialDesign:Chip Opacity="0.7" Grid.Column="1"  IsDeletable="True" ToolTip="Observation File"
                                              DeleteToolTip="Remove Selected File" Margin="10,38,10,30" HorizontalAlignment="Stretch" Click="pick_observation_file" DeleteClick="clear_observation_file">
                                                 <StackPanel Orientation="Horizontal" Margin="0, 0, 0, -2">
                                                     <materialDesign:PackIcon Kind="MicrosoftExcel" />
@@ -699,10 +727,19 @@
                                         x:Name="ui_sensitivity_analysis_method"
                                         materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource SecondaryAccentBrush}"
                                         materialDesign:HintAssist.Hint="Sensitivity Analysis Method"
-                                        MinWidth="185">
+                                        MinWidth="300" DropDownClosed="update_sensitivty_method" >
 
                                         <ComboBoxItem>
                                             Sobol
+                                        </ComboBoxItem>
+                                        <ComboBoxItem>
+                                            Fourier Amplitude
+                                        </ComboBoxItem>
+                                        <ComboBoxItem>
+                                            Random Balance Designs Fourier Amplitude
+                                        </ComboBoxItem>
+                                        <ComboBoxItem>
+                                            Delta Moment-Independent Measure
                                         </ComboBoxItem>
                                     </ComboBox>
 
@@ -719,15 +756,16 @@
                                              ToolTip="This number determines how many parameter samples are generated"
                                              Text="{Binding seed, Mode=TwoWay}"
                                              Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                                             VerticalAlignment="Center" LostFocus="update_sensitivity_seed" />
+                                             VerticalAlignment="Center" LostFocus="update_sensitivity_seed" TextChanged="update_sensitivity_seed" />
 
-                                    <materialDesign:Chip Visibility="Hidden" Margin="15, 0, 0, -5" MinWidth="200">
-                                        <TextBlock TextAlignment="Center"> Number of Samples: 2000</TextBlock>
+                                    
+                                    
+                                    
+                                    <materialDesign:Chip  Visibility="Visible" Margin="15, 0, 0, -5" MinWidth="200">
+                                        <TextBlock HorizontalAlignment="Center" x:Name="ui_sensitivity_number_of_samples" Opacity="0.6" Margin="0, 2, 0, 0" MinWidth="70" VerticalAlignment="Center">
+                                        Number of Samples: -
+                                        </TextBlock>
                                     </materialDesign:Chip>
-
-                                    <TextBlock >
-
-                                    </TextBlock>
 
                                 </StackPanel>
 

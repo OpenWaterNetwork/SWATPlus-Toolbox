@@ -32,6 +32,7 @@ using static SWAT__Toolbox.home_module;
 using static SWAT__Toolbox.run_model_module;
 using static SWAT__Toolbox.model_evaluation_module;
 using static SWAT__Toolbox.mannual_calibration_module;
+using static SWAT__Toolbox.sensitivity_analysis_module;
 
 
 using Path = System.IO.Path;
@@ -186,11 +187,55 @@ namespace SWAT__Toolbox
             ui_calibration_automatic_performance.ItemsSource = current_project.current_observations;
 
 
-
-
-            // Python in C# https://pythonnet.github.io/
-
             this.DataContext = this;
+
+            // user doubleclicked project file
+            string[] args = Environment.GetCommandLineArgs();
+            if (args.Length > 1)
+            {
+                current_project = new project();
+                try
+                {
+                    ui_calibration_automatic_observation_selection.SelectedIndex = current_project.selected_eval_index;
+                    ui_sensitivity_observation_selection.SelectedIndex = current_project.selected_eval_index;
+                }
+                catch (Exception)
+                {
+
+                }
+
+                // try to open an existing project, ignore if cancelled
+                using (StreamReader streamReader = new StreamReader(args[1]))
+                {
+                    var deserializer = new DeserializerBuilder()
+                        .Build();
+                    //Deserializer deserializer = new Deserializer();
+                    current_project = (project)deserializer.Deserialize(streamReader, typeof(project));
+                }
+
+                selected_parameters = current_project.current_parameters;
+                selected_observations = current_project.current_observations;
+
+                ui_selected_parameters.ItemsSource = selected_parameters;
+                ui_selected_observations.ItemsSource = selected_observations;
+
+                ui_calibration_manual_performance.ItemsSource = current_project.current_observations;
+                ui_calibration_automatic_performance.ItemsSource = current_project.current_observations;
+
+                //update ui
+                //home
+                //run_model
+                ui_run_model_start_date.SelectedDate = current_project.run_date_start;
+                ui_run_model_end_date.SelectedDate = current_project.run_date_end;
+
+                ui_run_model_warmup_period.Text = current_project.run_warmup.ToString();
+
+                //binding checkboxes for printing
+                set_binding_contexts();
+            }
+
+
+
 
         }
 
@@ -543,6 +588,11 @@ namespace SWAT__Toolbox
             ui_parameter_change_type.Text = null;
 
             current_project.current_parameters = selected_parameters;
+            try
+            {
+                ui_sensitivity_number_of_samples.Text = $@"Number of Samples: {current_project.sensivity_settings.seed * ((2 * current_project.current_parameters.Count) + 2)}";
+            } catch (Exception){}
+
             update_project();
         }
 
@@ -612,6 +662,7 @@ namespace SWAT__Toolbox
             current_project.water_balance = default_water_balance();
             current_project.nutrient_balance = default_nutrient_balance();
             current_project.plant_summary = default_plant_results();
+            current_project.run_options = default_run_options();
 
             current_project.sensivity_settings = default_sensitivity_analysis_settings();
 
@@ -769,6 +820,9 @@ namespace SWAT__Toolbox
             ui_calibration_manual_performance.ItemsSource = current_project.current_observations;
             ui_calibration_automatic_performance.ItemsSource = current_project.current_observations;
 
+            ui_sensitivity_number_of_samples.Text = "Number of Samples: - ";
+
+
             ui_sensitivity_observation_selection.ItemsSource = current_project.current_observations;
             ui_sensitivity_observation_selection.DisplayMemberPath = "chart_name";
             ui_sensitivity_observation_selection.SelectedValuePath = "chart_name";
@@ -859,6 +913,12 @@ namespace SWAT__Toolbox
             ui_run_model_print_plt_hru_month.DataContext = current_project.print_settings.plt_hru;
             ui_run_model_print_plt_hru_year.DataContext = current_project.print_settings.plt_hru;
             ui_run_model_print_plt_hru_aa.DataContext = current_project.print_settings.plt_hru;
+            
+            ui_run_model_pet_method.SelectedIndex = get_pet_method_index(current_project);
+            ui_run_model_routing_method.SelectedIndex = get_routing_method_index(current_project);
+
+            ui_sensitivity_analysis_method.SelectedIndex = get_sensitivity_analysis_index(current_project);
+
         }
 
         public void run_swat()
@@ -1036,6 +1096,7 @@ namespace SWAT__Toolbox
 
             File.WriteAllText($"{current_project.txtinout}\\print.prt", print_prt_file(current_project));
             File.WriteAllText($"{current_project.txtinout}\\time.sim", time_sim_file(current_project));
+            File.WriteAllText($"{current_project.txtinout}\\codes.bsn", codes_bsn_file(current_project));
 
             ui_run_model_progress.DataContext = this;
 
@@ -1053,69 +1114,6 @@ namespace SWAT__Toolbox
             ui_run_model_run_swat_button_text.Text = "Run SWAT+";
 
         }
-
-        private string time_sim_file(project current_)
-        {
-            string time_sim = $@"time.sim: written by SWAT+ Toolbox v0.1
-day_start  yrc_start   day_end   yrc_end      step  
-        {current_.run_date_start.DayOfYear}      {current_.run_date_start.Year}         {current_.run_date_end.DayOfYear}      {current_.run_date_end.Year}         0  
-
-";
-            return time_sim;
-        }
-        private string print_prt_file(project current_)
-        {
-            string print_prt = $@"print.prt: written by SWAT+ Toolbox v0.1                                   
-nyskip   day_start    yrc_start   day_end   yrc_end   interval                                     
-{current_.run_warmup}        0            0           0         0         0
-aa_int_cnt                                                                                         
-0                                                                                                  
-csvout    dbout         cdfout
-{(current_.print_csv == true ? "y" : "n")}         n             n
-soilout   mgtout     hydcon      fdcout
-n         n          n           n
-objects           daily     monthly        yearly          avann
-basin_wb              {(current_.print_settings.wb_basin.daily == true ? "y" : "n")}           {(current_.print_settings.wb_basin.monthly == true ? "y" : "n")}             {(current_.print_settings.wb_basin.yearly == true ? "y" : "n")}              {(current_.print_settings.wb_basin.annual_average == true ? "y" : "n")}
-basin_nb              {(current_.print_settings.nut_basin.daily == true ? "y" : "n")}           {(current_.print_settings.nut_basin.monthly == true ? "y" : "n")}             {(current_.print_settings.nut_basin.yearly == true ? "y" : "n")}              {(current_.print_settings.nut_basin.annual_average == true ? "y" : "n")}
-basin_ls              n           n             n              n
-basin_pw              {(current_.print_settings.plt_basin.daily == true ? "y" : "n")}           {(current_.print_settings.plt_basin.monthly == true ? "y" : "n")}             {(current_.print_settings.plt_basin.yearly == true ? "y" : "n")}              {(current_.print_settings.plt_basin.annual_average == true ? "y" : "n")}
-basin_aqu             {(current_.print_settings.aquifer.daily == true ? "y" : "n")}           {(current_.print_settings.aquifer.monthly == true ? "y" : "n")}             {(current_.print_settings.aquifer.yearly == true ? "y" : "n")}              {(current_.print_settings.aquifer.annual_average == true ? "y" : "n")}
-basin_res             n           n             n              n
-basin_cha             n           n             n              n
-basin_sd_cha          n           n             n              n
-basin_psc             n           n             n              n
-region_wb             n           n             n              n
-region_nb             n           n             n              n
-region_ls             n           n             n              n
-region_pw             n           n             n              n
-region_aqu            n           n             n              n
-region_res            n           n             n              n
-region_cha            n           n             n              n
-region_sd_cha         n           n             n              n
-region_psc            n           n             n              n
-lsunit_wb             {(current_.print_settings.wb_lsu.daily == true ? "y" : "n")}           {(current_.print_settings.wb_lsu.monthly == true ? "y" : "n")}             {(current_.print_settings.wb_lsu.yearly == true ? "y" : "n")}              {(current_.print_settings.wb_lsu.annual_average == true ? "y" : "n")}
-lsunit_nb             {(current_.print_settings.nut_lsu.daily == true ? "y" : "n")}           {(current_.print_settings.nut_lsu.monthly == true ? "y" : "n")}             {(current_.print_settings.nut_lsu.yearly == true ? "y" : "n")}              {(current_.print_settings.nut_lsu.annual_average == true ? "y" : "n")}
-lsunit_ls             n           n             n              n
-lsunit_pw             {(current_.print_settings.plt_lsu.daily == true ? "y" : "n")}           {(current_.print_settings.plt_lsu.monthly == true ? "y" : "n")}             {(current_.print_settings.plt_lsu.yearly == true ? "y" : "n")}              {(current_.print_settings.plt_lsu.annual_average == true ? "y" : "n")}
-hru_wb                {(current_.print_settings.wb_hru.daily == true ? "y" : "n")}           {(current_.print_settings.wb_hru.monthly == true ? "y" : "n")}             {(current_.print_settings.wb_hru.yearly == true ? "y" : "n")}              {(current_.print_settings.wb_hru.annual_average == true ? "y" : "n")}
-hru_nb                {(current_.print_settings.nut_hru.daily == true ? "y" : "n")}           {(current_.print_settings.nut_hru.monthly == true ? "y" : "n")}             {(current_.print_settings.nut_hru.yearly == true ? "y" : "n")}              {(current_.print_settings.nut_hru.annual_average == true ? "y" : "n")}
-hru_ls                n           n             n              n
-hru_pw                {(current_.print_settings.plt_hru.daily == true ? "y" : "n")}           {(current_.print_settings.plt_hru.monthly == true ? "y" : "n")}             {(current_.print_settings.plt_hru.yearly == true ? "y" : "n")}              {(current_.print_settings.plt_hru.annual_average == true ? "y" : "n")}
-hru-lte_wb            n           n             n              n
-hru-lte_nb            n           n             n              n
-hru-lte_ls            n           n             n              n
-hru-lte_pw            n           n             n              n
-channel               {(current_.print_settings.channel.daily == true ? "y" : "n")}           {(current_.print_settings.channel.monthly == true ? "y" : "n")}             {(current_.print_settings.channel.yearly == true ? "y" : "n")}              {(current_.print_settings.channel.annual_average == true ? "y" : "n")}
-channel_sd            {(current_.print_settings.channel.daily == true ? "y" : "n")}           {(current_.print_settings.channel.monthly == true ? "y" : "n")}             {(current_.print_settings.channel.yearly == true ? "y" : "n")}              {(current_.print_settings.channel.annual_average == true ? "y" : "n")}
-aquifer               {(current_.print_settings.aquifer.daily == true ? "y" : "n")}           {(current_.print_settings.aquifer.monthly == true ? "y" : "n")}             {(current_.print_settings.aquifer.yearly == true ? "y" : "n")}              {(current_.print_settings.aquifer.annual_average == true ? "y" : "n")}
-reservoir             {(current_.print_settings.reservoir.daily == true ? "y" : "n")}           {(current_.print_settings.reservoir.monthly == true ? "y" : "n")}             {(current_.print_settings.reservoir.yearly == true ? "y" : "n")}              {(current_.print_settings.reservoir.annual_average == true ? "y" : "n")}
-recall                n           n             n              n
-hyd                   n           n             n              n
-ru                    n           n             n              n
-";
-            return print_prt;
-        }
-
 
         private void analyse_model(object sender, RoutedEventArgs e)
         {
@@ -1383,6 +1381,7 @@ ru                    n           n             n              n
 
             File.WriteAllText($"{current_project.txtinout}\\print.prt", print_prt_file(current_project));
             File.WriteAllText($"{current_project.txtinout}\\time.sim", time_sim_file(current_project));
+            File.WriteAllText($"{current_project.txtinout}\\codes.bsn", codes_bsn_file(current_project));
 
             Environment.CurrentDirectory = current_project.txtinout;
 
@@ -1637,6 +1636,9 @@ ru                    n           n             n              n
             // get observation index for comparison
             selected_obs_index = ui_sensitivity_observation_selection.SelectedIndex;
 
+            // get sensitivity analysis method
+            selected_obs_index = ui_sensitivity_observation_selection.SelectedIndex;
+
             is_sensitivity_run = true;
             // run loop
             run_sensitivity_loop_async();
@@ -1714,6 +1716,7 @@ ru                    n           n             n              n
 
             //generate sample
             string sensitivity_api_path = $@"""{Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory)}\\assets\\sensitivity_api\sensitivity_api.exe""";
+            //string sensitivity_api_path = $@"""{Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory)}\\assets\\sensitivity_api.py""";
 
             using (System.Diagnostics.Process p_gen_process = new System.Diagnostics.Process())
             {
@@ -1725,7 +1728,7 @@ ru                    n           n             n              n
                 p_gen_process.StartInfo.UseShellExecute = false;
                 p_gen_process.Start();
 
-                p_gen_process.StandardInput.WriteLine($@"{sensitivity_api_path} generate_sample {current_project.txtinout.Replace(" ", "__space__")} {current_project.sensivity_settings.seed}"); //argument);
+                p_gen_process.StandardInput.WriteLine($@"{sensitivity_api_path} generate_sample {get_sensitivity_analysis_method_code(current_project)} {current_project.txtinout.Replace(" ", "__space__")} {current_project.sensivity_settings.seed}"); //argument);
                 p_gen_process.StandardInput.Flush();
                 p_gen_process.StandardInput.Close();
                 p_gen_process.WaitForExit();
@@ -1814,12 +1817,11 @@ ru                    n           n             n              n
                 p_gen_process.StartInfo.UseShellExecute = false;
                 p_gen_process.Start();
 
-                p_gen_process.StandardInput.WriteLine($@"{sensitivity_api_path} analyse_sensitivity {current_project.txtinout.Replace(" ", "__space__")}"); //argument);
+                p_gen_process.StandardInput.WriteLine($@"{sensitivity_api_path} analyse_sensitivity {get_sensitivity_analysis_method_code(current_project)} {current_project.txtinout.Replace(" ", "__space__")}");
                 p_gen_process.StandardInput.Flush();
                 p_gen_process.StandardInput.Close();
                 p_gen_process.WaitForExit();
                 Console.WriteLine(p_gen_process.StandardOutput.ReadToEnd());
-
             }
 
             string[] sensitivity_content = read_from($@"{current_project.txtinout}\s1_sensitivity.stb");
@@ -1855,13 +1857,14 @@ ru                    n           n             n              n
         {
             current_project.sensivity_settings.seed = int.Parse(ui_sensitivity_seed_box.Text);
             ui_calibration_automatic_seed_box.Text = ui_sensitivity_seed_box.Text;
+            set_sensitivity_samples_number();
             update_project();
         }
         private void update_sensitivity_seed_auto(object sender, RoutedEventArgs e)
         {
-            current_project.sensivity_settings.seed = int.Parse(ui_calibration_automatic_seed_box.Text);
-            ui_sensitivity_seed_box.Text = ui_calibration_automatic_seed_box.Text;
-
+            current_project.sensivity_settings.seed = int.Parse(ui_sensitivity_seed_box.Text);
+            ui_calibration_automatic_seed_box.Text = ui_sensitivity_seed_box.Text;
+            set_sensitivity_samples_number();
             update_project();
         }
         private void navigate_calibration_automatic(object sender, RoutedEventArgs e)
@@ -1904,6 +1907,62 @@ ru                    n           n             n              n
         private void navigate_ui_model_check_plants(object sender, RoutedEventArgs e)
         {
             ui_model_check_pages.SelectedIndex = 3;
+        }
+
+        private void update_run_options(object sender, EventArgs e)
+        {
+            current_project.run_options.routing_method = get_routing_method_string(ui_run_model_routing_method.SelectedIndex);
+            current_project.run_options.pet_method = get_pet_method_string(ui_run_model_pet_method.SelectedIndex);
+            update_project();
+        }
+
+        private void update_sensitivty_method(object sender, EventArgs e)
+        {
+            current_project.sensivity_settings.sensitivity_method = get_sensitivity_analysis_method(ui_sensitivity_analysis_method.SelectedIndex);
+            if (current_project.sensivity_settings.sensitivity_method == "Fourier Amplitude")
+            {
+                if (int.Parse(ui_sensitivity_seed_box.Text) < 70)
+                {
+                    ui_sensitivity_seed_box.Text = "70";
+                    current_project.sensivity_settings.seed = 70;
+                }
+            }
+            set_sensitivity_samples_number();
+            update_project();
+        }
+
+        public void set_sensitivity_samples_number()
+        {
+            switch (current_project.sensivity_settings.sensitivity_method)
+            {
+                case "Fourier Amplitude":
+                    ui_sensitivity_number_of_samples.Text = $@"Number of Samples: {current_project.sensivity_settings.seed * current_project.current_parameters.Count}";
+                    break;
+
+                case "Random Balance Designs Fourier Amplitude":
+                    ui_sensitivity_number_of_samples.Text = $@"Number of Samples: {current_project.sensivity_settings.seed}";
+                    break;
+
+                case "Sobol":
+                    ui_sensitivity_number_of_samples.Text = $@"Number of Samples: {current_project.sensivity_settings.seed * ((2 * current_project.current_parameters.Count) + 2)}";
+                    break;
+
+                case "Delta Moment-Independent Measure":
+                    ui_sensitivity_number_of_samples.Text = $@"Number of Samples: {current_project.sensivity_settings.seed}";
+                    break;
+
+                default:
+                    ui_sensitivity_number_of_samples.Text = $@"Number of Samples: {current_project.sensivity_settings.seed * ((2 * current_project.current_parameters.Count) + 2)}";
+                    break;
+            }
+        }
+
+        private void update_sensitivity_seed_text_changed(object sender, TextChangedEventArgs e)
+        {
+            current_project.sensivity_settings.seed = int.Parse(ui_sensitivity_seed_box.Text);
+            ui_calibration_automatic_seed_box.Text = ui_sensitivity_seed_box.Text;
+            set_sensitivity_samples_number();
+            update_project();
         }
     }
 }

@@ -118,6 +118,7 @@
     <Compile Include="mannual_calibration_module.cs" />
     <Compile Include="model_evaluation_module.cs" />
     <Compile Include="run_model_module.cs" />
+    <Compile Include="sensitivity_analysis_module.cs" />
     <Compile Include="toolbox_resources.cs" />
     <Page Include="custom_resources.xaml">
       <SubType>Designer</SubType>

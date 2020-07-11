@@ -29,6 +29,7 @@ namespace SWAT__Toolbox
             public int run_warmup { get; set; }
             public bool print_csv { get; set; }
             public print_options print_settings { get; set; }
+            public run_options run_options { get; set; }
             public sensitivity_analysis_settings sensivity_settings { get; set; }
             public double best_sensitivity_nse { get; set; } = -1000;
             public water_balance_results water_balance { get; set; }
@@ -37,11 +38,15 @@ namespace SWAT__Toolbox
             public int selected_eval_index { get; set; } = 0;
         }
 
+        public class run_options
+        {
+            public string pet_method { get; set; }
+            public string routing_method { get; set; }
+        }
         public class sensitivity_analysis_settings
         {
             public int seed { get; set; }
             public string sensitivity_method { get; set; }
-            
         }
 
         public static sensitivity_analysis_settings default_sensitivity_analysis_settings()
@@ -50,6 +55,15 @@ namespace SWAT__Toolbox
 
             defaults.seed = 1000;
             defaults.sensitivity_method = "Sobol";
+           
+            return defaults;
+        }
+         public static run_options default_run_options()
+        {
+            run_options defaults = new run_options();
+
+            defaults.pet_method = "Penman-Monteith";
+            defaults.routing_method = "Muskingum";
            
             return defaults;
         }
