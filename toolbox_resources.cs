@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -24,7 +25,17 @@ namespace SWAT__Toolbox
         
         public static string[] read_from(string file_path)
         {
-            string[] lines = File.ReadAllLines(file_path);
+            string[] lines;
+            try
+            {
+                lines = File.ReadAllLines(file_path);
+            }
+            catch (Exception)
+            {
+
+                MessageBox.Show($@"Could not read the file,{System.IO.Path.GetFileName(file_path)}{Environment.NewLine}Make sure it exists.");
+                return new string[] { };
+            }
             return lines;
         }
 
@@ -52,13 +63,77 @@ namespace SWAT__Toolbox
             return par_change_typ;
         }
 
-        public static bool save_project(project project_object)
+
+        public static ObservableCollection<recent_project> sort_recents(ObservableCollection<recent_project> recents, project project_obj)
+        {
+
+            foreach (var item in recents) {
+                if (item.project_name == null)
+                {
+                    recents.Remove(item);
+                }
+            }
+            if (project_obj == null) { return recents; }
+
+            recent_project recent_instance = new recent_project
+            {
+                project_name = project_obj.project_name,
+                project_path = project_obj.project_path,
+                txtinout = project_obj.txtinout,
+                last_modified = project_obj.last_modified
+            };
+
+            // saving recent projects
+            using (StreamWriter streamWriter = new StreamWriter($@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\SWAT+ Toolbox\recents.dll"))
+            {
+                Serializer serializer = new Serializer();
+                serializer.Serialize(streamWriter, recents);
+            }
+
+            try  // incase a different thread tries to modify source
+            {
+                recents.Remove(recents.Where(i => i.project_name == recent_instance.project_name).First());
+                recents.Remove(recents.Where(i => i.project_name == "").First());
+            }
+            catch (Exception)
+            {
+
+            }
+
+            try  // incase a different thread tries to modify source
+            {
+                recents.Insert(0, recent_instance);
+            }
+            catch (Exception)
+            {
+
+            }
+
+            return recents;
+        }
+
+
+        public static bool save_project(project project_object, ObservableCollection<recent_project> recents)
         {
             // saving the project
             using (StreamWriter streamWriter = new StreamWriter(project_object.project_path))
             {
                 Serializer serializer = new Serializer();
                 serializer.Serialize(streamWriter, project_object);
+            }
+
+
+            //if not path - create
+            Directory.CreateDirectory($@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\SWAT+ Toolbox");
+
+            //sort recents
+            recents = sort_recents(recents, project_object);
+
+            // saving recent projects
+            using (StreamWriter streamWriter = new StreamWriter($@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\SWAT+ Toolbox\recents.dll"))
+            {
+                Serializer serializer = new Serializer();
+                serializer.Serialize(streamWriter, recents);
             }
 
             return true;

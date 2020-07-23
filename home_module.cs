@@ -14,7 +14,7 @@ namespace SWAT__Toolbox
 {
     class home_module
     {
-        //add mechanism to lad existing parameters upon new project
+        
         public class project
         {
             public string project_name { get; set; }
@@ -36,6 +36,16 @@ namespace SWAT__Toolbox
             public nutrient_balance_results nutrient_balance { get; set; }
             public plant_results plant_summary { get; set; }
             public int selected_eval_index { get; set; } = 0;
+        }
+        
+
+        public class recent_project
+        {
+            public string project_name { get; set; }
+            public string project_path { get; set; }
+            public string txtinout { get; set; }
+            public DateTime last_modified { get; set; }
+            
         }
 
         public class run_options

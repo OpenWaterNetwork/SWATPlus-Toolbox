@@ -50,6 +50,7 @@ using MaterialDesignColors;
 using System.ComponentModel;
 using System.Windows.Threading;
 using LiveCharts.Defaults;
+using System.Data;
 
 namespace SWAT__Toolbox
 {
@@ -60,9 +61,11 @@ namespace SWAT__Toolbox
     {
 
         ObservableCollection<parameter> selected_parameters;
+        ObservableCollection<recent_project> recent_projects;
         ObservableCollection<observation> selected_observations;
 
         project current_project = new project();
+
 
         public SeriesCollection SeriesCollection { get; set; }
         public SeriesCollection SeriesCollection_auto { get; set; }
@@ -179,6 +182,7 @@ namespace SWAT__Toolbox
             ui_model_check_pages.SelectedIndex = 1;
             selected_parameters = new ObservableCollection<parameter>();
             selected_observations = new ObservableCollection<observation>();
+            recent_projects = new ObservableCollection<recent_project>();
 
             ui_selected_parameters.ItemsSource = selected_parameters;
             ui_selected_observations.ItemsSource = selected_observations;
@@ -213,6 +217,15 @@ namespace SWAT__Toolbox
                     current_project = (project)deserializer.Deserialize(streamReader, typeof(project));
                 }
 
+                ui_home_current_project_name.Visibility = Visibility.Visible;
+                ui_home_current_project_name.Text = $@"{current_project.project_name}";
+
+                ui_home_current_project_name_titlebar.Visibility = Visibility.Visible;
+                ui_home_current_project_name_titlebar.Text = $@"  -  {current_project.project_name}";
+
+                ui_home_current_project_txtinout.Visibility = Visibility.Visible;
+                ui_home_current_project_txtinout.Text = $@"{current_project.txtinout}";
+
                 selected_parameters = current_project.current_parameters;
                 selected_observations = current_project.current_observations;
 
@@ -230,12 +243,43 @@ namespace SWAT__Toolbox
 
                 ui_run_model_warmup_period.Text = current_project.run_warmup.ToString();
 
+                //load recents
+                // try to open an existing file, create if it does not exist
+
+
+
                 //binding checkboxes for printing
                 set_binding_contexts();
             }
 
 
+            try   // see if you can read an existing file if not, you can skip
+            {
+                using (StreamReader streamReader = new StreamReader(
+                                $@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\SWAT+ Toolbox\recents.dll"
+                                ))
+                {
+                    var deserializer = new DeserializerBuilder()
+                        .Build();
+                    //Deserializer deserializer = new Deserializer();
+                    recent_projects = (ObservableCollection<recent_project>)deserializer.Deserialize(streamReader, typeof(ObservableCollection<recent_project>));
+                }
 
+                recent_projects = sort_recents(recent_projects, current_project);
+
+
+                ui_home_recent_listdatagrid.ItemsSource = recent_projects;
+                ui_home_recent_listdatagrid.DataContext = recent_projects;
+
+                ui_home_recent_listdatagrid.Items.Refresh();
+
+                recent_projects = sort_recents(recent_projects, current_project);
+
+            }
+            catch (Exception)
+            {
+
+            }
 
         }
 
@@ -266,6 +310,8 @@ namespace SWAT__Toolbox
         {
             pages.SelectedIndex = 0;
             active_tab = "home";
+            ui_master_progress_bar.Visibility = Visibility.Visible;
+
 
         }
         private void navigate_runmodel(object sender, RoutedEventArgs e)
@@ -279,6 +325,7 @@ namespace SWAT__Toolbox
                 ui_run_model_grid.IsEnabled = true;
             }
             active_tab = "run_model";
+            ui_master_progress_bar.Visibility = Visibility.Collapsed;
 
         }
 
@@ -294,6 +341,8 @@ namespace SWAT__Toolbox
                 ui_parameters_grid.IsEnabled = true;
             }
             active_tab = "parameters";
+            ui_master_progress_bar.Visibility = Visibility.Visible;
+
 
         }
 
@@ -309,6 +358,8 @@ namespace SWAT__Toolbox
                 ui_observations_grid.IsEnabled = true;
             }
             active_tab = "observations";
+            ui_master_progress_bar.Visibility = Visibility.Visible;
+
 
         }
 
@@ -316,6 +367,8 @@ namespace SWAT__Toolbox
         {
             pages.SelectedIndex = 4;
             active_tab = "sensitivity";
+            ui_master_progress_bar.Visibility = Visibility.Visible;
+
 
             if (current_project.project_name == null)
             {
@@ -343,6 +396,8 @@ namespace SWAT__Toolbox
         {
             pages.SelectedIndex = 5;
             active_tab = "calibration";
+            ui_master_progress_bar.Visibility = Visibility.Visible;
+
 
             if (current_project.project_name == null)
             {
@@ -370,6 +425,8 @@ namespace SWAT__Toolbox
         {
             pages.SelectedIndex = 6;
             active_tab = "model_check";
+            ui_master_progress_bar.Visibility = Visibility.Visible;
+
 
             if (current_project.project_name == null)
             {
@@ -600,6 +657,27 @@ namespace SWAT__Toolbox
         string public_selected_txt_path;
         private void home_set_project(object sender, RoutedEventArgs e)
         {
+
+            if (is_swat_running == true)
+            {
+                System.Windows.MessageBox.Show($@"Cannot create a new project because{Environment.NewLine}SWAT+ is running. Please, Wait.");
+                return;
+            }
+
+
+            if (is_calibration_run == true)
+            {
+                System.Windows.MessageBox.Show($@"Cannot create a new project because{Environment.NewLine}calibration is running. Please, Wait.");
+                return;
+            }
+
+
+            if (is_sensitivity_run == true)
+            {
+                System.Windows.MessageBox.Show($@"Cannot create a new project, sensitivity{Environment.NewLine}analysis is running. Please, Wait.");
+                return;
+            }
+
             try
             {
                 public_selected_txt_path = pick_folder("Choose a TxtInOut Directory", "OK");
@@ -667,7 +745,7 @@ namespace SWAT__Toolbox
             current_project.sensivity_settings = default_sensitivity_analysis_settings();
 
             // saving the project
-            save_project(current_project);
+            save_project(current_project, recent_projects);
 
             ui_selected_parameters.ItemsSource = selected_parameters;
             ui_selected_observations.ItemsSource = selected_observations;
@@ -692,11 +770,56 @@ namespace SWAT__Toolbox
             {
 
             }
+
+            bool add_new_recent = true;
+
+            for (int celray = 0; celray < recent_projects.Count; celray++)
+            {
+                
+                if (recent_projects[celray].project_name == current_project.project_name)
+                {
+                    recent_projects[celray].project_path = current_project.project_path;
+                    recent_projects[celray].txtinout = current_project.txtinout;
+                    recent_projects[celray].last_modified = current_project.last_modified;
+
+                    add_new_recent = false;
+                }
+            }
+
+            if (add_new_recent == true)
+            {
+                recent_projects.Add(new recent_project()
+                {
+                    project_name = current_project.project_name,
+                    project_path = current_project.project_path,
+                    txtinout = current_project.txtinout,
+                    last_modified = current_project.last_modified
+                });
+            }
+
         }
 
         private void home_open_project(object sender, RoutedEventArgs e)
         {
+            if (is_swat_running == true)
+            {
+                System.Windows.MessageBox.Show($@"Cannot open a new project because{Environment.NewLine}SWAT+ is running. Please, Wait.");
+                return;
+            }
 
+
+            if (is_calibration_run == true)
+            {
+                System.Windows.MessageBox.Show($@"Cannot open a new project because{Environment.NewLine}calibration is running. Please, Wait.");
+                return;
+            }
+
+
+            if (is_sensitivity_run == true)
+            {
+                System.Windows.MessageBox.Show($@"Cannot open a new project, sensitivity{Environment.NewLine}analysis is running. Please, Wait.");
+                return;
+            }
             try
             {
                 open_project();
@@ -726,6 +849,7 @@ namespace SWAT__Toolbox
         public void open_project()
         {
             current_project = new project();
+
             try
             {
                 ui_calibration_automatic_observation_selection.SelectedIndex = current_project.selected_eval_index;
@@ -765,6 +889,7 @@ namespace SWAT__Toolbox
             ui_run_model_warmup_period.Text = current_project.run_warmup.ToString();
 
             //binding checkboxes for printing
+
             set_binding_contexts();
 
             //
@@ -776,7 +901,31 @@ namespace SWAT__Toolbox
         {
             current_project.run_date_start = (DateTime)ui_run_model_start_date.SelectedDate;
             update_project();
+            
         }
+        private bool cant_change_run_settings(bool sensitivity_run, bool swat_running, bool calibration_run)
+        {
+            if (swat_running == true)
+            {
+                System.Windows.MessageBox.Show($@"Cannot change project settings because{Environment.NewLine}SWAT+ is running. Please, Wait.");
+                return true;
+            }
+
+            if (calibration_run == true)
+            {
+                System.Windows.MessageBox.Show($@"Cannot change project settings because{Environment.NewLine}calibration is running. Please, Wait.");
+                return true;
+            }
+
+            if (sensitivity_run == true)
+            {
+                System.Windows.MessageBox.Show($@"Cannot change project settings because{Environment.NewLine}analysis is running. Please, Wait.");
+                return true;
+            }
+            return false;
+        }
+
+
         private void update_project_end_date(object sender, RoutedEventArgs e)
         {
             current_project.run_date_end = (DateTime)ui_run_model_end_date.SelectedDate;
@@ -810,15 +959,32 @@ namespace SWAT__Toolbox
 
         private void update_project()
         {
+            recent_projects = sort_recents(recent_projects, current_project);
+
             current_project.last_modified = DateTime.Now;
-            save_project(current_project);
+            save_project(current_project, recent_projects);
         }
 
 
         private void set_binding_contexts()
         {
+
+
+            ui_home_current_project_name.Visibility = Visibility.Visible;
+            ui_home_current_project_name.Text = $@"{current_project.project_name}";
+
+            ui_home_current_project_name_titlebar.Visibility = Visibility.Visible;
+            ui_home_current_project_name_titlebar.Text = $@"  -  {current_project.project_name}";
+
+            ui_home_current_project_txtinout.Visibility = Visibility.Visible;
+            ui_home_current_project_txtinout.Text = $@"{current_project.txtinout}";
+
+
             ui_calibration_manual_performance.ItemsSource = current_project.current_observations;
             ui_calibration_automatic_performance.ItemsSource = current_project.current_observations;
+
+            ui_home_recent_listdatagrid.ItemsSource = recent_projects;
+            ui_home_recent_listdatagrid.DataContext = recent_projects;
 
             ui_sensitivity_number_of_samples.Text = "Number of Samples: - ";
 
@@ -921,13 +1087,14 @@ namespace SWAT__Toolbox
 
         }
 
+        // Processes can be terminated if they are public
+        // Processes
+        Process process = new Process();
+
+
         public void run_swat()
         {
-            //* Create your Process
-            Process process = new Process();
-
-            process.StartInfo.FileName = $@"{Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory)}\\assets\\rev59_3_64rel.exe";
-            //process.StartInfo.Arguments = "/c DIR";
+            process.StartInfo.FileName = $@"{Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory)}\\assets\\rev64_4_64rel.exe";
             process.StartInfo.UseShellExecute = false;
             process.StartInfo.RedirectStandardOutput = true;
             process.StartInfo.RedirectStandardError = true;
@@ -940,22 +1107,25 @@ namespace SWAT__Toolbox
             process.Exited += new EventHandler(process_exited);
             //* Start process and handlers
             process.Start();
+
             process.BeginOutputReadLine();
             process.BeginErrorReadLine();
+          
+            // do not run the model before the other run finishes
             if (is_sensitivity_run == true)
             {
                 process.WaitForExit();
             }
             if (is_calibration_run == true)
             {
-                    process.WaitForExit();
+                process.WaitForExit();
             }
         }
 
         public void OutputHandler(object sendingProcess, DataReceivedEventArgs outLine)
         {
 
-            //* Do your stuff with the output (write to console/log/StringBuilder)
+
             Console.WriteLine(outLine.Data);
             int current_year = 0;
             int current_month = 0;
@@ -988,6 +1158,8 @@ namespace SWAT__Toolbox
 
                 this.Dispatcher.Invoke(() =>
                 {
+                    disable_project_settings(true);
+
                     running_swat_info.Visibility = Visibility.Visible;
 
                     double all_total_days = Convert.ToDouble(new DateTime(current_project.run_date_end.Year, 12, 31).Subtract(new DateTime(current_project.run_date_start.Year, 1, 1)).TotalDays);
@@ -1057,10 +1229,21 @@ namespace SWAT__Toolbox
 
         private void process_exited(object sender, System.EventArgs e)
         {
+            process.CancelErrorRead();
+            process.CancelOutputRead();
+
             is_swat_running = false;
             this.Dispatcher.Invoke(() =>
             {
                 running_swat_info.Visibility = Visibility.Hidden;
+                disable_project_settings(false);
+
+                ui_run_model_run_icon.Kind = PackIconKind.Play;
+                ui_run_model_run_swat_button_text.Text = "Run SWAT+";
+
+
+                ui_calibration_manual_run_icon.Kind = PackIconKind.Play;
+                ui_calibration_manual_run_swat_button_text.Text = "Run SWAT+";
             });
         }
 
@@ -1069,7 +1252,12 @@ namespace SWAT__Toolbox
         {
             if (is_swat_running == true)
             {
-                System.Windows.MessageBox.Show("SWAT+ is already runing. Please, Wait.");
+                if (ui_calibration_manual_run_swat_button_text.Text == "Stop SWAT+")
+                {
+                    //process.CancelErrorRead();
+                    //process.CancelOutputRead();
+                    process.Kill();
+                }
                 return;
             }
 
@@ -1090,7 +1278,7 @@ namespace SWAT__Toolbox
 
             if (current_project.run_date_start > current_project.run_date_end)
             {
-                System.Windows.MessageBox.Show("Start Date cannot be in the future of End Date");
+                System.Windows.MessageBox.Show($@"Start Date cannot be in{Environment.NewLine}the future of the End Date");
                 return;
             }
 
@@ -1103,6 +1291,9 @@ namespace SWAT__Toolbox
             ui_run_model_run_icon.Kind = PackIconKind.Stop;
             ui_run_model_run_swat_button_text.Text = "Stop SWAT+";
 
+            ui_calibration_manual_run_icon.Kind = PackIconKind.Stop;
+            ui_calibration_manual_run_swat_button_text.Text = "Stop SWAT+";
+
             is_swat_running = true;
             running_swat_info.Visibility = Visibility.Visible;
 
@@ -1110,8 +1301,6 @@ namespace SWAT__Toolbox
             ui_run_model_running_year.Text = "";
             ui_run_model_total_years.Text = "";
 
-            ui_run_model_run_icon.Kind = PackIconKind.Play;
-            ui_run_model_run_swat_button_text.Text = "Run SWAT+";
 
         }
 
@@ -1350,13 +1539,17 @@ namespace SWAT__Toolbox
 
             update_project();
         }
-
         private void run_swat_plus_model_with_new_pars(object sender, RoutedEventArgs e)
         {
 
             if (is_swat_running == true)
             {
-                System.Windows.MessageBox.Show("SWAT+ is already runing. Please, Wait.");
+                if (ui_calibration_manual_run_swat_button_text.Text == "Stop SWAT+")
+                {
+                    process.CancelErrorRead();
+                    process.CancelOutputRead();
+                    process.Kill();
+                }
                 return;
             }
 
@@ -1384,6 +1577,12 @@ namespace SWAT__Toolbox
             File.WriteAllText($"{current_project.txtinout}\\codes.bsn", codes_bsn_file(current_project));
 
             Environment.CurrentDirectory = current_project.txtinout;
+
+            ui_calibration_manual_run_icon.Kind = PackIconKind.Stop;
+            ui_calibration_manual_run_swat_button_text.Text = "Stop SWAT+";
+
+            ui_run_model_run_icon.Kind = PackIconKind.Stop;
+            ui_run_model_run_swat_button_text.Text = "Stop SWAT+";
 
             run_swat();
             ui_run_model_running_year.Text = "";
@@ -1627,7 +1826,22 @@ namespace SWAT__Toolbox
 
             if (is_sensitivity_run == true)
             {
-                System.Windows.MessageBox.Show($@"Sensitivity analysis is already running");
+                if (ui_sensitivity_run_swat_sensitivity_button_text.Text == "Stop Analysis")
+                {
+                    worker.CancelAsync();
+                    process.Kill();
+                }
+
+                ui_sensitivity_run_icon.Kind = PackIconKind.Play;
+                ui_sensitivity_run_swat_sensitivity_button_text.Text = "Analyse";
+
+                return;
+            }
+
+
+            if (current_project.current_parameters.Count < 2)
+            {
+                System.Windows.MessageBox.Show($@"Cannot run sensitivity analysis{Environment.NewLine}Add a at least two paramaters");
                 return;
             }
             ui_sensitivity_is_running.Visibility = Visibility.Visible;
@@ -1641,6 +1855,10 @@ namespace SWAT__Toolbox
 
             is_sensitivity_run = true;
             // run loop
+
+            ui_sensitivity_run_icon.Kind = PackIconKind.Stop;
+            ui_sensitivity_run_swat_sensitivity_button_text.Text = "Stop Analysis";
+
             run_sensitivity_loop_async();
         }
 
@@ -1652,18 +1870,33 @@ namespace SWAT__Toolbox
                 return;
             }
 
-            if (is_calibration_run == true)
-            {
-                System.Windows.MessageBox.Show($@"Calibration is already running");
-                return;
-            }
-
-
             if (is_sensitivity_run == true)
             {
-                System.Windows.MessageBox.Show($@"Cannot run calibration analysis because{Environment.NewLine}sensitivity analysis is running. Please, Wait.");
+                System.Windows.MessageBox.Show($@"Cannot run sampled parameter calibration because{Environment.NewLine}sensitivity analysis is running. Please, Wait.");
                 return;
             }
+
+            if (current_project.current_parameters.Count < 1)
+            {
+                System.Windows.MessageBox.Show($@"Cannot run automatic calibration{Environment.NewLine}Add a at least one paramater");
+                return;
+            }
+
+
+            if (is_calibration_run == true)
+            {
+                if (ui_calibration_automatic_calibration_run_calibration.Text == "Stop Calibration")
+                {
+                    worker.CancelAsync();
+                    process.Kill();
+                }
+
+                ui_calibration_automatic_run_icon.Kind = PackIconKind.Play;
+                ui_calibration_automatic_calibration_run_calibration.Text = "Calibrate";
+
+                return;
+            }
+
 
             ui_calibration_automatic_is_running.Visibility = Visibility.Collapsed;
 
@@ -1673,16 +1906,19 @@ namespace SWAT__Toolbox
 
             // run loop
             is_calibration_run = true;
+            ui_calibration_automatic_run_icon.Kind = PackIconKind.Stop;
+            ui_calibration_automatic_calibration_run_calibration.Text = "Stop Calibration";
             run_sensitivity_loop_async();
         }
-             
 
+        BackgroundWorker worker = new BackgroundWorker();
 
         private void run_sensitivity_loop_async()
         {
-            BackgroundWorker worker = new BackgroundWorker();
             worker.DoWork += run_loop;
             worker.WorkerReportsProgress = true;
+            worker.WorkerSupportsCancellation = true;
+
             worker.RunWorkerCompleted += notify_swat_run_status;
             worker.RunWorkerAsync();
         }
@@ -1690,9 +1926,12 @@ namespace SWAT__Toolbox
 
         private void run_loop(object sender, DoWorkEventArgs e)
         {
+                        
             this.Dispatcher.Invoke(() =>
             {
                 running_swat_info.Visibility = Visibility.Visible;
+                disable_project_settings(true);
+
             });
             
             // reset best parameters and best nse
@@ -1720,7 +1959,6 @@ namespace SWAT__Toolbox
 
             using (System.Diagnostics.Process p_gen_process = new System.Diagnostics.Process())
             {
-
                 p_gen_process.StartInfo.FileName = "cmd.exe";
                 p_gen_process.StartInfo.RedirectStandardInput = true;
                 p_gen_process.StartInfo.RedirectStandardOutput = true;
@@ -1747,6 +1985,12 @@ namespace SWAT__Toolbox
 
             foreach (var par_line in parameter_sample)
             {
+                if (worker.CancellationPending)
+                {
+                    e.Cancel = true;
+                    return;
+                }
+
                 par_set_id = par_set_id + 1;
 
                 //set parameters
@@ -1839,6 +2083,47 @@ namespace SWAT__Toolbox
                 ui_sensitivity_parameters.Items.Refresh();
             });
         }
+
+        private void disable_project_settings(bool option)
+        {
+            if (option == true)
+            {
+                ui_run_model_print_options_all.IsEnabled = false;
+                ui_run_model_print_csv.IsEnabled = false;
+                ui_run_model_pet_method.IsEnabled = false;
+                ui_run_model_routing_method.IsEnabled = false;
+                ui_run_model_warmup_period.IsEnabled = false;
+                ui_run_model_start_date.IsEnabled = false;
+                ui_run_model_end_date.IsEnabled = false;
+                ui_parameters_add_parameter_button.IsEnabled = false;
+                ui_observations_add_observation_button.IsEnabled = false;
+                ui_sensitivity_analysis_method.IsEnabled = false;
+                ui_sensitivity_observation_selection.IsEnabled = false;
+                ui_sensitivity_seed_box.IsEnabled = false;
+                ui_calibration_automatic_observation_selection.IsEnabled = false;
+                ui_calibration_automatic_seed_box.IsEnabled = false;
+
+            }
+            else
+            {
+                ui_run_model_print_options_all.IsEnabled = true;
+                ui_run_model_print_csv.IsEnabled = true;
+                ui_run_model_pet_method.IsEnabled = true;
+                ui_run_model_routing_method.IsEnabled = true;
+                ui_run_model_warmup_period.IsEnabled = true;
+                ui_run_model_start_date.IsEnabled = true;
+                ui_run_model_end_date.IsEnabled = true;
+                ui_parameters_add_parameter_button.IsEnabled = true;
+                ui_observations_add_observation_button.IsEnabled = true;
+                ui_sensitivity_analysis_method.IsEnabled = true;
+                ui_sensitivity_observation_selection.IsEnabled = true;
+                ui_sensitivity_seed_box.IsEnabled = true;
+                ui_calibration_automatic_observation_selection.IsEnabled = true;
+                ui_calibration_automatic_seed_box.IsEnabled = true;
+
+            }
+        }
+
         private void notify_swat_run_status(object sender, RunWorkerCompletedEventArgs e)
         {
             File.WriteAllText($@"{current_project.txtinout}\is_model_running.stb", "False");
@@ -1848,6 +2133,8 @@ namespace SWAT__Toolbox
             is_calibration_run = false;
             this.Dispatcher.Invoke(() =>
             {
+                disable_project_settings(false);
+
                 running_swat_info.Visibility = Visibility.Hidden;
                 ui_sensitivity_is_running.Visibility = Visibility.Hidden;
                 ui_calibration_automatic_is_running.Visibility = Visibility.Collapsed;
@@ -1855,10 +2142,13 @@ namespace SWAT__Toolbox
         }
         private void update_sensitivity_seed(object sender, RoutedEventArgs e)
         {
-            current_project.sensivity_settings.seed = int.Parse(ui_sensitivity_seed_box.Text);
-            ui_calibration_automatic_seed_box.Text = ui_sensitivity_seed_box.Text;
-            set_sensitivity_samples_number();
-            update_project();
+            try
+            {
+                current_project.sensivity_settings.seed = int.Parse(ui_sensitivity_seed_box.Text);
+                ui_calibration_automatic_seed_box.Text = ui_sensitivity_seed_box.Text;
+                set_sensitivity_samples_number();
+                update_project();
+            } catch (Exception) {}
         }
         private void update_sensitivity_seed_auto(object sender, RoutedEventArgs e)
         {
@@ -1964,5 +2254,193 @@ namespace SWAT__Toolbox
             set_sensitivity_samples_number();
             update_project();
         }
+
+        //private void load_recent_project(object sender, SelectionChangedEventArgs e)
+        //{
+        //    recent_project recent_pj = (recent_project)ui_home_recent_listdatagrid.SelectedItem;
+
+        //    System.Windows.MessageBox.Show($@"{recent_pj.project_name}{Environment.NewLine}{recent_pj.txtinout}");
+        //}
+
+
+        private void load_recentproject(object sender, RoutedEventArgs e)
+        {
+            if (is_swat_running == true)
+            {
+                System.Windows.MessageBox.Show($@"Cannot open a new project because{Environment.NewLine}SWAT+ is running. Please, Wait.");
+                return;
+            }
+
+
+            if (is_calibration_run == true)
+            {
+                System.Windows.MessageBox.Show($@"Cannot open a new project because{Environment.NewLine}calibration is running. Please, Wait.");
+                return;
+            }
+
+            if (is_sensitivity_run == true)
+            {
+                System.Windows.MessageBox.Show($@"Cannot open a new project, sensitivity{Environment.NewLine}analysis is running. Please, Wait.");
+                return;
+            }
+
+            string sCaption = "New SWAT+ Toolbox Project";
+
+            MessageBoxButton btnMessageBox = MessageBoxButton.YesNo;
+            MessageBoxImage icnMessageBox = MessageBoxImage.Warning;
+
+            MessageBoxResult rsltMessageBox = System.Windows.MessageBox.Show($@"Do you want to load a{Environment.NewLine}new SWAT+ Toolbox project?", sCaption, btnMessageBox, icnMessageBox);
+
+            switch (rsltMessageBox)
+            {
+                case MessageBoxResult.Yes:
+                    break;
+
+                case MessageBoxResult.No:
+                    return;
+            }
+
+            recent_project project_row_info = (recent_project)((System.Windows.Controls.Button)e.Source).DataContext;
+            Console.WriteLine(project_row_info.txtinout);
+            Console.WriteLine(project_row_info.project_name);
+
+            // try to open an existing project, ignore if cancelled
+            using (StreamReader streamReader = new StreamReader(project_row_info.project_path))
+            {
+                var deserializer = new DeserializerBuilder()
+                    .Build();
+                //Deserializer deserializer = new Deserializer();
+                current_project = (project)deserializer.Deserialize(streamReader, typeof(project));
+            }
+
+            selected_parameters = current_project.current_parameters;
+            selected_observations = current_project.current_observations;
+
+            ui_selected_parameters.ItemsSource = selected_parameters;
+            ui_selected_observations.ItemsSource = selected_observations;
+
+            ui_calibration_manual_performance.ItemsSource = current_project.current_observations;
+            ui_calibration_automatic_performance.ItemsSource = current_project.current_observations;
+
+            //update ui
+            ui_home_current_project_name.Visibility = Visibility.Visible;
+            ui_home_current_project_name.Text = $@"{current_project.project_name}";
+
+            ui_home_current_project_name_titlebar.Visibility = Visibility.Visible;
+            ui_home_current_project_name_titlebar.Text = $@"  -  {current_project.project_name}";
+
+            ui_home_current_project_txtinout.Visibility = Visibility.Visible;
+            ui_home_current_project_txtinout.Text = $@"{current_project.txtinout}";
+
+            //home
+
+            //run_model
+            ui_run_model_start_date.SelectedDate = current_project.run_date_start;
+            ui_run_model_end_date.SelectedDate = current_project.run_date_end;
+
+            ui_run_model_warmup_period.Text = current_project.run_warmup.ToString();
+
+            set_binding_contexts();
+
+            update_project();
+
+        }
+
+        private void remove_recent(object sender, RoutedEventArgs e)
+        {
+            recent_project project_row_info = (recent_project)((System.Windows.Controls.Button)e.Source).DataContext;
+            
+            for (int i = 0; i < recent_projects.Count; i++)
+            {
+                if (recent_projects[i].project_name == project_row_info.project_name)
+                {
+                    recent_projects.RemoveAt(i);
+
+                    recent_projects = sort_recents(recent_projects, current_project);
+
+                    ui_home_recent_listdatagrid.ItemsSource = recent_projects;
+                    ui_home_recent_listdatagrid.DataContext = recent_projects;
+
+                    ui_home_recent_listdatagrid.Items.Refresh();
+
+                    break;
+                }
+            }
+
+
+        }
+
+        private void remove_parameter(object sender, RoutedEventArgs e)
+        {
+
+            if (cant_change_run_settings(is_sensitivity_run, is_swat_running, is_calibration_run))
+            {
+                return;
+            }
+            parameter parameter_row_info = (parameter)((System.Windows.Controls.Button)e.Source).DataContext;
+            Console.WriteLine(parameter_row_info.name);
+            Console.WriteLine(parameter_row_info.minimum);
+            
+
+            for (int i = 0; i < current_project.current_parameters.Count; i++)
+            {
+                if (current_project.current_parameters[i].name == parameter_row_info.name)
+                {
+                    if (current_project.current_parameters[i].minimum == parameter_row_info.minimum)
+                    {
+                        if (current_project.current_parameters[i].maximum == parameter_row_info.maximum)
+                        {
+                            if (current_project.current_parameters[i].change_type == parameter_row_info.change_type)
+                            {
+                                current_project.current_parameters.RemoveAt(i);
+                                update_project();
+                                break;
+
+                            }
+                        }
+
+                    }
+                    
+                }
+            }
+        }
+
+        private void remove_observation(object sender, RoutedEventArgs e)
+        {
+            if (cant_change_run_settings(is_sensitivity_run, is_swat_running, is_calibration_run))
+            {
+                return;
+            }
+
+            observation parameter_row_info = (observation)((System.Windows.Controls.Button)e.Source).DataContext;
+            Console.WriteLine(parameter_row_info.chart_name);
+            
+            for (int i = 0; i < current_project.current_observations.Count; i++)
+            {
+                if (current_project.current_observations[i].chart_name == parameter_row_info.chart_name)
+                {
+                    if (current_project.current_observations[i].file == parameter_row_info.file)
+                    {
+                        if (current_project.current_observations[i].number == parameter_row_info.number)
+                        {
+                            if (current_project.current_observations[i].object_type == parameter_row_info.object_type)
+                            {
+                                if (current_project.current_observations[i].observed_variable == parameter_row_info.observed_variable)
+                                {
+                                    current_project.current_observations.RemoveAt(i);
+                                    update_project();
+                                    break;
+
+                                }
+
+                            }
+                        }
+
+                    }
+
+                }
+            }
+        }
     }
 }
+

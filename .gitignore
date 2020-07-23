@@ -9,3 +9,4 @@ assets/__pycache__
 /assets/setup_exe.py
 /assets/sensitivity_api
 /releases
+assets/sensitivity_api_old

@@ -25,11 +25,14 @@
         <materialDesign:ColorZone Grid.Row="0" Mode="PrimaryLight" VerticalAlignment="Stretch" 
                                   HorizontalAlignment="Stretch" VerticalContentAlignment="Stretch" Background="#FF06467A"/>
 
-        <TextBlock FontSize="16" Height="20" HorizontalAlignment="Left"  VerticalAlignment="Top" Margin="12, 12, 0, 0" Foreground="White">
-            SWAT+ Toolbox
-        </TextBlock>
+        <StackPanel Orientation="Horizontal">
+            <TextBlock FontSize="16" Height="20" HorizontalAlignment="Left"  VerticalAlignment="Top" Margin="12, 12, 0, 0" Foreground="White"> SWAT+ Toolbox v0.2.1 </TextBlock>
+            <TextBlock x:Name="ui_home_current_project_name_titlebar" Visibility="Collapsed" FontSize="16" Height="20" HorizontalAlignment="Left"  VerticalAlignment="Top" Text="Test_details" Foreground="White" Margin="0, 12, 0, 0" />
+            
+        </StackPanel>
 
         <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right" WindowChrome.IsHitTestVisibleInChrome="True" Height="32" Width="138">
+            <TextBlock FontSize="16" Height="20" HorizontalAlignment="Left"  VerticalAlignment="Top" Margin="-138, 12, 0, 0" Foreground="Gray"> (c) Celray James</TextBlock>
             <Button Width = "46" Style="{StaticResource MaterialDesignFlatButton}" Foreground="{DynamicResource MaterialDesignPaper}" ToolTip="Minimise" Click="WindowMinimise" Cursor="Arrow">
                 <materialDesign:PackIcon Kind="WindowMinimize" />
             </Button>
@@ -70,7 +73,7 @@
 
                 <TabControl  x:Name="pages" TabStripPlacement="Bottom" Margin="0,0,0,-46">
                     <TabItem Header="Home">
-                        <Grid Background="{DynamicResource MaterialDesignPaper}" Margin="0,0,0,24">
+                        <Grid Background="{DynamicResource MaterialDesignPaper}" Margin="0,0,0,0">
 
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="140*"/>
@@ -89,6 +92,10 @@
                             </Grid>
 
                             <Grid Grid.Row="1">
+                                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top">
+                                    <TextBlock Visibility="Hidden" Foreground="#FF06467A" HorizontalAlignment="Center" x:Name="ui_home_current_project_name" FontSize="25" Text="Test_details" Margin="0, 0, 0, 0" />
+                                    <TextBlock Visibility="Hidden" Foreground="#FF06467A" HorizontalAlignment="Center" x:Name="ui_home_current_project_txtinout" FontSize="16" Text="Test_details" Margin="0, 0, 0, 0" />
+                                </StackPanel>
                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
 
                                     <materialDesign:DialogHost HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -155,7 +162,12 @@
                                                 </StackPanel>
                                             </StackPanel>
                                         </materialDesign:DialogHost.DialogContent>
-                                        <StackPanel Orientation="Horizontal">
+                                        
+                                        
+                                        
+                                        
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0, 80, 0, 0">
+
                                             <Button x:Name="ui_home_new_project" Click="home_set_project" Foreground="{DynamicResource MaterialDesignTextAreaBorder}" Style="{StaticResource MaterialDesignFlatButton}"   ToolTip="Start a New Project">
                                                 <!--Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}"-->
                                                 <StackPanel Orientation="Horizontal">
@@ -186,15 +198,96 @@
                                 </Grid.ColumnDefinitions>
 
                                 <DataGrid Grid.Column="1" x:Name="ui_home_recent_listdatagrid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                                                      Margin="0,0,0,0" CanUserAddRows="False"  AutoGenerateColumns="False">
+                                        materialDesign:DataGridAssist.CellPadding="0 0 0 0"
+                                        Margin="0,0,0,0" CanUserAddRows="False" CanUserReorderColumns="False"
+                                        CanUserResizeColumns="False" AutoGenerateColumns="False"
+                                        CanUserSortColumns="False" SelectionMode ="Single" >
+
                                     <DataGrid.Columns>
-                                        <DataGridTextColumn IsReadOnly="True" Header="Project Name" Binding="{Binding Key}" Width="Auto" />
-                                        <DataGridTextColumn IsReadOnly="True" Header="TxtInOut Directory" Binding="{Binding Value}" Width="*"/>
-                                        <DataGridTextColumn IsReadOnly="True" Header="x" Binding="{Binding minimum}" Width="30"/>
+
+
+                                        <DataGridTemplateColumn IsReadOnly="True" Header="" MinWidth="40">
+
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Button HorizontalAlignment="Stretch"
+                                                            Click="load_recentproject"
+                                                            HorizontalContentAlignment="Left"
+                                                            Foreground="Gray"
+                                                            Style="{StaticResource MaterialDesignFlatButton}"
+                                                            ToolTip="Load project..." materialDesign:DataGridAssist.CellPadding="0 0 0 0" 
+                                                            Content="{Binding last_modified}"/>
+
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+
+                                        </DataGridTemplateColumn>
+
+
+
+                                        <!--<DataGridTextColumn IsReadOnly="True" Header="" Binding="{Binding last_modified}"  SortDirection="Descending" SortMemberPath="{Binding last_modified}"/>-->
+
+                                        <!--<DataGridTextColumn IsReadOnly="True" Header="Project Name" Binding="{Binding project_name}" Width="Auto"/>-->
+
+                                        <DataGridTemplateColumn IsReadOnly="True" Header="Project Name" Width="Auto">
+
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Button HorizontalAlignment="Stretch"
+                                                            Click="load_recentproject"
+                                                            HorizontalContentAlignment="Left"
+                                                            Foreground="Gray"
+                                                            Style="{StaticResource MaterialDesignFlatButton}"
+                                                            ToolTip="Load project..." materialDesign:DataGridAssist.CellPadding="0 0 0 0" Height="30"
+                                                            Content="{Binding project_name}"/>
+
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+
+                                        </DataGridTemplateColumn>
+
+
+
+
+                                        <DataGridTemplateColumn IsReadOnly="True" Header="TxtInOut Directory" Width="*">
+
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Button HorizontalAlignment="Stretch"
+                                                            Click="load_recentproject"
+                                                            HorizontalContentAlignment="Left"
+                                                            Foreground="Gray"
+                                                            Style="{StaticResource MaterialDesignFlatButton}"
+                                                            ToolTip="Load project..." materialDesign:DataGridAssist.CellPadding="0 0 0 0" Height="30"
+                                                            Content="{Binding txtinout}"/>
+
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+
+                                        </DataGridTemplateColumn>
+
+                                        <!--<DataGridTextColumn IsReadOnly="True" Header="TxtInOut Directory" Binding="{Binding txtinout}" Width="*"/>-->
+
+                                        <DataGridTemplateColumn Width="30">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Button
+                                                        Style="{StaticResource MaterialDesignFlatButton}"
+                                                        Foreground="Gray"
+                                                         Click="remove_recent"
+                                                        ToolTip="Remove" materialDesign:DataGridAssist.CellPadding="0 0 0 0" Height="30" Width="30" Padding="0, 0, 0, 0">
+
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <materialDesign:PackIcon Kind="WindowClose" />
+                                                        </StackPanel>
+                                                    </Button>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+
                                     </DataGrid.Columns>
                                 </DataGrid>
                             </Grid>
-                            
 
 
                         </Grid>
@@ -286,12 +379,12 @@
 
 
 
-                                        <StackPanel>
+                                        <StackPanel x:Name="ui_run_model_print_options_all">
                                             <Expander
                                         HorizontalAlignment="Stretch"
                                         Header="Model Components"
                                         materialDesign:ExpanderAssist.DownHeaderPadding="10, 0, 0, 0"
-                                        IsExpanded="True">
+                                        IsExpanded="True" x:Name="ui_run_model_print_item_options" >
 
                                                 <StackPanel Orientation="Vertical" TextBlock.Foreground="{DynamicResource MaterialDesignBody}" Margin="24,8,24,16">
 
@@ -472,8 +565,8 @@
                                             Grid.Row = "1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="12,0,0,0"
                                             Style="{StaticResource MaterialDesignFlatButton}" ToolTip="Run SWAT+ with current settings" Click="run_swat_plus_model">
                                         <StackPanel Orientation="Horizontal">
-                                            <materialDesign:PackIcon x:Name="ui_run_model_run_icon" Kind="Play" />
-                                            <TextBlock  x:Name="ui_run_model_run_swat_button_text" Text=" Run SWAT+"/>
+                                            <materialDesign:PackIcon x:Name="ui_run_model_run_icon" Foreground="#FF06467A"  Kind="Play" />
+                                            <TextBlock  x:Name="ui_run_model_run_swat_button_text" Foreground="#FF06467A" Text=" Run SWAT+"/>
                                         </StackPanel>
                                     </Button>
                                 </Grid>
@@ -545,9 +638,9 @@
                                         </StackPanel>
                                     </Grid>
                                     <Grid Grid.Column="1" HorizontalAlignment="Right">
-                                        <Button Style="{StaticResource MaterialDesignFloatingActionMiniButton}" ToolTip="Add to observations table" Width="35"
+                                        <Button Style="{StaticResource MaterialDesignFloatingActionMiniButton}" Background="#FF06467A" BorderBrush="#FF06467A" ToolTip="Add to parameters table" Width="35"
                                                 Height="35" Margin="10, 0, 0, 0"
-                                                HorizontalAlignment ="Right" Click="add_parameter"
+                                                HorizontalAlignment ="Right" Click="add_parameter" x:Name="ui_parameters_add_parameter_button"
                                                 >
                                             <materialDesign:PackIcon Kind="Add" />
 
@@ -559,21 +652,84 @@
 
                             <TabControl BorderThickness="0" TabStripPlacement="Bottom" Grid.Row="1" BorderBrush="SkyBlue" Margin="-8,0,-12,-31">
                                 <TabItem Header="TabItem">
+                                    
                                     <Grid Background="{DynamicResource MaterialDesignPaper}" Margin="0, 0, 0, 0">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="10*"/>
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
-                                        <DataGrid Grid.Column="1" x:Name="ui_selected_parameters" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                                                      Margin="0,0,0,0" CanUserAddRows="False"  AutoGenerateColumns="False">
+
+                                        <DataGrid Grid.Column="1" x:Name="ui_selected_parameters"
+                                                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                                  Margin="0,0,0,0" CanUserAddRows="False" 
+                                                  materialDesign:DataGridAssist.CellPadding="0 0 0 0" 
+                                                  AutoGenerateColumns="False">
+                                            
                                             <DataGrid.Columns>
-                                                <DataGridTextColumn IsReadOnly="True" Header="Parameter Group" Binding="{Binding object_type}" Width="2*"/>
-                                                <DataGridTextColumn IsReadOnly="True" Header="Parameter Name" Binding="{Binding name}" Width="2*" />
-                                                <DataGridTextColumn IsReadOnly="True" Header="Change Type" Binding="{Binding change_type}" Width="2*"/>
-                                                <DataGridTextColumn IsReadOnly="True" Header="Minimum" Binding="{Binding minimum}" Width="*"/>
-                                                <DataGridTextColumn IsReadOnly="True" Header="Maximum" Binding="{Binding maximum}" Width="*"/>
-                                                <DataGridTextColumn IsReadOnly="True" Header="Units" Binding="{Binding units}" Width="*"/>
+                                                <DataGridTextColumn IsReadOnly="True" Header="Parameter Group" Binding="{Binding object_type}" Width="2*">
+                                                    <DataGridTextColumn.ElementStyle>
+                                                        <Style TargetType="TextBlock">
+                                                            <Setter Property="VerticalAlignment" Value="Center" />
+                                                            <Setter Property="Margin" Value="12, 0, 12, 0" />
+                                                        </Style>
+                                                    </DataGridTextColumn.ElementStyle>
+                                                </DataGridTextColumn>
+                                                <DataGridTextColumn IsReadOnly="True" Header="Parameter Name" Binding="{Binding name}" Width="2*">
+                                                    <DataGridTextColumn.ElementStyle>
+                                                        <Style TargetType="TextBlock">
+                                                            <Setter Property="VerticalAlignment" Value="Center" />
+                                                        </Style>
+                                                    </DataGridTextColumn.ElementStyle>
+                                                </DataGridTextColumn>
+                                                <DataGridTextColumn IsReadOnly="True" Header="Change Type" Binding="{Binding change_type}" Width="2*">
+                                                    <DataGridTextColumn.ElementStyle>
+                                                        <Style TargetType="TextBlock">
+                                                            <Setter Property="VerticalAlignment" Value="Center" />
+                                                        </Style>
+                                                    </DataGridTextColumn.ElementStyle>
+                                                </DataGridTextColumn>
+                                                <DataGridTextColumn IsReadOnly="True" Header="Minimum" Binding="{Binding minimum}" Width="*">
+                                                    <DataGridTextColumn.ElementStyle>
+                                                        <Style TargetType="TextBlock">
+                                                            <Setter Property="VerticalAlignment" Value="Center" />
+                                                            <Setter Property="TextAlignment" Value="Right" />
+                                                        </Style>
+                                                    </DataGridTextColumn.ElementStyle>
+                                                </DataGridTextColumn>
+                                                <DataGridTextColumn IsReadOnly="True" Header="Maximum" Binding="{Binding maximum}" Width="*">
+                                                    <DataGridTextColumn.ElementStyle>
+                                                        <Style TargetType="TextBlock">
+                                                            <Setter Property="TextAlignment" Value="Right" />
+                                                            <Setter Property="VerticalAlignment" Value="Center" />
+                                                        </Style>
+                                                    </DataGridTextColumn.ElementStyle>
+                                                </DataGridTextColumn>
+                                                <DataGridTextColumn IsReadOnly="True" Header="Units" Binding="{Binding units}" Width="*">
+                                                    <DataGridTextColumn.ElementStyle>
+                                                        <Style TargetType="TextBlock">
+                                                            <Setter Property="VerticalAlignment" Value="Center" />
+                                                        </Style>
+                                                    </DataGridTextColumn.ElementStyle>
+                                                </DataGridTextColumn>
+
+                                                <DataGridTemplateColumn Width="30" Header="">
+                                                    <DataGridTemplateColumn.CellTemplate>
+                                                        <DataTemplate>
+                                                            <Button
+                                                        Style="{StaticResource MaterialDesignFlatButton}"
+                                                        Foreground="Gray"
+                                                        Click="remove_parameter"
+                                                        ToolTip="Remove" materialDesign:DataGridAssist.CellPadding="0 0 0 0" Height="30" Width="30" Padding="0, 0, 0, 0">
+
+                                                                <StackPanel Orientation="Horizontal">
+                                                                    <materialDesign:PackIcon Kind="WindowClose" />
+                                                                </StackPanel>
+                                                            </Button>
+                                                        </DataTemplate>
+                                                    </DataGridTemplateColumn.CellTemplate>
+                                                </DataGridTemplateColumn>
+                                                
                                             </DataGrid.Columns>
 
                                         </DataGrid>
@@ -665,18 +821,18 @@
                                                         <ComboBoxItem Content="Mineral Phosphorus"/>-->
                                                     </ComboBox>
 
-                                                    <Button Style="{StaticResource MaterialDesignFloatingActionMiniButton}" ToolTip="Add to observations table"
-                                                        Width="35" Height="35" Margin="10, 0, 0, 0" HorizontalAlignment ="Right" Click="add_observation">
+                                                    <Button Style="{StaticResource MaterialDesignFloatingActionMiniButton}"
+                                                            Background="#FF06467A" BorderBrush="#FF06467A" ToolTip="Add to observations table"
+                                                            Width="35" Height="35" Margin="10, 0, 0, 0" HorizontalAlignment ="Right"
+                                                            Click="add_observation" x:Name="ui_observations_add_observation_button">
 
-                                                        <materialDesign:PackIcon Kind="Add" />
+                                                        <materialDesign:PackIcon Foreground="White" Kind="Add" />
 
                                                     </Button>
                                                 </StackPanel>
                                             </Grid>
                                         </Grid>
-
                                     </Grid>
-
 
                                     <TabControl BorderThickness="0" HorizontalAlignment="Stretch" Grid.Row="1" TabStripPlacement="Bottom" Margin="-8,0,-7,-29">
                                         <TabItem Header="Parameters">
@@ -686,14 +842,70 @@
                                                     <ColumnDefinition Width="10*"/>
                                                     <ColumnDefinition Width="*"/>
                                                 </Grid.ColumnDefinitions>
-                                                <DataGrid Grid.Column="1" Background="{DynamicResource MaterialDesignPaper}" x:Name="ui_selected_observations" BorderThickness="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                                                      Margin="0,0,0,0" CanUserAddRows="False"  AutoGenerateColumns="False">
+                                                <DataGrid Grid.Column="1" Background="{DynamicResource MaterialDesignPaper}"
+                                                          x:Name="ui_selected_observations" BorderThickness="0" HorizontalAlignment="Stretch"
+                                                          VerticalAlignment="Stretch" Margin="0,0,0,0" CanUserAddRows="False"
+                                                          AutoGenerateColumns="False" materialDesign:DataGridAssist.CellPadding="0 0 0 0" >
                                                     <DataGrid.Columns>
-                                                        <DataGridTextColumn IsReadOnly="True" Header="Object Type" Binding="{Binding object_type}" Width="200"/>
-                                                        <DataGridTextColumn IsReadOnly="True" Header="Object Number" Binding="{Binding number}" Width="120" />
-                                                        <DataGridTextColumn IsReadOnly="True" Header="Observation File" Binding="{Binding file}" Width="*"/>
-                                                        <DataGridTextColumn IsReadOnly="True" Header="Timestep" Binding="{Binding timestep}" Width="120"/>
-                                                        <DataGridTextColumn IsReadOnly="True" Header="Observed Variable" Binding="{Binding observed_variable}" Width="180"/>
+                                                        <DataGridTextColumn IsReadOnly="True" Header="Object Type" Binding="{Binding object_type}" Width="200">
+                                                            <DataGridTextColumn.ElementStyle>
+                                                                <Style TargetType="TextBlock">
+                                                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                                                    <Setter Property="Margin" Value="12, 0, 12, 0" />
+                                                                </Style>
+                                                            </DataGridTextColumn.ElementStyle>
+                                                        </DataGridTextColumn>
+                                                        <DataGridTextColumn IsReadOnly="True" Header="Object Number" Binding="{Binding number}" Width="120" >
+                                                            <DataGridTextColumn.ElementStyle>
+                                                                <Style TargetType="TextBlock">
+                                                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                                                    <Setter Property="Margin" Value="12, 0, 12, 0" />
+                                                                </Style>
+                                                            </DataGridTextColumn.ElementStyle>
+                                                        </DataGridTextColumn>
+                                                        <DataGridTextColumn IsReadOnly="True" Header="Observation File" Binding="{Binding file}" Width="*">
+                                                            <DataGridTextColumn.ElementStyle>
+                                                                <Style TargetType="TextBlock">
+                                                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                                                    <Setter Property="Margin" Value="12, 0, 12, 0" />
+                                                                </Style>
+                                                            </DataGridTextColumn.ElementStyle>
+                                                        </DataGridTextColumn>
+                                                        <DataGridTextColumn IsReadOnly="True" Header="Timestep" Binding="{Binding timestep}" Width="120">
+                                                            <DataGridTextColumn.ElementStyle>
+                                                                <Style TargetType="TextBlock">
+                                                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                                                    <Setter Property="Margin" Value="12, 0, 12, 0" />
+                                                                </Style>
+                                                            </DataGridTextColumn.ElementStyle>
+                                                        </DataGridTextColumn>
+                                                        <DataGridTextColumn IsReadOnly="True" Header="Observed Variable" Binding="{Binding observed_variable}" Width="180">
+                                                            <DataGridTextColumn.ElementStyle>
+                                                                <Style TargetType="TextBlock">
+                                                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                                                    <Setter Property="Margin" Value="12, 0, 12, 0" />
+                                                                </Style>
+                                                            </DataGridTextColumn.ElementStyle>
+                                                        </DataGridTextColumn>
+                                                        
+                                                        <DataGridTemplateColumn MinWidth="30" Header="">
+                                                            <DataGridTemplateColumn.CellTemplate>
+                                                                <DataTemplate>
+                                                                    <Button
+                                                                        Style="{StaticResource MaterialDesignFlatButton}"
+                                                                        Foreground="Gray"
+                                                                        Click="remove_observation"
+                                                                        ToolTip="Remove" materialDesign:DataGridAssist.CellPadding="0 0 0 0" Height="30" Width="30" Padding="0, 0, 0, 0">
+
+                                                                        <StackPanel Orientation="Horizontal">
+                                                                            <materialDesign:PackIcon Kind="WindowClose" />
+                                                                        </StackPanel>
+
+                                                                    </Button>
+                                                                </DataTemplate>
+                                                            </DataGridTemplateColumn.CellTemplate>
+                                                        </DataGridTemplateColumn>
+                                                        
                                                     </DataGrid.Columns>
 
                                                 </DataGrid>
@@ -818,7 +1030,7 @@
                                         ToolTip="Run sensitivity analysis" Click="run_sensitivity">
                                         <StackPanel Orientation="Horizontal">
                                             <materialDesign:PackIcon x:Name="ui_sensitivity_run_icon" Kind="Play" />
-                                            <TextBlock  x:Name="ui_sensitivity_run_swat_sensitivity_vutton_text" Text=" Analyse"/>
+                                            <TextBlock  x:Name="ui_sensitivity_run_swat_sensitivity_button_text" Text="Analyse"/>
                                         </StackPanel>
                                     </Button>
                                 </StackPanel>
@@ -866,7 +1078,7 @@
                                                         <Setter Property="LineSmoothness" Value="0"></Setter>
                                                     </Style>
                                                 </Grid.Resources>
-                                                <lvc:CartesianChart Margin="0, 10, 0, 0" Visibility="Visible" x:Name="ui_calibration_manual_chart" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                                <lvc:CartesianChart Margin="0, 10, 0, 0" Visibility="Hidden" x:Name="ui_calibration_manual_chart" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                                                                 Series="{Binding SeriesCollection}">
 
                                                     <lvc:CartesianChart.AxisY>
@@ -898,8 +1110,8 @@
                                                         Style="{StaticResource MaterialDesignFlatButton}" ToolTip="Run SWAT+ with current parameters"
                                                         Click="run_swat_plus_model_with_new_pars">
                                                         <StackPanel Orientation="Horizontal">
-                                                            <materialDesign:PackIcon x:Name="ui_calibration_manual_run_icon" Kind="Play" />
-                                                            <TextBlock  x:Name="ui_calibration_manual_run_swat_button_text" Text=" Run SWAT+"/>
+                                                            <materialDesign:PackIcon Foreground="#FF06467A" x:Name="ui_calibration_manual_run_icon" Kind="Play" />
+                                                            <TextBlock Margin="5, 0, 0, 0" Foreground="#FF06467A" x:Name="ui_calibration_manual_run_swat_button_text" Text="Run SWAT+"/>
                                                         </StackPanel>
                                                     </Button>
                                                     <Button x:Name="ui_calibration_manual_refresh_indices" Style="{StaticResource MaterialDesignIconButton}"
@@ -936,8 +1148,8 @@
                                                                 <DataGridTextColumn IsReadOnly="True"  Header="Change Type" Binding="{Binding change_type}" Width="*" MinWidth="80"/>
                                                                 <DataGridTextColumn IsReadOnly="True"  Header="Abs.min" Binding="{Binding absolute_minimum}" Width="*" MinWidth="50"/>
                                                                 <DataGridTextColumn IsReadOnly="True"  Header="Abs.max" Binding="{Binding absolute_maximum}" Width="*" MinWidth="50"/>
-                                                                <DataGridTextColumn IsReadOnly="True"  Header="Curr. Best" Binding="{Binding best_sens_parameter}" Width="*" MinWidth="50"/>
-                                                                <DataGridTextColumn IsReadOnly="False" Header="Value" Binding="{Binding value, Mode=TwoWay}" Width="*"/>
+                                                                <DataGridTextColumn IsReadOnly="True"  Header="Curr. Best" Binding="{Binding best_sens_parameter, StringFormat={}{0:0.000}}" Width="*" MinWidth="50"/>
+                                                                <DataGridTextColumn IsReadOnly="False" Header="Value" Binding="{Binding value, StringFormat={}{0:0.000}, Mode=TwoWay}" Width="*"/>
                                                                 <DataGridTextColumn IsReadOnly="True"  Header="" Binding="{Binding units}" Width="*" MinWidth="20"/>
                                                             </DataGrid.Columns>
                                                         </DataGrid>
@@ -960,9 +1172,9 @@
                                                                 <DataGridTextColumn IsReadOnly="True" Header="" Binding="{Binding number}" Width="*" />
                                                                 <DataGridTextColumn IsReadOnly="True" Header="" Binding="{Binding timestep}" Width="*" />
                                                                 <DataGridTextColumn IsReadOnly="True" Header="" Binding="{Binding observed_variable}" Width="*" />
-                                                                <DataGridTextColumn IsReadOnly="True" Header="NSE" Binding="{Binding nse}" MinWidth="30"/>
+                                                                <DataGridTextColumn IsReadOnly="True" Header="NSE" Binding="{Binding nse, StringFormat={}{0:0.000}}" MinWidth="30"/>
                                                                 <!--<DataGridTextColumn IsReadOnly="True" Header="R2" Binding="{Binding Path=r2}" MinWidth="20"/>-->
-                                                                <DataGridTextColumn IsReadOnly="True" Header="PBias" Binding="{Binding pbias}" MinWidth="30"/>
+                                                                <DataGridTextColumn IsReadOnly="True" Header="PBias" Binding="{Binding pbias, StringFormat={}{0:0.000}}" MinWidth="30"/>
                                                             </DataGrid.Columns>
                                                         </DataGrid>
                                                     </Grid>
@@ -1052,7 +1264,7 @@
 
                                                     <StackPanel Orientation="Horizontal">
                                                         <materialDesign:PackIcon x:Name="ui_calibration_automatic_run_icon" Kind="Play"/>
-                                                        <TextBlock Margin="0, 1, 0, 0" x:Name="ui_calibration_automatic_calibration_run_calibration" Text=" Calibrate"/>
+                                                        <TextBlock Margin="0, 1, 0, 0" x:Name="ui_calibration_automatic_calibration_run_calibration" Text="Calibrate"/>
                                                     </StackPanel>
                                                 </Button>
                                             </StackPanel>
@@ -1085,8 +1297,8 @@
                                                             <DataGridTextColumn IsReadOnly="True"  Header="Group" Binding="{Binding object_type}" Width="*" MinWidth="50"/>
                                                             <DataGridTextColumn IsReadOnly="True"  Header="Name" Binding="{Binding name}" MinWidth="55" Width="*"/>
                                                             <DataGridTextColumn IsReadOnly="True"  Header="Change Type" Binding="{Binding change_type}" Width="*" MinWidth="80"/>
-                                                            <DataGridTextColumn IsReadOnly="True"  Header="Current Best" Binding="{Binding best_sens_parameter}" Width="*" MinWidth="50"/>
-                                                            <DataGridTextColumn IsReadOnly="True"  Header="Value" Binding="{Binding value}" Width="*"/>
+                                                            <DataGridTextColumn IsReadOnly="True"  Header="Current Best" Binding="{Binding best_sens_parameter, StringFormat={}{0:0.000}}" Width="*" MinWidth="50"/>
+                                                            <DataGridTextColumn IsReadOnly="True"  Header="Value" Binding="{Binding value, StringFormat={}{0:0.000}}" Width="*"/>
                                                             <DataGridTextColumn IsReadOnly="True"  Header="" Binding="{Binding units}" Width="*" MinWidth="20"/>
                                                         </DataGrid.Columns>
                                                     </DataGrid>
@@ -1117,9 +1329,9 @@
                                                         <DataGridTextColumn IsReadOnly="True" Header="" Binding="{Binding number}" Width="*" />
                                                         <DataGridTextColumn IsReadOnly="True" Header="" Binding="{Binding timestep}" Width="*" />
                                                         <DataGridTextColumn IsReadOnly="True" Header="" Binding="{Binding observed_variable}" Width="*" />
-                                                        <DataGridTextColumn IsReadOnly="True" Header="NSE" Binding="{Binding nse}" MinWidth="30"/>
+                                                        <DataGridTextColumn IsReadOnly="True" Header="NSE" Binding="{Binding nse, StringFormat={}{0:0.000}}" MinWidth="30"/>
                                                         <!--<DataGridTextColumn IsReadOnly="True" Header="R2" Binding="{Binding Path=r2}" MinWidth="20"/>-->
-                                                        <DataGridTextColumn IsReadOnly="True" Header="PBias" Binding="{Binding pbias}" MinWidth="30"/>
+                                                        <DataGridTextColumn IsReadOnly="True" Header="PBias" Binding="{Binding pbias, StringFormat={}{0:0.000}}" MinWidth="30"/>
                                                     </DataGrid.Columns>
                                                 </DataGrid>
 
@@ -1155,7 +1367,7 @@
                                                 </Style>
                                             </Grid.Resources>
 
-                                            <lvc:CartesianChart Margin="0, 10, 0, 0" Visibility="Visible" x:Name="ui_calibration_automatic_chart" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                            <lvc:CartesianChart Margin="0, 10, 0, 0" Visibility="Hidden" x:Name="ui_calibration_automatic_chart" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                                                                 Series="{Binding SeriesCollection_auto}">
 
                                                 <lvc:CartesianChart.AxisY>
@@ -1206,16 +1418,17 @@
                             </TabControl>
 
 
-                            <Grid Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Top">
+                            <Grid Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Bottom">
                                 <materialDesign:Card
+                                    Background="#b0adae"
                                     materialDesign:ShadowAssist.ShadowDepth="Depth0"
                                     Padding="1" MinWidth="280" Margin="0, 0, 0, 17"
                                     HorizontalAlignment="Center">
 
                                     <StackPanel Orientation="Horizontal" Margin="4" HorizontalAlignment="Center">
 
-                                        <RadioButton IsChecked="True" Click="navigate_calibration_manual" IsEnabled="True" MinWidth="110" Content="Manual" ToolTip="Perform a Manual Calibration" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="0" Cursor="Hand"/>
-                                        <RadioButton IsChecked="False" MinWidth="110" Content="Automatic" ToolTip="Perform an Automatic Calibration" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="0" Click="navigate_calibration_automatic" Cursor="Hand"  />
+                                        <RadioButton Foreground="#FF06467A" IsChecked="True" Click="navigate_calibration_manual" IsEnabled="True" MinWidth="110" Content="Manual" ToolTip="Perform a Manual Calibration" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="0" Cursor="Hand"/>
+                                        <RadioButton Foreground="#FF06467A" IsChecked="False" MinWidth="110" Content="Automatic" ToolTip="Perform an Automatic Calibration" Style="{StaticResource MaterialDesignTabRadioButton}" Margin="0" Click="navigate_calibration_automatic" Cursor="Hand"  />
 
                                     </StackPanel>
 
@@ -1302,7 +1515,7 @@
         </materialDesign:Transitioner>
 
         <StackPanel Grid.Row="2">
-            <ProgressBar x:Name="ui_master_progress_bar" Value="0" Height="10" />
+            <ProgressBar x:Name="ui_master_progress_bar" Value="0" Height="20" Margin="0, -5, 0, 0" />
         </StackPanel>
 
 
